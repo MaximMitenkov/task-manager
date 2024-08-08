@@ -12,7 +12,7 @@ public class Storage {
     private Integer idCounter = 0;
 
     public void addTask(Task task) {
-        storage.set(idCounter++, task);
+        storage.add(idCounter++, task);
     }
     public void removeTask(int id) {
         storage.remove(id);

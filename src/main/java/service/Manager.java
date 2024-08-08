@@ -19,7 +19,7 @@ public class Manager {
     public Manager(Storage storage) {
         this.storage = storage;
 
-        comparators = new Comparator[]{};
+        comparators = new Comparator[3];
         comparators[0] = Comparator.comparing(Task::getTitle);
         comparators[1] = Comparator.comparing(Task::getPriority);
         comparators[2] = Comparator.comparing(Task::getDeadline);

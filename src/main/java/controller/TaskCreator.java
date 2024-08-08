@@ -19,7 +19,7 @@ public class TaskCreator {
         System.out.println("Enter Title of the task");
         String title = scanner.nextLine();
         System.out.println("Enter Priority of the task");
-        Priority priority = Priority.valueOf(scanner.nextLine());
+        Priority priority = Priority.valueOf(scanner.nextLine().toUpperCase());
         System.out.println("Enter Deadline of the task");
         LocalDate deadLine = LocalDate.parse(scanner.nextLine());
         return Feature.builder()
@@ -33,7 +33,7 @@ public class TaskCreator {
         System.out.println("Enter Title of the task");
         String title = scanner.nextLine();
         System.out.println("Enter Priority of the task");
-        Priority priority = Priority.valueOf(scanner.nextLine());
+        Priority priority = Priority.valueOf(scanner.nextLine().toUpperCase());
         System.out.println("Enter Deadline of the task");
         LocalDate deadLine = LocalDate.parse(scanner.nextLine());
         System.out.println("Enter Version");

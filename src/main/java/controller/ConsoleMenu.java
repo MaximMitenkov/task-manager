@@ -1,32 +1,30 @@
 package controller;
 
-import dao.Storage;
 import entities.Task;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import service.Manager;
 
 import java.util.Scanner;
 
-@Slf4j
 public class ConsoleMenu {
 
-    final Manager manager;
+    final private Manager manager;
 
-    ConsoleMenu(Manager manager) {
+    public ConsoleMenu(Manager manager) {
         this.manager = manager;
     }
 
     final Scanner scanner = new Scanner(System.in);
 
     public void startMenu() {
-        System.out.println("""
+        while (true) {
+            System.out.println("""
                 WELCOME TO THE MENU
                 1) Check my notes
                 2) Create a new note
                 3) Remove a note
                 """);
-        while (true) {
+            //TODO realization of showTasks with sorting and filter and task remover
             switch (scanner.nextLine().toLowerCase()) {
                 case "1" -> showTasks();
                 case "2" -> addTasks();
