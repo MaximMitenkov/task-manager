@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="controller in progress, entities">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/Storage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/Priority.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/Manager.java" afterDir="false" />
+    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="Dao + some fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Bug.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Bug.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Feature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Feature.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/Storage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/Manager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +70,7 @@
       <option name="presentableId" value="Default" />
       <updated>1723134258045</updated>
       <workItem from="1723134259091" duration="809000" />
-      <workItem from="1723135094575" duration="12868000" />
+      <workItem from="1723135094575" duration="17261000" />
     </task>
     <task id="LOCAL-00001" summary="Test">
       <option name="closed" value="true" />
@@ -102,7 +96,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723139243804</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Dao + some fixes">
+      <option name="closed" value="true" />
+      <created>1723151601211</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1723151601211</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -111,6 +113,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Test" />
     <MESSAGE value="controller in progress, entities" />
-    <option name="LAST_COMMIT_MESSAGE" value="controller in progress, entities" />
+    <MESSAGE value="Dao + some fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dao + some fixes" />
   </component>
 </project>
