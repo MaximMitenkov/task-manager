@@ -1,12 +1,13 @@
 package entities;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
 @SuperBuilder
 public abstract class Task {
     private String title;
