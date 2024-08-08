@@ -2,15 +2,15 @@ package entities;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
-public abstract class Note {
-    private int id;
+@SuperBuilder
+public abstract class Task {
     private String title;
-    private int priority;
+    private Priority priority;
     private LocalDate deadline;
 
     public void printConsole() {

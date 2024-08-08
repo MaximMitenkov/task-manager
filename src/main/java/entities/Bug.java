@@ -1,14 +1,13 @@
 package entities;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-@Setter
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
 @SuperBuilder
-public class Bug extends Note{
+public class Bug extends Task {
 
     int version;
 

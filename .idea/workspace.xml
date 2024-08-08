@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="Test">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/Bug.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/Feature.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/Note.java" afterDir="false" />
+    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="controller in progress, entities">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dao/Storage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/Priority.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/Manager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Bug.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Bug.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Feature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Feature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Task.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +23,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -41,6 +44,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -72,7 +76,7 @@
       <option name="presentableId" value="Default" />
       <updated>1723134258045</updated>
       <workItem from="1723134259091" duration="809000" />
-      <workItem from="1723135094575" duration="4093000" />
+      <workItem from="1723135094575" duration="12868000" />
     </task>
     <task id="LOCAL-00001" summary="Test">
       <option name="closed" value="true" />
@@ -90,7 +94,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723136003718</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="controller in progress, entities">
+      <option name="closed" value="true" />
+      <created>1723139243804</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1723139243804</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -98,6 +110,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test" />
+    <MESSAGE value="controller in progress, entities" />
+    <option name="LAST_COMMIT_MESSAGE" value="controller in progress, entities" />
   </component>
 </project>

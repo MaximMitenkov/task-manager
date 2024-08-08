@@ -1,27 +1,18 @@
 package controller;
 
-import lombok.NoArgsConstructor;
+import dao.Storage;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
 
-@NoArgsConstructor
+@Slf4j
 public class ConsoleMenu {
 
-    private String userName;
-    Scanner scanner = new Scanner(System.in);
 
-    public ConsoleMenu(String userName) {
-        this.userName = userName;
-    }
 
-    public void authorization() {
-        System.out.println("Enter the user name: ");
-        userName = scanner.nextLine();
-        startMenu();
-    }
+    final Scanner scanner = new Scanner(System.in);
 
     public void startMenu() {
-        System.out.println("Welcome " + userName + "!");
         System.out.println("""
                 WELCOME TO THE MENU
                 1) Check my notes
@@ -30,22 +21,22 @@ public class ConsoleMenu {
                 """);
         while (true) {
             switch (scanner.nextLine().toLowerCase()) {
-                case "1" -> showNotes();
-                case "2" -> addNote();
-                case "3" -> removeNote();
+                case "1" -> showTasks();
+                case "2" -> addTasks();
+                case "3" -> removeTasks();
                 case "exit" -> System.exit(0);
                 default -> System.out.println("Invalid option");
             }
         }
     }
 
-    private void showNotes() {
+    private void showTasks() {
         System.out.println("");
     }
 
-    private void addNote() {}
+    private void addTasks() {}
 
-    private void removeNote() {}
+    private void removeTasks() {}
 
 }
 
