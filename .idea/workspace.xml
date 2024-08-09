@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="Added TaskCreator">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/TaskCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/TaskCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/Storage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/Manager.java" afterDir="false" />
-    </list>
+    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="Added TaskCreator" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,6 +20,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -42,7 +36,7 @@
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
