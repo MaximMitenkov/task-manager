@@ -30,8 +30,8 @@ public class Manager {
         storage.addTask(task);
     }
 
-    public void removeTask(int id) {
-        storage.removeTask(id);
+    public void removeTask(Task task) {
+        storage.removeTask(task);
     }
 
     public Task[] getFilteredTasks(Class parameterClass) {

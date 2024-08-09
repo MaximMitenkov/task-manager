@@ -14,8 +14,8 @@ public class Storage {
     public void addTask(Task task) {
         storage.add(idCounter++, task);
     }
-    public void removeTask(int id) {
-        storage.remove(id);
+    public void removeTask(Task task) {
+        storage.remove(task);
     }
 
     public Task[] getFilteredTasks(Predicate<Task> filter) {
