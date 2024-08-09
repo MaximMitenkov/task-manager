@@ -16,5 +16,5 @@ public abstract class Task {
 
     public void printConsole() {
         System.out.println(this);
-    };
+    }
 }

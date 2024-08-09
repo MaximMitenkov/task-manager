@@ -1,6 +1,5 @@
 package entities;
 
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder

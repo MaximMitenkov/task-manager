@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="Menu is ready, need tests">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/FilterType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/SortType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="Added SortType and FilterType Enums, filter and sorting methods are now encapsulated. Exception checks were added in ConsoleMenu class. Need Tests and logs">
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/Storage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/entities/Bug.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Bug.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/entities/Feature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Feature.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/entities/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/Manager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +144,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723225362941</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Added SortType and FilterType Enums, filter and sorting methods are now encapsulated. Exception checks were added in ConsoleMenu class. Need Tests and logs">
+      <option name="closed" value="true" />
+      <created>1723242425071</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1723242425071</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -164,6 +166,7 @@
     <MESSAGE value="Added TaskCreator" />
     <MESSAGE value="workspace" />
     <MESSAGE value="Menu is ready, need tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Menu is ready, need tests" />
+    <MESSAGE value="Added SortType and FilterType Enums, filter and sorting methods are now encapsulated. Exception checks were added in ConsoleMenu class. Need Tests and logs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added SortType and FilterType Enums, filter and sorting methods are now encapsulated. Exception checks were added in ConsoleMenu class. Need Tests and logs" />
   </component>
 </project>

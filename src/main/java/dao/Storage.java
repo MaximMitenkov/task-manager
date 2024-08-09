@@ -3,7 +3,6 @@ package dao;
 import entities.Task;
 
 import java.util.ArrayList;
-import java.util.function.Predicate;
 
 public class Storage {
 

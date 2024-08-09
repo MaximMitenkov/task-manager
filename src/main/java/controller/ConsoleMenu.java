@@ -55,8 +55,8 @@ public class ConsoleMenu {
         try {
             switch (Integer.getInteger(scanner.nextLine())) {
                 case 1 -> showTasks();
-                case 2 -> manager.getFilteredTasks(FilterType.BUG);
-                case 3 -> manager.getFilteredTasks(FilterType.FEATURE);
+                case 2 -> showTasks(FilterType.BUG);
+                case 3 -> showTasks(FilterType.FEATURE);
                 default -> System.out.println("Invalid option");
             }
         } catch (SecurityException securityException) {
@@ -91,6 +91,12 @@ public class ConsoleMenu {
 
     private void showTasks(SortType type) {
         for (Task task : manager.getSortedTasks(type)) {
+            task.printConsole();
+        }
+    }
+
+    private void showTasks(FilterType type) {
+        for (Task task : manager.getFilteredTasks(type)) {
             task.printConsole();
         }
     }
