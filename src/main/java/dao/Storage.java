@@ -3,7 +3,6 @@ package dao;
 import entities.Task;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.function.Predicate;
 
 public class Storage {
@@ -14,23 +13,23 @@ public class Storage {
     public void addTask(Task task) {
         storage.add(idCounter++, task);
     }
+
+    //TODO Перенести в Storage сортировку и фильтр через енамы
+
     public void removeTask(Task task) {
         storage.remove(task);
     }
 
-    public Task[] getFilteredTasks(Predicate<Task> filter) {
-        return storage.stream().filter(filter).toArray(Task[]::new);
+    public ArrayList<Task> getFilteredTasks(FilterType type) {
+        return new ArrayList<>(storage.stream().filter(type.getPredicate()).toList());
     }
 
-    public Task[] getSortedTasks(ArrayList<Comparator<Task>> comparators) {
-        if (comparators.size() == 0) {
-            return storage.toArray(new Task[storage.size()]);
-        }
-        ArrayList<Task> sortedStorage = storage;
-        for (Comparator<Task> comparator : comparators) {
-            sortedStorage.sort(comparator);
-        }
-        return sortedStorage.toArray(new Task[sortedStorage.size()]);
+    public ArrayList<Task> getSortedTasks(SortType type) {
+        return new ArrayList<>(storage.stream().sorted(type.getComparator()).toList());
+    }
+
+    public ArrayList<Task> getTasks() {
+        return storage;
     }
 
 }

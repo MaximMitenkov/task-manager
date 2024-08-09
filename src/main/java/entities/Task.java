@@ -15,6 +15,6 @@ public abstract class Task {
     private LocalDate deadline;
 
     public void printConsole() {
-        System.out.println(this.toString());
+        System.out.println(this);
     };
 }
