@@ -20,7 +20,7 @@ public class TaskCreator {
         try {
             log.debug("Start building feature");
             System.out.println("Enter Title of the task");
-            String title = scanner.nextLine();
+            String title = firstLetterToUpperCase(scanner.nextLine());
             System.out.println("Enter Priority of the task");
             Priority priority = Priority.valueOf(scanner.nextLine().toUpperCase());
             System.out.println("Enter Deadline of the task in yyyy-MM-dd format");
@@ -47,7 +47,7 @@ public class TaskCreator {
         try {
             log.debug("Start building bug");
             System.out.println("Enter Title of the task");
-            String title = scanner.nextLine();
+            String title = firstLetterToUpperCase(scanner.nextLine());
             System.out.println("Enter Priority of the task");
             Priority priority = Priority.valueOf(scanner.nextLine().toUpperCase());
             System.out.println("Enter Deadline of the task in yyyy-MM-dd format");
@@ -71,5 +71,9 @@ public class TaskCreator {
             scanner.nextLine();
             return buildBug();
         }
+    }
+
+    private String firstLetterToUpperCase(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 }
