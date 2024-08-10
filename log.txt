@@ -8,3 +8,30 @@
 10.08.2024 17:26:46.683 [main] INFO   c.ConsoleMenu - Show tasks
 10.08.2024 17:26:50.813 [main] INFO   c.ConsoleMenu - Removing task menu opened
 10.08.2024 17:26:52.424 [main] INFO   c.ConsoleMenu - Task removed successfully.
+10.08.2024 19:11:44.041 [main] INFO   c.ConsoleMenu - Menu started
+10.08.2024 19:11:47.353 [main] INFO   c.ConsoleMenu - Adding task menu opened
+10.08.2024 19:13:17.220 [main] INFO   c.ConsoleMenu - Bug created
+10.08.2024 19:13:30.268 [main] INFO   c.ConsoleMenu - Filter menu opened
+10.08.2024 19:13:31.449 [main] INFO   c.ConsoleMenu - Show tasks
+10.08.2024 19:20:23.165 [main] INFO   c.ConsoleMenu - Menu started
+10.08.2024 19:20:26.583 [main] INFO   c.ConsoleMenu - Adding task menu opened
+10.08.2024 19:20:41.599 [main] ERROR  c.ConsoleMenu - User entered version in incorrect format
+java.util.regex.PatternSyntaxException: Incorrect format of version near index 0
+[0-9]+\.[0-9]+\.[0-9]+
+^
+	at service.Manager.addTask(Manager.java:28)
+	at controller.ConsoleMenu.addTasks(ConsoleMenu.java:168)
+	at controller.ConsoleMenu.startMenu(ConsoleMenu.java:41)
+	at Main.main(Main.java:10)
+10.08.2024 19:20:57.769 [main] ERROR  c.TaskCreator - User entered Invalid date format
+java.time.format.DateTimeParseException: Text '2024.12.01' could not be parsed at index 4
+	at java.base/java.time.format.DateTimeFormatter.parseResolved0(DateTimeFormatter.java:2108)
+	at java.base/java.time.format.DateTimeFormatter.parse(DateTimeFormatter.java:2010)
+	at java.base/java.time.LocalDate.parse(LocalDate.java:435)
+	at java.base/java.time.LocalDate.parse(LocalDate.java:420)
+	at controller.TaskCreator.buildBug(TaskCreator.java:54)
+	at controller.ConsoleMenu.addTasks(ConsoleMenu.java:186)
+	at controller.ConsoleMenu.startMenu(ConsoleMenu.java:41)
+	at Main.main(Main.java:10)
+10.08.2024 19:21:27.397 [main] INFO   c.ConsoleMenu - Filter menu opened
+10.08.2024 19:21:28.274 [main] INFO   c.ConsoleMenu - Show tasks

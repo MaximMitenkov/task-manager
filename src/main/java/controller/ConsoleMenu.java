@@ -3,20 +3,19 @@ package controller;
 import dao.FilterType;
 import dao.SortType;
 import entities.Task;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import service.Manager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.PatternSyntaxException;
 
 @Slf4j
+@RequiredArgsConstructor
 public class ConsoleMenu {
 
     final private Manager manager;
-
-    public ConsoleMenu(Manager manager) {
-        this.manager = manager;
-    }
 
     final Scanner scanner = new Scanner(System.in);
 
@@ -71,10 +70,10 @@ public class ConsoleMenu {
                     log.warn("User picked wrong number in filter menu");
                 }
             }
-            scanner.nextLine();
         } catch (NumberFormatException numberFormatException) {
             log.error("User entered not a number in filter menu", numberFormatException);
             System.out.println("You should enter a valid number. Try again.");
+        } finally {
             scanner.nextLine();
         }
     }
@@ -97,10 +96,10 @@ public class ConsoleMenu {
                     log.warn("User entered wrong number in sort menu");
                 }
             }
-            scanner.nextLine();
         } catch (NumberFormatException numberFormatException) {
             log.error("User entered not a number in sort menu", numberFormatException);
             System.out.println("You should enter a valid number. Try again.");
+        } finally {
             scanner.nextLine();
         }
     }
@@ -115,7 +114,7 @@ public class ConsoleMenu {
             return;
         }
         for (Task task : tasks) {
-            task.printConsole();
+            System.out.println(task.toString());
         }
     }
 
@@ -129,7 +128,7 @@ public class ConsoleMenu {
             return;
         }
         for (Task task : tasks) {
-            task.printConsole();
+            System.out.println(task.toString());
         }
     }
 
@@ -143,7 +142,7 @@ public class ConsoleMenu {
             return;
         }
         for (Task task : tasks) {
-            task.printConsole();
+            System.out.println(task.toString());
         }
     }
 
@@ -177,6 +176,11 @@ public class ConsoleMenu {
         } catch (NumberFormatException numberFormatException) {
             log.error("User entered not a number", numberFormatException);
             System.out.println("You should enter a valid number. Try again.");
+        } catch (PatternSyntaxException e) {
+            log.error("User entered version in incorrect format", e);
+            System.out.println("Incorrect format of version. Try again.");
+            manager.addTask(taskCreator.buildBug());
+        } finally {
             scanner.nextLine();
         }
     }

@@ -13,8 +13,4 @@ public abstract class Task {
     private String title;
     private Priority priority;
     private LocalDate deadline;
-
-    public void printConsole() {
-        System.out.println(this);
-    }
 }
