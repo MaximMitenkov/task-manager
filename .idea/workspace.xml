@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="Added regex version + bug fixes">
+    <list default="true" id="ebe7582e-3de4-4415-8bd6-b4d016c1ec7f" name="Changes" comment="Code clean up, menu improve">
+      <change afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ConsoleMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/TaskCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/TaskCreator.java" afterDir="false" />
     </list>
@@ -59,6 +62,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mitma\IdeaProjects\TaskManager\src\main\resources" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -78,7 +86,9 @@
       <workItem from="1723134259091" duration="809000" />
       <workItem from="1723135094575" duration="21320000" />
       <workItem from="1723243458301" duration="1145000" />
-      <workItem from="1723244983382" duration="4314000" />
+      <workItem from="1723244983382" duration="4508000" />
+      <workItem from="1723249701823" duration="33000" />
+      <workItem from="1723292092197" duration="5716000" />
     </task>
     <task id="LOCAL-00001" summary="Test">
       <option name="closed" value="true" />
@@ -168,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723248143728</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Code clean up, menu improve">
+      <option name="closed" value="true" />
+      <created>1723249582633</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1723249582633</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,6 +203,7 @@
     <MESSAGE value="Added SortType and FilterType Enums, filter and sorting methods are now encapsulated. Exception checks were added in ConsoleMenu class. Need Tests and logs" />
     <MESSAGE value="Some fixes" />
     <MESSAGE value="Added regex version + bug fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added regex version + bug fixes" />
+    <MESSAGE value="Code clean up, menu improve" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code clean up, menu improve" />
   </component>
 </project>

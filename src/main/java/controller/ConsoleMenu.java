@@ -3,11 +3,13 @@ package controller;
 import dao.FilterType;
 import dao.SortType;
 import entities.Task;
+import lombok.extern.slf4j.Slf4j;
 import service.Manager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@Slf4j
 public class ConsoleMenu {
 
     final private Manager manager;
@@ -19,6 +21,7 @@ public class ConsoleMenu {
     final Scanner scanner = new Scanner(System.in);
 
     public void startMenu() {
+        log.info("Menu started");
         while (true) {
             System.out.println("""
                 WELCOME TO THE MENU
@@ -37,9 +40,13 @@ public class ConsoleMenu {
                     case 3 -> addTasks();
                     case 4 -> removeTasks();
                     case 0 -> System.exit(0);
-                    default -> System.out.println("You picked wrong number. Try again.");
+                    default -> {
+                        System.out.println("You picked wrong number. Try again.");
+                        log.warn("User entered wrong number");
+                    }
                 }
-            } catch (SecurityException securityException) {
+            } catch (NumberFormatException numberFormatException) {
+                log.error("User entered not a number", numberFormatException);
                 System.out.println("You should enter a valid number. Try again.");
                 scanner.nextLine();
             }
@@ -47,6 +54,7 @@ public class ConsoleMenu {
     }
 
     private void filter() {
+        log.info("Filter menu opened");
         System.out.println("""
             Enter the type of filter:
             1) Show all tasks
@@ -58,16 +66,21 @@ public class ConsoleMenu {
                 case 1 -> showTasks();
                 case 2 -> showTasks(FilterType.BUG);
                 case 3 -> showTasks(FilterType.FEATURE);
-                default -> System.out.println("You picked wrong number. Try again.");
+                default -> {
+                    System.out.println("You picked wrong number. Try again.");
+                    log.warn("User picked wrong number in filter menu");
+                }
             }
             scanner.nextLine();
-        } catch (SecurityException securityException) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error("User entered not a number in filter menu", numberFormatException);
             System.out.println("You should enter a valid number. Try again.");
             scanner.nextLine();
         }
     }
 
     private void sort() {
+        log.info("Sort menu opened");
         System.out.println("""
                 Enter the type of sort method:
                 1) Title sort
@@ -79,18 +92,24 @@ public class ConsoleMenu {
                 case 1 -> showTasks(SortType.TITLE);
                 case 2 -> showTasks(SortType.PRIORITY);
                 case 3 -> showTasks(SortType.DEADLINE);
-                default -> System.out.println("You entered wrong number. Try again.");
+                default -> {
+                    System.out.println("You entered wrong number. Try again.");
+                    log.warn("User entered wrong number in sort menu");
+                }
             }
             scanner.nextLine();
-        } catch (SecurityException securityException) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error("User entered not a number in sort menu", numberFormatException);
             System.out.println("You should enter a valid number. Try again.");
             scanner.nextLine();
         }
     }
 
     private void showTasks() {
+        log.info("Show tasks");
         var tasks = manager.getTasks();
         if (tasks.isEmpty()) {
+            log.warn("User have no tasks");
             System.out.println("You have no tasks.");
             scanner.nextLine();
             return;
@@ -101,9 +120,11 @@ public class ConsoleMenu {
     }
 
     private void showTasks(SortType type) {
+        log.info("Show sorted tasks by {}", type);
         var tasks = manager.getSortedTasks(type);
         if (tasks.isEmpty()) {
             System.out.println("You have no tasks.");
+            log.warn("User have no tasks of {}", type);
             scanner.nextLine();
             return;
         }
@@ -113,9 +134,11 @@ public class ConsoleMenu {
     }
 
     private void showTasks(FilterType type) {
+        log.info("Show filtered tasks by {}", type);
         var tasks = manager.getFilteredTasks(type);
         if (tasks.isEmpty()) {
             System.out.println("You have no tasks of this type.");
+            log.warn("User have no tasks of this type.");
             scanner.nextLine();
             return;
         }
@@ -125,6 +148,7 @@ public class ConsoleMenu {
     }
 
     private void addTasks() {
+        log.info("Adding task menu opened");
         System.out.println("""
             Enter the type of the task you would like to add:
             1) Add a new Feature;
@@ -136,26 +160,34 @@ public class ConsoleMenu {
             switch (Integer.parseInt(scanner.nextLine())) {
                 case 1 -> {
                     manager.addTask(taskCreator.buildFeature());
+                    log.info("Feature created");
                     System.out.println("Feature added successfully.");
                 }
                 case 2 -> {
                     manager.addTask(taskCreator.buildBug());
+                    log.info("Bug created");
                     System.out.println("Bug added successfully.");
                 }
-                default -> System.out.println("You picked wrong number. Try again.");
+                default -> {
+                    System.out.println("You picked wrong number. Try again.");
+                    log.warn("User picked wrong number in add task menu");
+                }
             }
             scanner.nextLine();
-        } catch (SecurityException securityException) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error("User entered not a number", numberFormatException);
             System.out.println("You should enter a valid number. Try again.");
             scanner.nextLine();
         }
     }
 
     private void removeTasks() {
+        log.info("Removing task menu opened");
         try {
             ArrayList<Task> tasks = manager.getTasks();
             if (tasks.isEmpty()) {
                 System.out.println("You have no tasks to remove.");
+                log.warn("User have no tasks to remove.");
                 scanner.nextLine();
                 return;
             }
@@ -164,13 +196,16 @@ public class ConsoleMenu {
             }
             System.out.println("\nEnter number of task you want to remove: ");
             manager.removeTask(tasks.get(Integer.parseInt(scanner.nextLine()) - 1));
+            log.info("Task removed successfully.");
             System.out.println("Task removed successfully.");
             scanner.nextLine();
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             System.out.println("You entered wrong number. Try again.");
+            log.warn("User entered wrong number in remove task menu");
             scanner.nextLine();
-        } catch (SecurityException securityException) {
+        } catch (NumberFormatException numberFormatException) {
             System.out.println("You should enter a valid number. Try again.");
+            log.error("User entered not a number in remove menu", numberFormatException);
             scanner.nextLine();
         }
     }

@@ -1,0 +1,10 @@
+10.08.2024 17:26:10.860 [main] INFO   c.ConsoleMenu - Menu started
+10.08.2024 17:26:21.996 [main] INFO   c.ConsoleMenu - Filter menu opened
+10.08.2024 17:26:23.814 [main] INFO   c.ConsoleMenu - Show tasks
+10.08.2024 17:26:23.815 [main] WARN   c.ConsoleMenu - User have no tasks
+10.08.2024 17:26:26.614 [main] INFO   c.ConsoleMenu - Adding task menu opened
+10.08.2024 17:26:43.428 [main] INFO   c.ConsoleMenu - Feature created
+10.08.2024 17:26:45.647 [main] INFO   c.ConsoleMenu - Filter menu opened
+10.08.2024 17:26:46.683 [main] INFO   c.ConsoleMenu - Show tasks
+10.08.2024 17:26:50.813 [main] INFO   c.ConsoleMenu - Removing task menu opened
+10.08.2024 17:26:52.424 [main] INFO   c.ConsoleMenu - Task removed successfully.
