@@ -31,7 +31,7 @@ public class ConsoleMenu {
                 """);
 
             try {
-                switch (Integer.getInteger(scanner.nextLine())) {
+                switch (Integer.parseInt(scanner.nextLine())) {
                     case 1 -> filter();
                     case 2 -> sort();
                     case 3 -> addTasks();
@@ -53,7 +53,7 @@ public class ConsoleMenu {
             3) Show only features
             """);
         try {
-            switch (Integer.getInteger(scanner.nextLine())) {
+            switch (Integer.parseInt(scanner.nextLine())) {
                 case 1 -> showTasks();
                 case 2 -> showTasks(FilterType.BUG);
                 case 3 -> showTasks(FilterType.FEATURE);
@@ -72,7 +72,7 @@ public class ConsoleMenu {
                 3) Deadline sort
                 """);
         try {
-            switch (Integer.getInteger(scanner.nextLine())) {
+            switch (Integer.parseInt(scanner.nextLine())) {
                 case 1 -> showTasks(SortType.TITLE);
                 case 2 -> showTasks(SortType.PRIORITY);
                 case 3 -> showTasks(SortType.DEADLINE);
@@ -110,7 +110,7 @@ public class ConsoleMenu {
 
         TaskCreator taskCreator = new TaskCreator(scanner);
         try {
-            switch (Integer.getInteger(scanner.nextLine())) {
+            switch (Integer.parseInt(scanner.nextLine())) {
                 case 1 -> manager.addTask(taskCreator.buildFeature());
                 case 2 -> manager.addTask(taskCreator.buildBug());
                 default -> System.out.println("You picked wrong number. Try again.");
@@ -127,7 +127,7 @@ public class ConsoleMenu {
                 System.out.println((i+1) + ") " + tasks.get(i).toString());
             }
             System.out.println("\nEnter number of task you want to remove: ");
-            manager.removeTask(tasks.get(Integer.getInteger(scanner.nextLine()) - 1));
+            manager.removeTask(tasks.get(Integer.parseInt(scanner.nextLine()) - 1));
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             System.out.println("You entered wrong number. Try again.");
         } catch (SecurityException securityException) {

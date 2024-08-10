@@ -7,13 +7,10 @@ import java.util.ArrayList;
 public class Storage {
 
     private final ArrayList<Task> storage = new ArrayList<>();
-    private Integer idCounter = 0;
 
     public void addTask(Task task) {
-        storage.add(idCounter++, task);
+        storage.add(task);
     }
-
-    //TODO Перенести в Storage сортировку и фильтр через енамы
 
     public void removeTask(Task task) {
         storage.remove(task);
