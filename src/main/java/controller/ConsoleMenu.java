@@ -41,6 +41,7 @@ public class ConsoleMenu {
                 }
             } catch (SecurityException securityException) {
                 System.out.println("You should enter a valid number. Try again.");
+                scanner.nextLine();
             }
         }
     }
@@ -57,10 +58,12 @@ public class ConsoleMenu {
                 case 1 -> showTasks();
                 case 2 -> showTasks(FilterType.BUG);
                 case 3 -> showTasks(FilterType.FEATURE);
-                default -> System.out.println("Invalid option");
+                default -> System.out.println("You picked wrong number. Try again.");
             }
+            scanner.nextLine();
         } catch (SecurityException securityException) {
             System.out.println("You should enter a valid number. Try again.");
+            scanner.nextLine();
         }
     }
 
@@ -78,25 +81,45 @@ public class ConsoleMenu {
                 case 3 -> showTasks(SortType.DEADLINE);
                 default -> System.out.println("You entered wrong number. Try again.");
             }
+            scanner.nextLine();
         } catch (SecurityException securityException) {
             System.out.println("You should enter a valid number. Try again.");
+            scanner.nextLine();
         }
     }
 
     private void showTasks() {
-        for (Task task : manager.getTasks()) {
+        var tasks = manager.getTasks();
+        if (tasks.isEmpty()) {
+            System.out.println("You have no tasks.");
+            scanner.nextLine();
+            return;
+        }
+        for (Task task : tasks) {
             task.printConsole();
         }
     }
 
     private void showTasks(SortType type) {
-        for (Task task : manager.getSortedTasks(type)) {
+        var tasks = manager.getSortedTasks(type);
+        if (tasks.isEmpty()) {
+            System.out.println("You have no tasks.");
+            scanner.nextLine();
+            return;
+        }
+        for (Task task : tasks) {
             task.printConsole();
         }
     }
 
     private void showTasks(FilterType type) {
-        for (Task task : manager.getFilteredTasks(type)) {
+        var tasks = manager.getFilteredTasks(type);
+        if (tasks.isEmpty()) {
+            System.out.println("You have no tasks of this type.");
+            scanner.nextLine();
+            return;
+        }
+        for (Task task : tasks) {
             task.printConsole();
         }
     }
@@ -111,27 +134,44 @@ public class ConsoleMenu {
         TaskCreator taskCreator = new TaskCreator(scanner);
         try {
             switch (Integer.parseInt(scanner.nextLine())) {
-                case 1 -> manager.addTask(taskCreator.buildFeature());
-                case 2 -> manager.addTask(taskCreator.buildBug());
+                case 1 -> {
+                    manager.addTask(taskCreator.buildFeature());
+                    System.out.println("Feature added successfully.");
+                }
+                case 2 -> {
+                    manager.addTask(taskCreator.buildBug());
+                    System.out.println("Bug added successfully.");
+                }
                 default -> System.out.println("You picked wrong number. Try again.");
             }
+            scanner.nextLine();
         } catch (SecurityException securityException) {
             System.out.println("You should enter a valid number. Try again.");
+            scanner.nextLine();
         }
     }
 
     private void removeTasks() {
         try {
             ArrayList<Task> tasks = manager.getTasks();
+            if (tasks.isEmpty()) {
+                System.out.println("You have no tasks to remove.");
+                scanner.nextLine();
+                return;
+            }
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println((i+1) + ") " + tasks.get(i).toString());
             }
             System.out.println("\nEnter number of task you want to remove: ");
             manager.removeTask(tasks.get(Integer.parseInt(scanner.nextLine()) - 1));
+            System.out.println("Task removed successfully.");
+            scanner.nextLine();
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             System.out.println("You entered wrong number. Try again.");
+            scanner.nextLine();
         } catch (SecurityException securityException) {
             System.out.println("You should enter a valid number. Try again.");
+            scanner.nextLine();
         }
     }
 

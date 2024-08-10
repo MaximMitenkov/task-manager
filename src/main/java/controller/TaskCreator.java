@@ -3,6 +3,7 @@ package controller;
 import entities.Bug;
 import entities.Feature;
 import entities.Priority;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -11,17 +12,12 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@RequiredArgsConstructor
 public class TaskCreator {
 
     private final Scanner scanner;
     private final String regex = "[0-9]+\\.[0-9]+\\.[0-9]+";
     private final Pattern pattern = Pattern.compile(regex);
-
-    public TaskCreator(Scanner scanner) {
-        this.scanner = scanner;
-
-
-    }
 
     public Feature buildFeature() {
         try {
@@ -38,9 +34,11 @@ public class TaskCreator {
                     .build();
         } catch (IllegalArgumentException e) {
             System.out.println("Unknown priority type. Try again.");
+            scanner.nextLine();
             return buildFeature();
         } catch (DateTimeParseException e) {
             System.out.println("Invalid date format. Try again.");
+            scanner.nextLine();
             return buildFeature();
         }
     }
@@ -67,12 +65,15 @@ public class TaskCreator {
                     .build();
         } catch (IllegalArgumentException e) {
             System.out.println("Unknown priority type. Try again.");
+            scanner.nextLine();
             return buildBug();
         } catch (DateTimeParseException e) {
             System.out.println("Invalid date format. Try again.");
+            scanner.nextLine();
             return buildBug();
         } catch (InputMismatchException e) {
             System.out.println("Invalid version format. Try again.");
+            scanner.nextLine();
             return buildBug();
         }
     }
