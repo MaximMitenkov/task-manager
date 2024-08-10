@@ -110,7 +110,6 @@ public class ConsoleMenu {
         if (tasks.isEmpty()) {
             log.warn("User have no tasks");
             System.out.println("You have no tasks.");
-            scanner.nextLine();
             return;
         }
         for (Task task : tasks) {
@@ -124,7 +123,6 @@ public class ConsoleMenu {
         if (tasks.isEmpty()) {
             System.out.println("You have no tasks.");
             log.warn("User have no tasks of {}", type);
-            scanner.nextLine();
             return;
         }
         for (Task task : tasks) {
@@ -138,7 +136,6 @@ public class ConsoleMenu {
         if (tasks.isEmpty()) {
             System.out.println("You have no tasks of this type.");
             log.warn("User have no tasks of this type.");
-            scanner.nextLine();
             return;
         }
         for (Task task : tasks) {
@@ -172,7 +169,6 @@ public class ConsoleMenu {
                     log.warn("User picked wrong number in add task menu");
                 }
             }
-            scanner.nextLine();
         } catch (NumberFormatException numberFormatException) {
             log.error("User entered not a number", numberFormatException);
             System.out.println("You should enter a valid number. Try again.");
@@ -202,14 +198,13 @@ public class ConsoleMenu {
             manager.removeTask(tasks.get(Integer.parseInt(scanner.nextLine()) - 1));
             log.info("Task removed successfully.");
             System.out.println("Task removed successfully.");
-            scanner.nextLine();
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             System.out.println("You entered wrong number. Try again.");
             log.warn("User entered wrong number in remove task menu");
-            scanner.nextLine();
         } catch (NumberFormatException numberFormatException) {
             System.out.println("You should enter a valid number. Try again.");
             log.error("User entered not a number in remove menu", numberFormatException);
+        } finally {
             scanner.nextLine();
         }
     }

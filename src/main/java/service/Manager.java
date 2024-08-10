@@ -18,11 +18,11 @@ import java.util.regex.PatternSyntaxException;
 public class Manager {
 
     private final Storage storage;
+    private final String versionRegex = "[0-9]+\\.[0-9]+\\.[0-9]+";
+    private final Pattern versionPattern = Pattern.compile(versionRegex);
 
     public void addTask(Task task) throws PatternSyntaxException {
         if (task instanceof Bug) {
-            String versionRegex = "[0-9]+\\.[0-9]+\\.[0-9]+";
-            Pattern versionPattern = Pattern.compile(versionRegex);
             Matcher matcher = versionPattern.matcher(((Bug) task).getVersion());
             if (!matcher.matches()) {
                 throw new PatternSyntaxException("Incorrect format of version", versionRegex, 0);
