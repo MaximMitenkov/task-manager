@@ -1,17 +1,21 @@
-package controller;
+package org.mitenkov.controller;
 
-import dao.FilterType;
-import dao.SortType;
-import entities.Task;
+import org.mitenkov.dao.FilterType;
+import org.mitenkov.dao.SortType;
+import org.mitenkov.entities.Task;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import service.Manager;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Controller;
+import org.mitenkov.service.Manager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
 
 @Slf4j
+@Controller
 @RequiredArgsConstructor
 public class ConsoleMenu {
 
@@ -19,6 +23,7 @@ public class ConsoleMenu {
 
     final Scanner scanner = new Scanner(System.in);
 
+    @EventListener(ApplicationReadyEvent.class)
     public void startMenu() {
         log.info("Menu started");
         while (true) {

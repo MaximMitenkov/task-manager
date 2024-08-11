@@ -1,4 +1,4 @@
-package entities;
+package org.mitenkov.entities;
 
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;

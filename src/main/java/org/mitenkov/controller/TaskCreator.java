@@ -1,8 +1,8 @@
-package controller;
+package org.mitenkov.controller;
 
-import entities.Bug;
-import entities.Feature;
-import entities.Priority;
+import org.mitenkov.entities.Bug;
+import org.mitenkov.entities.Feature;
+import org.mitenkov.entities.Priority;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

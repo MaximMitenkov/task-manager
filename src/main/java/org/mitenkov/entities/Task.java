@@ -1,4 +1,4 @@
-package entities;
+package org.mitenkov.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

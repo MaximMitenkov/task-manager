@@ -1,6 +1,6 @@
-package dao;
+package org.mitenkov.dao;
 
-import entities.Task;
+import org.mitenkov.entities.Task;
 import lombok.Getter;
 
 import java.util.Comparator;

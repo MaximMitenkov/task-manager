@@ -1,8 +1,8 @@
-package dao;
+package org.mitenkov.dao;
 
-import entities.Bug;
-import entities.Feature;
-import entities.Task;
+import org.mitenkov.entities.Bug;
+import org.mitenkov.entities.Feature;
+import org.mitenkov.entities.Task;
 import lombok.Getter;
 
 import java.util.function.Predicate;

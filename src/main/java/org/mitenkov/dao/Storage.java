@@ -1,9 +1,11 @@
-package dao;
+package org.mitenkov.dao;
 
-import entities.Task;
+import org.mitenkov.entities.Task;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
+@Repository
 public class Storage {
 
     private final ArrayList<Task> storage = new ArrayList<>();

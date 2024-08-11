@@ -1,12 +1,13 @@
-package service;
+package org.mitenkov.service;
 
-import dao.FilterType;
-import dao.SortType;
-import dao.Storage;
-import entities.Bug;
-import entities.Task;
+import org.mitenkov.dao.FilterType;
+import org.mitenkov.dao.SortType;
+import org.mitenkov.dao.Storage;
+import org.mitenkov.entities.Bug;
+import org.mitenkov.entities.Task;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class Manager {
 
