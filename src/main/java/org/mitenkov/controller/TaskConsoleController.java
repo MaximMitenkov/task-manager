@@ -1,25 +1,25 @@
 package org.mitenkov.controller;
 
-import org.mitenkov.dao.FilterType;
-import org.mitenkov.dao.SortType;
-import org.mitenkov.entities.Task;
+import org.mitenkov.enums.FilterType;
+import org.mitenkov.enums.SortType;
+import org.mitenkov.entity.Task;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
-import org.mitenkov.service.Manager;
+import org.mitenkov.service.TaskService;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
 
-@Slf4j
 @Controller
+@Slf4j
 @RequiredArgsConstructor
-public class ConsoleMenu {
+public class TaskConsoleController {
 
-    final private Manager manager;
+    final private TaskService taskService;
 
     final Scanner scanner = new Scanner(System.in);
 
@@ -111,7 +111,7 @@ public class ConsoleMenu {
 
     private void showTasks() {
         log.info("Show tasks");
-        var tasks = manager.getTasks();
+        var tasks = taskService.getTasks();
         if (tasks.isEmpty()) {
             log.warn("User have no tasks");
             System.out.println("You have no tasks.");
@@ -124,7 +124,7 @@ public class ConsoleMenu {
 
     private void showTasks(SortType type) {
         log.info("Show sorted tasks by {}", type);
-        var tasks = manager.getSortedTasks(type);
+        var tasks = taskService.getSortedTasks(type);
         if (tasks.isEmpty()) {
             System.out.println("You have no tasks.");
             log.warn("User have no tasks of {}", type);
@@ -137,7 +137,7 @@ public class ConsoleMenu {
 
     private void showTasks(FilterType type) {
         log.info("Show filtered tasks by {}", type);
-        var tasks = manager.getFilteredTasks(type);
+        var tasks = taskService.getFilteredTasks(type);
         if (tasks.isEmpty()) {
             System.out.println("You have no tasks of this type.");
             log.warn("User have no tasks of this type.");
@@ -156,16 +156,16 @@ public class ConsoleMenu {
             2) Add a new Bug;
          """);
 
-        TaskCreator taskCreator = new TaskCreator(scanner);
+        TaskConsoleCreator taskConsoleCreator = new TaskConsoleCreator(scanner);
         try {
             switch (Integer.parseInt(scanner.nextLine())) {
                 case 1 -> {
-                    manager.addTask(taskCreator.buildFeature());
+                    taskService.addTask(taskConsoleCreator.buildFeature());
                     log.info("Feature created");
                     System.out.println("Feature added successfully.");
                 }
                 case 2 -> {
-                    manager.addTask(taskCreator.buildBug());
+                    taskService.addTask(taskConsoleCreator.buildBug());
                     log.info("Bug created");
                     System.out.println("Bug added successfully.");
                 }
@@ -180,7 +180,7 @@ public class ConsoleMenu {
         } catch (PatternSyntaxException e) {
             log.error("User entered version in incorrect format", e);
             System.out.println("Incorrect format of version. Try again.");
-            manager.addTask(taskCreator.buildBug());
+            taskService.addTask(taskConsoleCreator.buildBug());
         } finally {
             scanner.nextLine();
         }
@@ -189,7 +189,7 @@ public class ConsoleMenu {
     private void removeTasks() {
         log.info("Removing task menu opened");
         try {
-            ArrayList<Task> tasks = manager.getTasks();
+            ArrayList<Task> tasks = taskService.getTasks();
             if (tasks.isEmpty()) {
                 System.out.println("You have no tasks to remove.");
                 log.warn("User have no tasks to remove.");
@@ -200,7 +200,7 @@ public class ConsoleMenu {
                 System.out.println((i+1) + ") " + tasks.get(i).toString());
             }
             System.out.println("\nEnter number of task you want to remove: ");
-            manager.removeTask(tasks.get(Integer.parseInt(scanner.nextLine()) - 1));
+            taskService.removeTask(tasks.get(Integer.parseInt(scanner.nextLine()) - 1));
             log.info("Task removed successfully.");
             System.out.println("Task removed successfully.");
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {

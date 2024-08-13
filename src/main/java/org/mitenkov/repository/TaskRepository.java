@@ -1,12 +1,14 @@
-package org.mitenkov.dao;
+package org.mitenkov.repository;
 
-import org.mitenkov.entities.Task;
+import org.mitenkov.entity.Task;
+import org.mitenkov.enums.FilterType;
+import org.mitenkov.enums.SortType;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
 @Repository
-public class Storage {
+public class TaskRepository {
 
     private final ArrayList<Task> storage = new ArrayList<>();
 
