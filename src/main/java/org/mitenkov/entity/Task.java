@@ -1,8 +1,9 @@
-package entities;
+package org.mitenkov.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.mitenkov.enums.Priority;
 
 import java.time.LocalDate;
 

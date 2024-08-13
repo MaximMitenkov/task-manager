@@ -1,8 +1,8 @@
-package controller;
+package org.mitenkov.controller;
 
-import entities.Bug;
-import entities.Feature;
-import entities.Priority;
+import org.mitenkov.entity.Bug;
+import org.mitenkov.entity.Feature;
+import org.mitenkov.enums.Priority;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 @Slf4j
 @RequiredArgsConstructor
-public class TaskCreator {
+public class TaskConsoleCreator {
 
     private final Scanner scanner;
 

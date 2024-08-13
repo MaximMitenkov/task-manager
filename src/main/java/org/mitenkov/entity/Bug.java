@@ -1,4 +1,4 @@
-package entities;
+package org.mitenkov.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
