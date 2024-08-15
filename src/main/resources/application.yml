@@ -1,0 +1,10 @@
+logging:
+  level:
+    root: trace
+
+app:
+  validation:
+    bug:
+      min-app-version: "1.10.15"
+    max-title-length: 30
+    min-time-feature: 10
