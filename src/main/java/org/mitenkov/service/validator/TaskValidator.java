@@ -47,8 +47,14 @@ public class TaskValidator {
         String[] numbers = version.split("\\.");
 
         for (int i = 0; i < minNumbers.length; i++) {
-            if (Integer.parseInt(minNumbers[i]) > Integer.parseInt(numbers[i])) {
+
+            int min = Integer.parseInt(minNumbers[i]);
+            int number = Integer.parseInt(numbers[i]);
+
+            if (min > number) {
                 throw new InvalidParameterException("Incorrect version number");
+            } else if (min < number) {
+                break;
             }
         }
     }
