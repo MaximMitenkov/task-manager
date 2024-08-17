@@ -23,7 +23,7 @@ public class TaskValidator {
     private final int maxTitleLength;
 
     public void validateDeadline(LocalDate deadline) {
-        if (deadline.isBefore(LocalDate.now().plus(validationProperties.getFeature().getMinTimeFeature()))) {
+        if (deadline.isBefore(LocalDate.now().plus(validationProperties.getFeature().getMinTimeToDo()))) {
             throw new InvalidParameterException();
         }
     }

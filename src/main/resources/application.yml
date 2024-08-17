@@ -7,5 +7,5 @@ app:
     bug:
       min-app-version: "1.10.15"
     feature:
-      min-time-feature: p10d
+      min-time-to-do: p10d
     max-title-length: 15

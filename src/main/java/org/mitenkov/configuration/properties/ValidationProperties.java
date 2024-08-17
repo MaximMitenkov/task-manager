@@ -21,7 +21,7 @@ public class ValidationProperties {
 
     @Data
     public static class FeatureProperties {
-        private Period minTimeFeature;
+        private Period minTimeToDo;
     }
 
 }
