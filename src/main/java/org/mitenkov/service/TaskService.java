@@ -24,8 +24,8 @@ public class TaskService {
 
     public void addTask(Task task) throws PatternSyntaxException {
         taskValidationService.validateTitleLength(task.getTitle());
-        if (task instanceof Bug) {
-            String version = ((Bug) task).getVersion();
+        if (task instanceof Bug bug) {
+            String version = bug.getVersion();
             taskValidationService.validateVersionFormat(version);
             taskValidationService.validateVersionNumber(version);
         }
