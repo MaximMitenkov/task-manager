@@ -12,4 +12,3 @@ import lombok.experimental.SuperBuilder;
 public class Bug extends Task {
     private String version;
 }
-
