@@ -1,17 +1,17 @@
 package org.mitenkov.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mitenkov.entity.Bug;
+import org.mitenkov.entity.Feature;
+import org.mitenkov.entity.Task;
 import org.mitenkov.enums.FilterType;
 import org.mitenkov.enums.SortType;
 import org.mitenkov.repository.TaskRepository;
-import org.mitenkov.entity.Bug;
-import org.mitenkov.entity.Task;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.mitenkov.service.validator.TaskValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 @Service
@@ -19,16 +19,18 @@ import java.util.regex.PatternSyntaxException;
 @RequiredArgsConstructor
 public class TaskService {
 
+    private final TaskValidator taskValidationService;
     private final TaskRepository taskRepository;
-    private final String versionRegex = "[0-9]+\\.[0-9]+\\.[0-9]+";
-    private final Pattern versionPattern = Pattern.compile(versionRegex);
 
     public void addTask(Task task) throws PatternSyntaxException {
-        if (task instanceof Bug) {
-            Matcher matcher = versionPattern.matcher(((Bug) task).getVersion());
-            if (!matcher.matches()) {
-                throw new PatternSyntaxException("Incorrect format of version", versionRegex, 0);
-            }
+        taskValidationService.validateTitleLength(task.getTitle());
+        if (task instanceof Bug bug) {
+            String version = bug.getVersion();
+            taskValidationService.validateVersionFormat(version);
+            taskValidationService.validateVersionNumber(version);
+        }
+        if (task instanceof Feature) {
+            taskValidationService.validateDeadline(task.getDeadline());
         }
         taskRepository.addTask(task);
     }

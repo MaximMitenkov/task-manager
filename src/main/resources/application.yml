@@ -1,0 +1,11 @@
+logging:
+  level:
+    root: info
+
+app:
+  validation:
+    bug:
+      min-app-version: "1.10.15"
+    feature:
+      min-time-to-do: p10d
+    max-title-length: 15

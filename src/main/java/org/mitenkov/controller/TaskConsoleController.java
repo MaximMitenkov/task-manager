@@ -1,15 +1,16 @@
 package org.mitenkov.controller;
 
-import org.mitenkov.enums.FilterType;
-import org.mitenkov.enums.SortType;
-import org.mitenkov.entity.Task;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mitenkov.entity.Task;
+import org.mitenkov.enums.FilterType;
+import org.mitenkov.enums.SortType;
+import org.mitenkov.service.TaskService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
-import org.mitenkov.service.TaskService;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
@@ -181,6 +182,9 @@ public class TaskConsoleController {
             log.error("User entered version in incorrect format", e);
             System.out.println("Incorrect format of version. Try again.");
             taskService.addTask(taskConsoleCreator.buildBug());
+        } catch (InvalidParameterException invalidParameterException) {
+            log.error("User entered version of app, that not allowed", invalidParameterException);
+            System.out.println("This version is no longer supported.");
         } finally {
             scanner.nextLine();
         }
@@ -215,5 +219,3 @@ public class TaskConsoleController {
     }
 
 }
-
-
