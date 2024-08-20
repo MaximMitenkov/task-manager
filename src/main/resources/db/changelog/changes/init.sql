@@ -4,5 +4,6 @@ CREATE table Task
     type     VARCHAR(20),
     title    VARCHAR(100),
     priority VARCHAR(20),
-    deadline DATE
+    deadline DATE,
+    version  varchar(20)
 )
