@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @SuperBuilder
 public abstract class Task {
+    private int id;
     private String title;
     private Priority priority;
     private LocalDate deadline;

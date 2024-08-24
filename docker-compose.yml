@@ -11,6 +11,3 @@ services:
       - POSTGRES_PASSWORD=mitdb
       - POSTGRES_USER=demo
       - POSTGRES_DB=demoDB
-
-
-
