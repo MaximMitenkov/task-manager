@@ -2,6 +2,14 @@ logging:
   level:
     root: info
 
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demoDB
+    username: demo
+    password: mitdb
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
 app:
   validation:
     bug:
