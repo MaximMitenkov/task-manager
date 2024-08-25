@@ -54,7 +54,7 @@ public class TaskRepository {
     }
 
     public ArrayList<Task> getTasks() {
-        return new ArrayList<>(jdbcTemplate.query("select * from Task", taskRowMapper));
+        return new ArrayList<>(jdbcTemplate.query("select * from task", taskRowMapper));
     }
 
 }

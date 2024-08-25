@@ -35,6 +35,6 @@ public class TaskRowMapper implements RowMapper<Task> {
                     .deadline(LocalDate.parse(rs.getString("deadline")))
                     .build();
         }
-        throw new SQLException("Unknown Task");
+        throw new SQLException("Unknown task found: " + type);
     }
 }
