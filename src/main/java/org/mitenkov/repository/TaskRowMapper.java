@@ -4,6 +4,7 @@ import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
+import org.mitenkov.enums.TaskType;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,10 @@ public class TaskRowMapper implements RowMapper<Task> {
     @Override
     public Task mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        String type = rs.getString("type");
+        TaskType type = TaskType.valueOf(rs.getString("type"));
 
         switch (type) {
-            case ("BUG") -> {
+            case BUG -> {
                 return Bug.builder()
                         .id(rs.getInt("id"))
                         .title(rs.getString("title"))
@@ -29,7 +30,7 @@ public class TaskRowMapper implements RowMapper<Task> {
                         .version(rs.getString("version"))
                         .build();
             }
-            case ("FEATURE") -> {
+            case FEATURE -> {
                 return Feature.builder()
                         .id(rs.getInt("id"))
                         .title(rs.getString("title"))
