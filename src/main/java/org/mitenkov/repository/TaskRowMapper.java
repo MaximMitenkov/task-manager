@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Component
 public class TaskRowMapper implements RowMapper<Task> {
@@ -19,22 +18,26 @@ public class TaskRowMapper implements RowMapper<Task> {
     public Task mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         String type = rs.getString("type");
-        if (Objects.equals(type, "BUG")) {
-            return Bug.builder()
-                    .id(rs.getInt("id"))
-                    .title(rs.getString("title"))
-                    .priority(Priority.valueOf(rs.getString("priority")))
-                    .deadline(LocalDate.parse(rs.getString("deadline")))
-                    .version(rs.getString("version"))
-                    .build();
-        } else if (Objects.equals(type, "FEATURE")) {
-            return Feature.builder()
-                    .id(rs.getInt("id"))
-                    .title(rs.getString("title"))
-                    .priority(Priority.valueOf(rs.getString("priority")))
-                    .deadline(LocalDate.parse(rs.getString("deadline")))
-                    .build();
+
+        switch (type) {
+            case ("BUG") -> {
+                return Bug.builder()
+                        .id(rs.getInt("id"))
+                        .title(rs.getString("title"))
+                        .priority(Priority.valueOf(rs.getString("priority")))
+                        .deadline(LocalDate.parse(rs.getString("deadline")))
+                        .version(rs.getString("version"))
+                        .build();
+            }
+            case ("FEATURE") -> {
+                return Feature.builder()
+                        .id(rs.getInt("id"))
+                        .title(rs.getString("title"))
+                        .priority(Priority.valueOf(rs.getString("priority")))
+                        .deadline(LocalDate.parse(rs.getString("deadline")))
+                        .build();
+            }
+            default -> throw new SQLException("Unknown task found: " + type);
         }
-        throw new SQLException("Unknown task found: " + type);
     }
 }
