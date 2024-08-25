@@ -21,20 +21,18 @@ public class TaskRepository {
 
     public void addTask(Task task) {
 
-        if (task instanceof Bug) {
+        if (task instanceof Bug bug) {
             jdbcTemplate.update("insert into task (type, title, priority, deadline, version) " +
-                            "values (?,?,?,?,?)",
-                    "Bug",
+                            "values ('BUG',?,?,?,?)",
                     task.getTitle(),
                     task.getPriority().toString(),
                     task.getDeadline(),
-                    ((Bug) task).getVersion());
+                    bug.getVersion());
         }
 
         if (task instanceof Feature) {
             jdbcTemplate.update("insert into task (type, title, priority, deadline) " +
-                    "values (?,?,?,?)",
-                    "Feature",
+                    "values ('FEATURE',?,?,?)",
                     task.getTitle(),
                     task.getPriority().toString(),
                     task.getDeadline());
@@ -46,11 +44,13 @@ public class TaskRepository {
     }
 
     public ArrayList<Task> getFilteredTasks(FilterType type) {
-        return new ArrayList<>(getTasks().stream().filter(type.getPredicate()).toList());
+        return new ArrayList<>(jdbcTemplate.query("select * from task where type = '" +
+                type.toString().toUpperCase() + "'", taskRowMapper));
     }
 
     public ArrayList<Task> getSortedTasks(SortType type) {
-        return new ArrayList<>(getTasks().stream().sorted(type.getComparator()).toList());
+        return new ArrayList<>(jdbcTemplate.query("select * from task order by " +
+                type.toString().toLowerCase() + " DESC", taskRowMapper));
     }
 
     public ArrayList<Task> getTasks() {

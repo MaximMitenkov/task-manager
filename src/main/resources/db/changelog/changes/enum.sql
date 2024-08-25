@@ -1,0 +1,1 @@
+CREATE TYPE taskPriority AS ENUM('LOW', 'MEDIUM', 'HIGH');

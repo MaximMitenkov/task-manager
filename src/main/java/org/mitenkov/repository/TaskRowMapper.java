@@ -17,7 +17,9 @@ public class TaskRowMapper implements RowMapper<Task> {
 
     @Override
     public Task mapRow(ResultSet rs, int rowNum) throws SQLException {
-        if (Objects.equals(rs.getString(2), "Bug")) {
+
+        String type = rs.getString("type");
+        if (Objects.equals(type, "BUG")) {
             return Bug.builder()
                     .id(rs.getInt("id"))
                     .title(rs.getString("title"))
@@ -25,7 +27,7 @@ public class TaskRowMapper implements RowMapper<Task> {
                     .deadline(LocalDate.parse(rs.getString("deadline")))
                     .version(rs.getString("version"))
                     .build();
-        } else if (Objects.equals(rs.getString(2), "Feature")) {
+        } else if (Objects.equals(type, "FEATURE")) {
             return Feature.builder()
                     .id(rs.getInt("id"))
                     .title(rs.getString("title"))
