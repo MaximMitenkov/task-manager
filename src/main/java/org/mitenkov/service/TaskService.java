@@ -11,7 +11,7 @@ import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.service.validator.TaskValidator;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
 @Service
@@ -39,15 +39,15 @@ public class TaskService {
         taskRepository.removeTask(task);
     }
 
-    public ArrayList<Task> getFilteredTasks(FilterType type) {
+    public List<Task> getFilteredTasks(FilterType type) {
         return taskRepository.getFilteredTasks(type);
     }
 
-    public ArrayList<Task> getSortedTasks(SortType type) {
+    public List<Task> getSortedTasks(SortType type) {
         return taskRepository.getSortedTasks(type);
     }
 
-    public ArrayList<Task> getTasks() {
+    public List<Task> getTasks() {
         return taskRepository.getTasks();
     }
 }

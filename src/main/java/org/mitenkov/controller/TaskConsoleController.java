@@ -11,7 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
 
@@ -193,7 +193,7 @@ public class TaskConsoleController {
     private void removeTasks() {
         log.info("Removing task menu opened");
         try {
-            ArrayList<Task> tasks = taskService.getTasks();
+            List<Task> tasks = taskService.getTasks();
             if (tasks.isEmpty()) {
                 System.out.println("You have no tasks to remove.");
                 log.warn("User have no tasks to remove.");

@@ -9,7 +9,7 @@ import org.mitenkov.enums.SortType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -43,18 +43,18 @@ public class TaskRepository {
         jdbcTemplate.execute("delete from task where id = " + task.getId());
     }
 
-    public ArrayList<Task> getFilteredTasks(FilterType type) {
-        return new ArrayList<>(jdbcTemplate.query("select * from task where type = '" +
-                type.toString().toUpperCase() + "'", taskRowMapper));
+    public List<Task> getFilteredTasks(FilterType type) {
+        return jdbcTemplate.query("select * from task where type = '" +
+                type.toString().toUpperCase() + "'", taskRowMapper);
     }
 
-    public ArrayList<Task> getSortedTasks(SortType type) {
-        return new ArrayList<>(jdbcTemplate.query("select * from task order by " +
-                type.toString().toLowerCase() + " DESC", taskRowMapper));
+    public List<Task> getSortedTasks(SortType type) {
+        return jdbcTemplate.query("select * from task order by " +
+                type.toString().toLowerCase() + " DESC", taskRowMapper);
     }
 
-    public ArrayList<Task> getTasks() {
-        return new ArrayList<>(jdbcTemplate.query("select * from task", taskRowMapper));
+    public List<Task> getTasks() {
+        return jdbcTemplate.query("select * from task", taskRowMapper);
     }
 
 }
