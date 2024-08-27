@@ -49,14 +49,14 @@ public class TaskRepository {
     }
 
     public List<Task> getSortedTasks(SortType type) {
-        return jdbcTemplate.query("select * from task order by " +
-                type.toString().toLowerCase() + " DESC", taskRowMapper);
+        return jdbcTemplate.query("select * from task order by '" +
+                type.toString().toLowerCase() + "' DESC", taskRowMapper);
     }
 
     public List<Task> getSortedAndFilteredTasks(FilterType type, SortType sortType) {
         return jdbcTemplate.query(
-                "select * from task where type = "+ type.toString() +
-                        " order by " + sortType.toString().toLowerCase() + " DESC", taskRowMapper);
+                "select * from task where type = '"+ type.toString() +
+                        "' order by '" + sortType.toString().toLowerCase() + "' DESC", taskRowMapper);
     }
 
     public List<Task> getTasks() {
