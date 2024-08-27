@@ -1,20 +1,17 @@
 package org.mitenkov.enums;
 
+import lombok.Getter;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
-import org.mitenkov.entity.Task;
-import lombok.Getter;
-
-import java.util.function.Predicate;
 
 @Getter
 public enum FilterType {
-    BUG(task -> task.getClass().equals(Bug.class)),
-    FEATURE(task -> task.getClass().equals(Feature.class));
+    BUG(Bug.class),
+    FEATURE(Feature.class),;
 
-    private final Predicate<Task> predicate;
+    private final Class<?> predicate;
 
-    FilterType(Predicate<Task> predicate) {
-        this.predicate = predicate;
+    FilterType(Class<?> paramClass) {
+        this.predicate = paramClass;
     }
 }
