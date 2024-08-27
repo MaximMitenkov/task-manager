@@ -53,6 +53,12 @@ public class TaskRepository {
                 type.toString().toLowerCase() + " DESC", taskRowMapper);
     }
 
+    public List<Task> getSortedAndFilteredTasks(FilterType type, SortType sortType) {
+        return jdbcTemplate.query(
+                "select * from task where type = "+ type.toString() +
+                        " order by " + sortType.toString().toLowerCase() + " DESC", taskRowMapper);
+    }
+
     public List<Task> getTasks() {
         return jdbcTemplate.query("select * from task", taskRowMapper);
     }

@@ -47,6 +47,10 @@ public class TaskService {
         return taskRepository.getSortedTasks(type);
     }
 
+    public List<Task> getSortedAndFilteredTasks(FilterType type, SortType sortType) {
+        return taskRepository.getSortedAndFilteredTasks(type, sortType);
+    }
+
     public List<Task> getTasks() {
         return taskRepository.getTasks();
     }
