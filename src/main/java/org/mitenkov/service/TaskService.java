@@ -52,6 +52,6 @@ public class TaskService {
     }
 
     public List<Task> getTasks() {
-        return taskRepository.getTasks();
+        return taskRepository.findAll();
     }
 }
