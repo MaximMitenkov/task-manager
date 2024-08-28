@@ -23,18 +23,18 @@ public class TaskRepository {
 
         if (task instanceof Bug bug) {
             jdbcTemplate.update("insert into task (type, title, priority, deadline, version) " +
-                            "values ('BUG',?,?,?,?)",
+                            "values ('BUG',?,?::prioritytype,?,?)",
                     task.getTitle(),
-                    task.getPriority().toString(),
+                    task.getPriority().name(),
                     task.getDeadline(),
                     bug.getVersion());
         }
 
         if (task instanceof Feature) {
             jdbcTemplate.update("insert into task (type, title, priority, deadline) " +
-                    "values ('FEATURE',?,?,?)",
+                    "values ('FEATURE',?,?::prioritytype,?)",
                     task.getTitle(),
-                    task.getPriority().toString(),
+                    task.getPriority().name(),
                     task.getDeadline());
         }
     }
