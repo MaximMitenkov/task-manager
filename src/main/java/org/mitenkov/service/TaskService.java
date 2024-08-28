@@ -32,11 +32,11 @@ public class TaskService {
         if (task instanceof Feature) {
             taskValidationService.validateDeadline(task.getDeadline());
         }
-        taskRepository.addTask(task);
+        taskRepository.save(task);
     }
 
     public void removeTask(Task task) {
-        taskRepository.removeTask(task);
+        taskRepository.delete(task);
     }
 
     public List<Task> getFilteredTasks(FilterType type) {
