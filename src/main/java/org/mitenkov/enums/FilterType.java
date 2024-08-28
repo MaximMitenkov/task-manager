@@ -9,9 +9,9 @@ public enum FilterType {
     BUG(Bug.class),
     FEATURE(Feature.class),;
 
-    private final Class<?> predicate;
+    private final Class<?> filterClass;
 
     FilterType(Class<?> paramClass) {
-        this.predicate = paramClass;
+        this.filterClass = paramClass;
     }
 }

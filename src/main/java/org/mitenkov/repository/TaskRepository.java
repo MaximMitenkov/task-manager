@@ -33,7 +33,7 @@ public class TaskRepository {
     @Transactional(readOnly = true)
     public List<Task> getFilteredTasks(FilterType type) {
         return entityManager.createQuery("select t from Task t where t.class = :type", Task.class)
-                .setParameter("type", type.getPredicate())
+                .setParameter("type", type.getFilterClass())
                 .getResultList();
     }
 
@@ -48,8 +48,8 @@ public class TaskRepository {
     public List<Task> getSortedAndFilteredTasks(FilterType type, SortType sortType) {
         return entityManager.createQuery(
                 "select t from Task t where t.class = :type order by :sort desc", Task.class)
-                .setParameter("type", type)
-                .setParameter("sort", sortType.toString())
+                .setParameter("type", type.getFilterClass())
+                .setParameter("sort", sortType.name())
                 .getResultList();
 
     }
