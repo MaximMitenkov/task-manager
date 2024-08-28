@@ -8,6 +8,10 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 public class TaskManagerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TaskManagerApplication.class, args);
+        try {
+            SpringApplication.run(TaskManagerApplication.class, args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,9 +1,10 @@
-CREATE table Task
+CREATE TABLE task
 (
-    id       bigint primary key,
+    id       SERIAL PRIMARY KEY,
     type     VARCHAR(20),
     title    VARCHAR(100),
     priority VARCHAR(20),
     deadline DATE,
-    version  varchar(20)
+    version  VARCHAR(20)
+
 )

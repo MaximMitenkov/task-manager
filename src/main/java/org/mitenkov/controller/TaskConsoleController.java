@@ -11,7 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.PatternSyntaxException;
 
@@ -84,6 +84,32 @@ public class TaskConsoleController {
         }
     }
 
+    private void filterAndSort(SortType sortType) {
+        log.info("Filter menu opened");
+        System.out.println("""
+            Enter the type of filter:
+            1) Show all tasks
+            2) Show only bugs
+            3) Show only features
+            """);
+        try {
+            switch (Integer.parseInt(scanner.nextLine())) {
+                case 1 -> showTasks(sortType);
+                case 2 -> showTasks(FilterType.BUG, sortType);
+                case 3 -> showTasks(FilterType.FEATURE, sortType);
+                default -> {
+                    System.out.println("You picked wrong number. Try again.");
+                    log.warn("User picked wrong number in filter menu");
+                }
+            }
+        } catch (NumberFormatException numberFormatException) {
+            log.error("User entered not a number in filter menu", numberFormatException);
+            System.out.println("You should enter a valid number. Try again.");
+        } finally {
+            scanner.nextLine();
+        }
+    }
+
     private void sort() {
         log.info("Sort menu opened");
         System.out.println("""
@@ -94,9 +120,9 @@ public class TaskConsoleController {
                 """);
         try {
             switch (Integer.parseInt(scanner.nextLine())) {
-                case 1 -> showTasks(SortType.TITLE);
-                case 2 -> showTasks(SortType.PRIORITY);
-                case 3 -> showTasks(SortType.DEADLINE);
+                case 1 -> filterAndSort(SortType.TITLE);
+                case 2 -> filterAndSort(SortType.PRIORITY);
+                case 3 -> filterAndSort(SortType.DEADLINE);
                 default -> {
                     System.out.println("You entered wrong number. Try again.");
                     log.warn("User entered wrong number in sort menu");
@@ -139,6 +165,20 @@ public class TaskConsoleController {
     private void showTasks(FilterType type) {
         log.info("Show filtered tasks by {}", type);
         var tasks = taskService.getFilteredTasks(type);
+        if (tasks.isEmpty()) {
+            System.out.println("You have no tasks of this type.");
+            log.warn("User have no tasks of this type.");
+            return;
+        }
+        for (Task task : tasks) {
+            System.out.println(task.toString());
+        }
+    }
+
+    private void showTasks(FilterType type, SortType sortType) {
+        log.info("Show filtered tasks by {}", type);
+        log.info("Show sorted tasks by {}", sortType);
+        var tasks = taskService.getSortedAndFilteredTasks(type, sortType);
         if (tasks.isEmpty()) {
             System.out.println("You have no tasks of this type.");
             log.warn("User have no tasks of this type.");
@@ -193,7 +233,7 @@ public class TaskConsoleController {
     private void removeTasks() {
         log.info("Removing task menu opened");
         try {
-            ArrayList<Task> tasks = taskService.getTasks();
+            List<Task> tasks = taskService.getTasks();
             if (tasks.isEmpty()) {
                 System.out.println("You have no tasks to remove.");
                 log.warn("User have no tasks to remove.");

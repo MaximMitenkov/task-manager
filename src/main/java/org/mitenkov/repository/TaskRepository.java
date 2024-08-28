@@ -1,35 +1,66 @@
 package org.mitenkov.repository;
 
+import lombok.RequiredArgsConstructor;
+import org.mitenkov.entity.Bug;
+import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.FilterType;
 import org.mitenkov.enums.SortType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class TaskRepository {
 
-    private final ArrayList<Task> storage = new ArrayList<>();
+    private final JdbcTemplate jdbcTemplate;
+
+    private final TaskRowMapper taskRowMapper;
 
     public void addTask(Task task) {
-        storage.add(task);
+
+        if (task instanceof Bug bug) {
+            jdbcTemplate.update("insert into task (type, title, priority, deadline, version) " +
+                            "values ('BUG',?,?::prioritytype,?,?)",
+                    task.getTitle(),
+                    task.getPriority().name(),
+                    task.getDeadline(),
+                    bug.getVersion());
+        }
+
+        if (task instanceof Feature) {
+            jdbcTemplate.update("insert into task (type, title, priority, deadline) " +
+                    "values ('FEATURE',?,?::prioritytype,?)",
+                    task.getTitle(),
+                    task.getPriority().name(),
+                    task.getDeadline());
+        }
     }
 
     public void removeTask(Task task) {
-        storage.remove(task);
+        jdbcTemplate.execute("delete from task where id = " + task.getId());
     }
 
-    public ArrayList<Task> getFilteredTasks(FilterType type) {
-        return new ArrayList<>(storage.stream().filter(type.getPredicate()).toList());
+    public List<Task> getFilteredTasks(FilterType type) {
+        return jdbcTemplate.query("select * from task where type = '" +
+                type.name() + "'", taskRowMapper);
     }
 
-    public ArrayList<Task> getSortedTasks(SortType type) {
-        return new ArrayList<>(storage.stream().sorted(type.getComparator()).toList());
+    public List<Task> getSortedTasks(SortType type) {
+        return jdbcTemplate.query("select * from task order by \"" +
+                type.name().toLowerCase() + "\" DESC", taskRowMapper);
     }
 
-    public ArrayList<Task> getTasks() {
-        return storage;
+    public List<Task> getSortedAndFilteredTasks(FilterType type, SortType sortType) {
+        return jdbcTemplate.query(
+                "select * from task where type = '"+ type.name() +
+                        "' order by \"" + sortType.name().toLowerCase() + "\" DESC", taskRowMapper);
+    }
+
+    public List<Task> getTasks() {
+        return jdbcTemplate.query("select * from task", taskRowMapper);
     }
 
 }
