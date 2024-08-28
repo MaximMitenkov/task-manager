@@ -1,13 +1,13 @@
 package org.mitenkov.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.mitenkov.entity.Bug;
-import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.FilterType;
 import org.mitenkov.enums.SortType;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,52 +15,48 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    private final TaskRowMapper taskRowMapper;
-
+    @Transactional
     public void addTask(Task task) {
-
-        if (task instanceof Bug bug) {
-            jdbcTemplate.update("insert into task (type, title, priority, deadline, version) " +
-                            "values ('BUG',?,?::prioritytype,?,?)",
-                    task.getTitle(),
-                    task.getPriority().name(),
-                    task.getDeadline(),
-                    bug.getVersion());
-        }
-
-        if (task instanceof Feature) {
-            jdbcTemplate.update("insert into task (type, title, priority, deadline) " +
-                    "values ('FEATURE',?,?::prioritytype,?)",
-                    task.getTitle(),
-                    task.getPriority().name(),
-                    task.getDeadline());
-        }
+        entityManager.persist(task);
     }
 
+    @Transactional
     public void removeTask(Task task) {
-        jdbcTemplate.execute("delete from task where id = " + task.getId());
+        entityManager.createQuery("delete from Task t where t.id = :id")
+                .setParameter("id", task.getId())
+                .executeUpdate();
     }
 
+    @Transactional(readOnly = true)
     public List<Task> getFilteredTasks(FilterType type) {
-        return jdbcTemplate.query("select * from task where type = '" +
-                type.name() + "'", taskRowMapper);
+        return entityManager.createQuery("select t from Task t where t.class = :type", Task.class)
+                .setParameter("type", type.getFilterClass())
+                .getResultList();
     }
 
+    @Transactional(readOnly = true)
     public List<Task> getSortedTasks(SortType type) {
-        return jdbcTemplate.query("select * from task order by \"" +
-                type.name().toLowerCase() + "\" DESC", taskRowMapper);
+        return entityManager.createQuery("select t from Task t order by :sort desc ", Task.class)
+                .setParameter("sort", type.toString().toLowerCase())
+                .getResultList();
     }
 
+    @Transactional(readOnly = true)
     public List<Task> getSortedAndFilteredTasks(FilterType type, SortType sortType) {
-        return jdbcTemplate.query(
-                "select * from task where type = '"+ type.name() +
-                        "' order by \"" + sortType.name().toLowerCase() + "\" DESC", taskRowMapper);
+        return entityManager.createQuery(
+                "select t from Task t where t.class = :type order by :sort desc", Task.class)
+                .setParameter("type", type.getFilterClass())
+                .setParameter("sort", sortType.name())
+                .getResultList();
+
     }
 
+    @Transactional(readOnly = true)
     public List<Task> getTasks() {
-        return jdbcTemplate.query("select * from task", taskRowMapper);
+        return entityManager.createQuery("select t from Task t", Task.class).getResultList();
     }
 
 }

@@ -1,16 +1,18 @@
 package org.mitenkov.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+@Entity
+@DiscriminatorValue("BUG")
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @AllArgsConstructor
+@NoArgsConstructor
 public class Bug extends Task {
     private String version;
 }
