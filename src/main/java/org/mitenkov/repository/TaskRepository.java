@@ -16,7 +16,7 @@ import java.util.List;
 public class TaskRepository {
 
     @PersistenceContext
-    private final EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Transactional
     public void addTask(Task task) {
