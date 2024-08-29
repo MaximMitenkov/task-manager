@@ -2,9 +2,12 @@ package org.mitenkov.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mitenkov.controller.creator.CommentConsoleCreator;
+import org.mitenkov.controller.creator.TaskConsoleCreator;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.FilterType;
 import org.mitenkov.enums.SortType;
+import org.mitenkov.service.CommentService;
 import org.mitenkov.service.TaskService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -18,9 +21,11 @@ import java.util.regex.PatternSyntaxException;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class TaskConsoleController {
+public class ConsoleController {
 
-    final private TaskService taskService;
+    private final TaskService taskService;
+
+    private final CommentService commentService;
 
     final Scanner scanner = new Scanner(System.in);
 
@@ -233,18 +238,8 @@ public class TaskConsoleController {
     private void removeTasks() {
         log.info("Removing task menu opened");
         try {
-            List<Task> tasks = taskService.getTasks();
-            if (tasks.isEmpty()) {
-                System.out.println("You have no tasks to remove.");
-                log.warn("User have no tasks to remove.");
-                scanner.nextLine();
-                return;
-            }
-            for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i+1) + ") " + tasks.get(i).toString());
-            }
-            System.out.println("\nEnter number of task you want to remove: ");
-            taskService.removeTask(tasks.get(Integer.parseInt(scanner.nextLine()) - 1));
+            System.out.println("Choose task you want to remove:");
+            taskService.removeTask(chooseTask());
             log.info("Task removed successfully.");
             System.out.println("Task removed successfully.");
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
@@ -256,6 +251,28 @@ public class TaskConsoleController {
         } finally {
             scanner.nextLine();
         }
+    }
+
+    private void addComment() {
+        CommentConsoleCreator creator = new CommentConsoleCreator(scanner);
+        commentService.add(creator.create(chooseTask()));
+    }
+
+    private Task chooseTask() {
+        log.info("Choose a task");
+        List<Task> tasks = taskService.getTasks();
+        if (tasks.isEmpty()) {
+            System.out.println("You have no tasks to remove.");
+            log.warn("User have no tasks to remove.");
+            scanner.nextLine();
+            throw new InvalidParameterException("You have no tasks");
+        }
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i+1) + ") " + tasks.get(i).toString());
+        }
+        log.debug("Choosing a task");
+        System.out.println("\nEnter number of task you want to remove: ");
+        return tasks.get(Integer.parseInt(scanner.nextLine()) - 1);
     }
 
 }

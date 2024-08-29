@@ -1,4 +1,4 @@
-package org.mitenkov.controller;
+package org.mitenkov.controller.creator;
 
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
