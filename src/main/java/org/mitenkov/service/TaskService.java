@@ -9,6 +9,7 @@ import org.mitenkov.enums.FilterType;
 import org.mitenkov.enums.SortType;
 import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.service.validator.TaskValidator;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,15 +41,24 @@ public class TaskService {
     }
 
     public List<Task> getFilteredTasks(FilterType type) {
-        return taskRepository.getFilteredTasks(type);
+        return taskRepository.getFilteredTasks(type.getFilterClass());
     }
 
     public List<Task> getSortedTasks(SortType type) {
-        return taskRepository.getSortedTasks(type);
+        return taskRepository.findAll(Sort.by(chooseSort(type), type.getColumn()));
     }
 
     public List<Task> getSortedAndFilteredTasks(FilterType type, SortType sortType) {
-        return taskRepository.getSortedAndFilteredTasks(type, sortType);
+        return taskRepository.getFilteredTasks(
+                type.getFilterClass(),
+                Sort.by(chooseSort(sortType), sortType.getColumn()));
+    }
+
+    private Sort.Direction chooseSort(SortType sortType) {
+        return switch (sortType) {
+            case PRIORITY -> Sort.Direction.DESC;
+            default -> Sort.Direction.ASC;
+        };
     }
 
     public List<Task> getTasks() {

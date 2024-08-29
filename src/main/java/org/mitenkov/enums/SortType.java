@@ -1,20 +1,17 @@
 package org.mitenkov.enums;
 
-import org.mitenkov.entity.Task;
 import lombok.Getter;
-
-import java.util.Comparator;
 
 @Getter
 public enum SortType {
-    TITLE(Comparator.comparing(Task::getTitle)),
-    PRIORITY(Comparator.comparing(Task::getPriority)),
-    DEADLINE(Comparator.comparing(Task::getDeadline));
+    TITLE("title"),
+    PRIORITY("priority"),
+    DEADLINE("deadline");
 
-    private final Comparator<Task> comparator;
+    private final String column;
 
-    SortType(Comparator<Task> comparator) {
-        this.comparator = comparator;
+    SortType(String column) {
+        this.column = column;
     }
 
 }
