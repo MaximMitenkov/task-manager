@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
-    @Query("select t from Task t where t.class = :type")
-    List<Task> getFilteredTasks(@Param("type") Class<?> type);
+    default List<Task> getFilteredTasks(Class<? extends Task> type) {
+        return getFilteredTasks(type, Sort.unsorted());
+    }
 
     @Query("select t from Task t where t.class = :type")
-    List<Task> getFilteredTasks(@Param("type") Class<?> type, Sort sort);
-
+    List<Task> getFilteredTasks(@Param("type") Class<? extends Task> type, Sort sort);
 }
