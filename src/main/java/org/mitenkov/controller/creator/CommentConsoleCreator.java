@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Task;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class CommentConsoleCreator {
         return Comment.builder()
                 .task(task)
                 .content(text)
+                .dateTime(Timestamp.valueOf(LocalDateTime.now()))
                 .author(nickname).build();
     }
 

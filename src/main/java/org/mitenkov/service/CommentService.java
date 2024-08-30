@@ -3,7 +3,10 @@ package org.mitenkov.service;
 import lombok.AllArgsConstructor;
 import org.mitenkov.entity.Comment;
 import org.mitenkov.repository.CommentRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -17,5 +20,9 @@ public class CommentService {
 
     public Comment getComment(int id) {
         return commentRepository.findById(id);
+    }
+
+    public List<Comment> findAllByNickname(String nickname) {
+        return commentRepository.findByAuthor(nickname, Sort.by(Sort.Direction.DESC, "dateTime"));
     }
 }

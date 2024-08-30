@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.controller.creator.CommentConsoleCreator;
 import org.mitenkov.controller.creator.TaskConsoleCreator;
+import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.FilterType;
 import org.mitenkov.enums.SortType;
@@ -39,6 +40,8 @@ public class ConsoleController {
                 2) Show sorted tasks
                 3) Add a new task
                 4) Remove a task
+                5) Add a new comment
+                6) Show comments of the author
                 
                 0) Exit
                 """);
@@ -49,6 +52,8 @@ public class ConsoleController {
                     case 2 -> sort();
                     case 3 -> addTasks();
                     case 4 -> removeTasks();
+                    case 5 -> addComment();
+                    case 6 -> showComments();
                     case 0 -> System.exit(0);
                     default -> {
                         System.out.println("You picked wrong number. Try again.");
@@ -256,6 +261,13 @@ public class ConsoleController {
     private void addComment() {
         CommentConsoleCreator creator = new CommentConsoleCreator(scanner);
         commentService.add(creator.create(chooseTask()));
+    }
+
+    private void showComments() {
+        System.out.println("Enter nickname of the author");
+        for (Comment comment : commentService.findAllByNickname(scanner.nextLine())) {
+            System.out.println(comment.toString());
+        };
     }
 
     private Task chooseTask() {
