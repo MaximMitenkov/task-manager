@@ -3,6 +3,7 @@ package org.mitenkov.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.entity.Bug;
+import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.FilterType;
@@ -63,5 +64,9 @@ public class TaskService {
 
     public List<Task> getTasks() {
         return taskRepository.findAll();
+    }
+
+    public List<Comment> findCommentsByTaskId(Task task) {
+        return taskRepository.findCommentsByTaskId(task.getId());
     }
 }

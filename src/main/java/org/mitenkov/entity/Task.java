@@ -34,6 +34,6 @@ public abstract class Task {
     private LocalDate deadline;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 }

@@ -269,14 +269,14 @@ public class ConsoleController {
         System.out.println("Enter nickname of the author");
         for (Comment comment : commentService.findAllByNickname(scanner.nextLine())) {
             System.out.println(comment.toString());
-        };
+        }
     }
 
     public void checkComments() {
         System.out.println("Choose task you want to check comments: ");
-        for (Comment comment : chooseTask().getComments()) {
+        for (Comment comment : taskService.findCommentsByTaskId(chooseTask())) {
             System.out.println(comment);
-        };
+        }
     }
 
     private Task chooseTask() {

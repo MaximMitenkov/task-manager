@@ -18,10 +18,6 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public Comment getComment(int id) {
-        return commentRepository.findById(id);
-    }
-
     public List<Comment> findAllByNickname(String nickname) {
         return commentRepository.findByAuthor(nickname, Sort.by(Sort.Direction.DESC, "dateTime"));
     }
