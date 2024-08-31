@@ -42,6 +42,7 @@ public class ConsoleController {
                 4) Remove a task
                 5) Add a new comment
                 6) Show comments of the author
+                7) Check comments to the task
                 
                 0) Exit
                 """);
@@ -54,6 +55,7 @@ public class ConsoleController {
                     case 4 -> removeTasks();
                     case 5 -> addComment();
                     case 6 -> showComments();
+                    case 7 -> checkComments();
                     case 0 -> System.exit(0);
                     default -> {
                         System.out.println("You picked wrong number. Try again.");
@@ -267,6 +269,13 @@ public class ConsoleController {
         System.out.println("Enter nickname of the author");
         for (Comment comment : commentService.findAllByNickname(scanner.nextLine())) {
             System.out.println(comment.toString());
+        };
+    }
+
+    public void checkComments() {
+        System.out.println("Choose task you want to check comments: ");
+        for (Comment comment : chooseTask().getComments()) {
+            System.out.println(comment);
         };
     }
 

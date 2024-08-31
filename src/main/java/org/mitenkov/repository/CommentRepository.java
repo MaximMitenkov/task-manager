@@ -11,6 +11,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
     Comment findById(int id);
 
-    @Query("select c from Comment c where c.author = :nickname")
+    @Query("select c from Comment c join fetch c.task where c.author = :nickname")
     List<Comment> findByAuthor(@Param("nickname") String author, Sort sort);
 }

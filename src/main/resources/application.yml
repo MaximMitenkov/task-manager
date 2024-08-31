@@ -12,6 +12,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
 app:
   validation:
@@ -20,3 +24,4 @@ app:
     feature:
       min-time-to-do: p10d
     max-title-length: 15
+

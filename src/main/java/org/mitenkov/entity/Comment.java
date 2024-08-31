@@ -23,8 +23,7 @@ public class Comment {
 
     private Timestamp dateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
-    @ToString.Exclude
     private Task task;
 }
