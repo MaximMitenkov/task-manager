@@ -3,12 +3,15 @@ package org.mitenkov.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.mitenkov.enums.Priority;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -29,4 +32,8 @@ public abstract class Task {
     private Priority priority;
 
     private LocalDate deadline;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 }

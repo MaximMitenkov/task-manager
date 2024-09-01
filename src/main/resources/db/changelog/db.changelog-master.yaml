@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/changes/init.sql
   - include:
       file: db/changelog/changes/enumPriority.sql
+  - include:
+      file: db/changelog/changes/commentTable.sql
