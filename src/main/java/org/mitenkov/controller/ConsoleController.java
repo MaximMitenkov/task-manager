@@ -267,9 +267,7 @@ public class ConsoleController {
 
     private void showComments() {
         System.out.println("Enter nickname of the author");
-        for (Comment comment : commentService.findAllByNickname(scanner.nextLine())) {
-            System.out.println(comment.toString());
-        }
+        commentService.findAllByNickname(scanner.nextLine()).forEach(comment -> System.out.println(comment.toString()));
     }
 
     public void checkComments() {
