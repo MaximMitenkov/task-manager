@@ -1,3 +1,5 @@
+package org.mitenkov;
+
 import org.junit.jupiter.api.Test;
 import org.mitenkov.configuration.properties.ValidationProperties;
 import org.mitenkov.configuration.properties.ValidationProperties.BugProperties;
