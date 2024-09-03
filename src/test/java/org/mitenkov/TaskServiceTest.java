@@ -12,7 +12,6 @@ import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.service.TaskService;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
@@ -25,8 +24,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-public class TaskServiceTest {
+public class TaskServiceTest extends BaseTest{
 
     @Autowired
     private TaskService taskService;
