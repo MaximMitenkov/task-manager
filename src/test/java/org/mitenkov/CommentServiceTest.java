@@ -11,7 +11,6 @@ import org.mitenkov.repository.CommentRepository;
 import org.mitenkov.service.CommentService;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
@@ -20,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-@SpringBootTest
 public class CommentServiceTest extends BaseTest {
     @Autowired
     CommentService commentService;
