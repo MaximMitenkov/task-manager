@@ -10,7 +10,6 @@ import org.mitenkov.repository.CommentRepository;
 import org.mitenkov.service.CommentService;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.sql.Timestamp;
@@ -21,9 +20,6 @@ import java.util.Objects;
 public class CommentServiceTest extends BaseTest {
     @Autowired
     CommentService commentService;
-
-    @MockBean
-    ConsoleController consoleController;
 
     @SpyBean
     CommentRepository commentRepository;
