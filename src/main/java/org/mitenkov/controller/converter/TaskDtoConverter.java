@@ -25,7 +25,7 @@ public class TaskDtoConverter {
             throw new IllegalArgumentException("Unsupported task type: " + task.getClass());
         }
         return TaskDto.builder()
-                .id(0)
+                .id(task.getId())
                 .title(task.getTitle())
                 .deadline(task.getDeadline())
                 .priority(task.getPriority())

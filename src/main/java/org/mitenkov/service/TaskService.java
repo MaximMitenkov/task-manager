@@ -59,10 +59,16 @@ public class TaskService {
     }
 
     public List<Task> getFilteredTasks(TaskType type) {
+        if (type == null) {
+            return getTasks();
+        }
         return taskRepository.getFilteredTasks(type.getTaskClass());
     }
 
     public List<Task> getSortedTasks(SortType type) {
+        if (type == null) {
+            return getTasks();
+        }
         return taskRepository.findAll(Sort.by(chooseSort(type), type.getColumn()));
     }
 
