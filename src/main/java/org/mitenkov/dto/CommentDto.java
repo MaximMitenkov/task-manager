@@ -1,7 +1,9 @@
 package org.mitenkov.dto;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
@@ -9,10 +11,12 @@ import java.sql.Timestamp;
 @Builder
 public class CommentDto {
 
+    @Setter(AccessLevel.NONE)
     private Integer id;
+
     private String content;
     private String author;
     private Timestamp dateTime;
-    private Integer TaskId;
+    private Integer taskId;
 
 }
