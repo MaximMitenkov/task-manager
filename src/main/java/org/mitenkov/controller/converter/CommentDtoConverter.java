@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CommentDtoConverter {
 
-    public CommentDto createDto(Comment comment) {
+    public CommentDto toDto(Comment comment) {
         return CommentDto.builder()
                 .taskId(comment.getTask().getId())
                 .id(comment.getId())

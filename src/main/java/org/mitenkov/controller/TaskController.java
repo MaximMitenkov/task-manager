@@ -29,7 +29,7 @@ public class TaskController {
     ) {
         log.info("Get task request for type {} and sort {}", type, sort);
         return taskService.getSortedAndFilteredTasks(type, sort).stream()
-                .map(taskDtoConverter::createDto)
+                .map(taskDtoConverter::toDto)
                 .toList();
     }
 
@@ -39,8 +39,8 @@ public class TaskController {
         taskService.addTask(request);
     }
 
-    @DeleteMapping
-    public void deleteTaskById(@RequestParam(value = "id") int id) {
+    @DeleteMapping("/{id}")
+    public void deleteTaskById(@PathVariable(value = "id") int id) {
         taskService.removeTask(id);
     }
 

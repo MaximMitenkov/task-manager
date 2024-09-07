@@ -23,7 +23,7 @@ public class CommentController {
     @GetMapping
     public List<CommentDto> getCommentsByNickname(@RequestParam(value = "nick") String nickname) {
         return commentService.findAllByNickname(nickname).stream()
-                .map(commentDtoConverter::createDto)
+                .map(commentDtoConverter::toDto)
                 .toList();
     }
 

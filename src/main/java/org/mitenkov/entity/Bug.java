@@ -4,6 +4,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.mitenkov.enums.TaskType;
 
 @Entity
 @DiscriminatorValue("BUG")
@@ -17,7 +18,7 @@ public class Bug extends Task {
     private String version;
 
     @Override
-    public Class<? extends Task> getTaskClass() {
-        return Bug.class;
+    public TaskType getTaskType() {
+        return TaskType.BUG;
     }
 }

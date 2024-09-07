@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.mitenkov.enums.Priority;
+import org.mitenkov.enums.TaskType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,5 +38,6 @@ public abstract class Task {
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
-    public abstract Class<? extends Task> getTaskClass();
+    public abstract TaskType getTaskType();
 }
+

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.mitenkov.enums.TaskType;
 
 @Entity
 @DiscriminatorValue("FEATURE")
@@ -14,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 public class Feature extends Task {
 
     @Override
-    public Class<? extends Task> getTaskClass() {
-        return Feature.class;
+    public TaskType getTaskType() {
+        return TaskType.FEATURE;
     }
 }
