@@ -38,6 +38,11 @@ public class TaskController {
         taskService.addTask(request);
     }
 
+    @DeleteMapping
+    public void deleteTaskById(@RequestParam(value = "id") int id) {
+        taskService.removeTask(id);
+    }
+
 
 
 }

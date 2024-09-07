@@ -54,8 +54,8 @@ public class TaskService {
         }
     }
 
-    public void removeTask(Task task) {
-        taskRepository.delete(task);
+    public void removeTask(int id) {
+        taskRepository.deleteById(id);
     }
 
     public List<Task> getFilteredTasks(TaskType type) {
