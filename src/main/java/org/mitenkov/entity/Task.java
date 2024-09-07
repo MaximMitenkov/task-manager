@@ -36,4 +36,6 @@ public abstract class Task {
     @ToString.Exclude
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
+
+    public abstract Class<? extends Task> getTaskClass();
 }

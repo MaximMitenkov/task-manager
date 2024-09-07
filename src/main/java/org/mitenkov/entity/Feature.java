@@ -13,4 +13,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Feature extends Task {
 
+    @Override
+    public Class<? extends Task> getTaskClass() {
+        return Feature.class;
+    }
 }

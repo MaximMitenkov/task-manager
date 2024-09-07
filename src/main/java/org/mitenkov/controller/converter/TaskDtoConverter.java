@@ -16,14 +16,15 @@ public class TaskDtoConverter {
         TaskType type;
         String version = "";
 
-        if (task.getClass().equals(Bug.class)) {
+        if (task instanceof Bug) {
             type = TaskType.BUG;
             version = ((Bug) task).getVersion();
-        } else if (task.getClass().equals(Feature.class)) {
+        } else if (task instanceof Feature) {
             type = TaskType.FEATURE;
         } else {
-            throw new IllegalArgumentException("Unsupported task type: " + task.getClass());
+            throw new IllegalArgumentException("Invalid task type: " + task.getTaskClass());
         }
+
         return TaskDto.builder()
                 .id(task.getId())
                 .title(task.getTitle())

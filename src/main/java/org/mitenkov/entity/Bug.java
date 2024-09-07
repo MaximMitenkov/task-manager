@@ -15,4 +15,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Bug extends Task {
     private String version;
+
+    @Override
+    public Class<? extends Task> getTaskClass() {
+        return Bug.class;
+    }
 }

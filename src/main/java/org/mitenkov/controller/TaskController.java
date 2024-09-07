@@ -27,6 +27,7 @@ public class TaskController {
             @RequestParam(value = "sort", required = false) SortType sort,
             @RequestParam(value = "type", required = false) TaskType type
     ) {
+        log.info("Get task request for type {} and sort {}", type, sort);
         return taskService.getSortedAndFilteredTasks(type, sort).stream()
                 .map(taskDtoConverter::createDto)
                 .toList();
@@ -42,7 +43,6 @@ public class TaskController {
     public void deleteTaskById(@RequestParam(value = "id") int id) {
         taskService.removeTask(id);
     }
-
 
 
 }
