@@ -3,7 +3,6 @@ package org.mitenkov;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mitenkov.controller.ConsoleController;
 import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Task;
 import org.mitenkov.helper.TaskGenerator;
