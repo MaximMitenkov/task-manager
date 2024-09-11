@@ -13,7 +13,11 @@ public enum ErrorCode {
     TASK_CREATION_ERROR("Ошибка в ходе создания задачи", HttpStatus.BAD_REQUEST),
     ACCESS_DENIED("Не хватает прав доступа", HttpStatus.FORBIDDEN),
     METHOD_TYPE_MISMATCH("Передан агрумент не подходящего типа", HttpStatus.BAD_REQUEST),
-    UNKNOWN_ERROR("Неизвестная ошибка", HttpStatus.INTERNAL_SERVER_ERROR);
+    CANNOT_PARSE_HTTP("Ошибка десериализации HTTP", HttpStatus.BAD_REQUEST),
+    UNKNOWN_ERROR("Неизвестная ошибка", HttpStatus.INTERNAL_SERVER_ERROR),
+    NO_SUCH_ELEMENT("Требуемый элемент не был найден", HttpStatus.NOT_FOUND),
+    NO_SUCH_RESOURCE("Требуемый ресурс не найден", HttpStatus.NOT_FOUND),
+    NEED_PARAMETER("Требуется указать параметр", HttpStatus.BAD_REQUEST),;
     //    UNKNOWN_TASK_TYPE("Неизвестный тип задачи", HttpStatus.BAD_REQUEST),
     //    UNKNOWN_TASK_SORT("Неизвестный тип сортировки задач", HttpStatus.BAD_REQUEST);
 

@@ -9,7 +9,10 @@ import org.mitenkov.enums.ErrorCode;
 public class ErrorMessageDto {
 
     private String message;
-
     private ErrorCode errorCode;
 
+    public ErrorMessageDto(ErrorCode errorCode) {
+        this.errorCode = errorCode;
+        this.message = errorCode.getMessage();
+    }
 }
