@@ -1,5 +1,7 @@
 package org.mitenkov.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,12 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        property = "type") @JsonSubTypes({
+
+        @JsonSubTypes.Type(value = Bug.class, name = "bug"),
+        @JsonSubTypes.Type(value = Feature.class, name = "feature")
+})
 @Data
 @NoArgsConstructor
 @SuperBuilder

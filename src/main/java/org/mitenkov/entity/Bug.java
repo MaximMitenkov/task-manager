@@ -1,5 +1,6 @@
 package org.mitenkov.entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -8,6 +9,7 @@ import org.mitenkov.enums.TaskType;
 
 @Entity
 @DiscriminatorValue("BUG")
+@JsonTypeName("bug")
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)

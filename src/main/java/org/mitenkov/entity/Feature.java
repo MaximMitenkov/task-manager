@@ -1,5 +1,6 @@
 package org.mitenkov.entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.mitenkov.enums.TaskType;
 
 @Entity
 @DiscriminatorValue("FEATURE")
+@JsonTypeName("feature")
 @SuperBuilder
 @ToString(callSuper = true)
 @NoArgsConstructor

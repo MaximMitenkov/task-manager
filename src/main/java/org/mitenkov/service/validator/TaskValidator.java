@@ -2,14 +2,14 @@ package org.mitenkov.service.validator;
 
 import lombok.RequiredArgsConstructor;
 import org.mitenkov.configuration.properties.ValidationProperties;
+import org.mitenkov.enums.ErrorCode;
+import org.mitenkov.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,24 +24,24 @@ public class TaskValidator {
 
     public void validateDeadline(LocalDate deadline) {
         if (deadline.isBefore(LocalDate.now().plus(validationProperties.getFeature().getMinTimeToDo()))) {
-            throw new InvalidParameterException();
+            throw new BusinessException(ErrorCode.ILLEGAL_VERSION);
         }
     }
 
     public void validateTitleLength(String title) {
         if (title.length() > maxTitleLength) {
-            throw new InvalidParameterException();
+            throw new BusinessException(ErrorCode.ILLEGAL_VERSION);
         }
     }
 
-    public void validateVersionFormat(String version) throws PatternSyntaxException {
+    public void validateVersionFormat(String version) {
         Matcher matcher = versionPattern.matcher(version);
         if (!matcher.matches()) {
-            throw new PatternSyntaxException("Incorrect format of version", versionRegex, 0);
+            throw new BusinessException(ErrorCode.ILLEGAL_VERSION);
         }
     }
 
-    public void validateVersionNumber(String version) throws InvalidParameterException {
+    public void validateVersionNumber(String version) {
 
         String[] minNumbers = validationProperties.getBug().getMinAppVersion().split("\\.");
         String[] numbers = version.split("\\.");
@@ -52,7 +52,7 @@ public class TaskValidator {
             int number = Integer.parseInt(numbers[i]);
 
             if (min > number) {
-                throw new InvalidParameterException("Incorrect version number");
+                throw new BusinessException(ErrorCode.ILLEGAL_VERSION);
             } else if (min < number) {
                 break;
             }
