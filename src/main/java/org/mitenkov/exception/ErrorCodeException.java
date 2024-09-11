@@ -6,6 +6,6 @@ import org.mitenkov.enums.ErrorCode;
 
 @Getter
 @AllArgsConstructor
-public class BusinessException extends RuntimeException {
+public class ErrorCodeException extends RuntimeException {
     private ErrorCode errorCode;
 }

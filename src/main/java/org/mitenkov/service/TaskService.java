@@ -7,8 +7,10 @@ import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
+import org.mitenkov.enums.ErrorCode;
 import org.mitenkov.enums.SortType;
 import org.mitenkov.enums.TaskType;
+import org.mitenkov.exception.ErrorCodeException;
 import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.service.validator.TaskValidator;
 import org.springframework.data.domain.Sort;
@@ -29,28 +31,35 @@ public class TaskService {
     public void addTask(TaskAddRequest request) throws PatternSyntaxException {
         taskValidationService.validateTitleLength(request.getTitle());
 
-        switch (request.getType()) {
-            case BUG -> {
-                String version = request.getVersion();
-                taskValidationService.validateVersionFormat(version);
-                taskValidationService.validateVersionNumber(version);
-                taskRepository.save(Bug.builder()
-                        .title(request.getTitle())
-                        .comments(new ArrayList<>())
-                        .priority(request.getPriority())
-                        .deadline(request.getDeadline())
-                        .version(request.getVersion())
-                        .build());
+        try {
+            switch (request.getType()) {
+                case BUG -> {
+                    String version = request.getVersion();
+                    taskValidationService.validateVersionFormat(version);
+                    taskValidationService.validateVersionNumber(version);
+                    taskRepository.save(Bug.builder()
+                            .title(request.getTitle())
+                            .comments(new ArrayList<>())
+                            .priority(request.getPriority())
+                            .deadline(request.getDeadline())
+                            .version(request.getVersion())
+                            .build());
+                }
+                case FEATURE -> {
+                    taskValidationService.validateDeadline(request.getDeadline());
+                    taskRepository.save(Feature.builder()
+                            .title(request.getTitle())
+                            .comments(new ArrayList<>())
+                            .priority(request.getPriority())
+                            .deadline(request.getDeadline())
+                            .build());
+                }
             }
-            case FEATURE -> {
-                taskValidationService.validateDeadline(request.getDeadline());
-                taskRepository.save(Feature.builder()
-                        .title(request.getTitle())
-                        .comments(new ArrayList<>())
-                        .priority(request.getPriority())
-                        .deadline(request.getDeadline())
-                        .build());
-            }
+        } catch (ErrorCodeException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ErrorCodeException(ErrorCode.TASK_CREATION_ERROR);
         }
     }
 

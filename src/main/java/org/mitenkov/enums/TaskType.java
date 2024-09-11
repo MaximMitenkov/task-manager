@@ -7,7 +7,9 @@ import org.mitenkov.entity.Task;
 
 @Getter
 public enum TaskType {
-    BUG(Bug.class), FEATURE(Feature.class);
+
+    BUG(Bug.class),
+    FEATURE(Feature.class);
 
     private final Class<? extends Task> taskClass;
 
