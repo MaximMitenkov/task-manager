@@ -20,8 +20,8 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        property = "type") @JsonSubTypes({
-
+        property = "type")
+@JsonSubTypes({
         @JsonSubTypes.Type(value = Bug.class, name = "bug"),
         @JsonSubTypes.Type(value = Feature.class, name = "feature")
 })

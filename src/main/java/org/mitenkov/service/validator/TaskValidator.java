@@ -24,13 +24,13 @@ public class TaskValidator {
 
     public void validateDeadline(LocalDate deadline) {
         if (deadline.isBefore(LocalDate.now().plus(validationProperties.getFeature().getMinTimeToDo()))) {
-            throw new ErrorCodeException(ErrorCode.ILLEGAL_VERSION);
+            throw new ErrorCodeException(ErrorCode.ILLEGAL_DEADLINE);
         }
     }
 
     public void validateTitleLength(String title) {
         if (title.length() > maxTitleLength) {
-            throw new ErrorCodeException(ErrorCode.ILLEGAL_VERSION);
+            throw new ErrorCodeException(ErrorCode.ILLEGAL_TITLE);
         }
     }
 

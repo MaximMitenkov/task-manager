@@ -18,8 +18,6 @@ public enum ErrorCode {
     NO_SUCH_ELEMENT("Требуемый элемент не был найден", HttpStatus.NOT_FOUND),
     NO_SUCH_RESOURCE("Требуемый ресурс не найден", HttpStatus.NOT_FOUND),
     NEED_PARAMETER("Требуется указать параметр", HttpStatus.BAD_REQUEST),;
-    //    UNKNOWN_TASK_TYPE("Неизвестный тип задачи", HttpStatus.BAD_REQUEST),
-    //    UNKNOWN_TASK_SORT("Неизвестный тип сортировки задач", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;
