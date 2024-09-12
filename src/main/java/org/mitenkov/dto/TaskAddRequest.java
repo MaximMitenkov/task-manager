@@ -16,7 +16,8 @@ public class TaskAddRequest {
     @NotBlank(message = "Title is mandatory")
     private String title;
 
-    @Pattern(regexp = "[0-9]+\\.[0-9]+\\.[0-9]+")
+    @Pattern(regexp = "[0-9]+\\.[0-9]+\\.[0-9]+",
+            message = "Invalid Version pattern. Version pattern example: 1.12.4")
     private String version;
 
     private LocalDate deadline;
