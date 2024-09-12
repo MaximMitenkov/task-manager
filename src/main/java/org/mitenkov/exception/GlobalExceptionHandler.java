@@ -1,5 +1,7 @@
 package org.mitenkov.exception;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.dto.ErrorMessageDto;
 import org.mitenkov.enums.ErrorCode;
@@ -56,6 +58,17 @@ public class GlobalExceptionHandler {
         log.error("MissingServletRequestParameterException", ex);
         ErrorCode error = ErrorCode.NEED_PARAMETER;
         return new ResponseEntity<>(new ErrorMessageDto(error), error.getHttpStatus());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorMessageDto> validationException(ConstraintViolationException ex) {
+        log.error("ConstraintViolationException", ex);
+        ErrorCode error = ErrorCode.VALIDATION_ERROR;
+        ErrorMessageDto messageDto = new ErrorMessageDto(error);
+        ConstraintViolation<?> constraintViolation = ex.getConstraintViolations().stream().findFirst().get();
+        messageDto.setMessage("Переданное значение: " + constraintViolation.getInvalidValue() +
+                ". Ошибка: " + constraintViolation.getMessage());
+        return new ResponseEntity<>(messageDto, error.getHttpStatus());
     }
 
     @ExceptionHandler(Exception.class)
