@@ -29,29 +29,29 @@ public class TaskService {
     public void addTask(TaskAddRequest request) throws PatternSyntaxException {
         taskValidationService.validateTitleLength(request.getTitle());
 
-        switch (request.getType()) {
-            case BUG -> {
-                String version = request.getVersion();
-                taskValidationService.validateVersionFormat(version);
-                taskValidationService.validateVersionNumber(version);
-                taskRepository.save(Bug.builder()
-                        .title(request.getTitle())
-                        .comments(new ArrayList<>())
-                        .priority(request.getPriority())
-                        .deadline(request.getDeadline())
-                        .version(request.getVersion())
-                        .build());
+            switch (request.getType()) {
+                case BUG -> {
+                    String version = request.getVersion();
+                    taskValidationService.validateVersionFormat(version);
+                    taskValidationService.validateVersionNumber(version);
+                    taskRepository.save(Bug.builder()
+                            .title(request.getTitle())
+                            .comments(new ArrayList<>())
+                            .priority(request.getPriority())
+                            .deadline(request.getDeadline())
+                            .version(request.getVersion())
+                            .build());
+                }
+                case FEATURE -> {
+                    taskValidationService.validateDeadline(request.getDeadline());
+                    taskRepository.save(Feature.builder()
+                            .title(request.getTitle())
+                            .comments(new ArrayList<>())
+                            .priority(request.getPriority())
+                            .deadline(request.getDeadline())
+                            .build());
+                }
             }
-            case FEATURE -> {
-                taskValidationService.validateDeadline(request.getDeadline());
-                taskRepository.save(Feature.builder()
-                        .title(request.getTitle())
-                        .comments(new ArrayList<>())
-                        .priority(request.getPriority())
-                        .deadline(request.getDeadline())
-                        .build());
-            }
-        }
     }
 
     public void removeTask(int id) {

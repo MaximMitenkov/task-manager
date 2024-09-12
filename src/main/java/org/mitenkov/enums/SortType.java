@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum SortType {
+
     TITLE("title"),
     PRIORITY("priority"),
     DEADLINE("deadline");
