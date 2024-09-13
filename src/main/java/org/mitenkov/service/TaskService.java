@@ -29,27 +29,27 @@ public class TaskService {
     private final TaskRepository taskRepository;
 
     public void addTask(@Valid TaskAddRequest request) {
-        taskValidationService.validateTitleLength(request.getTitle());
+        taskValidationService.validateTitleLength(request.title());
 
-            switch (request.getType()) {
+            switch (request.type()) {
                 case BUG -> {
-                    String version = request.getVersion();
+                    String version = request.version();
                     taskValidationService.validateVersionNumber(version);
                     taskRepository.save(Bug.builder()
-                            .title(request.getTitle())
+                            .title(request.title())
                             .comments(new ArrayList<>())
-                            .priority(request.getPriority())
-                            .deadline(request.getDeadline())
-                            .version(request.getVersion())
+                            .priority(request.priority())
+                            .deadline(request.deadline())
+                            .version(request.version())
                             .build());
                 }
                 case FEATURE -> {
-                    taskValidationService.validateDeadline(request.getDeadline());
+                    taskValidationService.validateDeadline(request.deadline());
                     taskRepository.save(Feature.builder()
-                            .title(request.getTitle())
+                            .title(request.title())
                             .comments(new ArrayList<>())
-                            .priority(request.getPriority())
-                            .deadline(request.getDeadline())
+                            .priority(request.priority())
+                            .deadline(request.deadline())
                             .build());
                 }
             }

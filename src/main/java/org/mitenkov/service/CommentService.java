@@ -1,7 +1,6 @@
 package org.mitenkov.service;
 
 import lombok.AllArgsConstructor;
-import org.mitenkov.controller.converter.CommentDtoConverter;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.entity.Comment;
 import org.mitenkov.repository.CommentRepository;
@@ -20,10 +19,10 @@ public class CommentService {
 
     public void add(CommentAddRequest request) {
         commentRepository.save(Comment.builder()
-                .dateTime(request.getDateTime())
-                .author(request.getAuthor())
-                .content(request.getContent())
-                .task(taskRepository.findById(request.getTaskId()).orElseThrow())
+                .dateTime(request.dateTime())
+                .author(request.author())
+                .content(request.content())
+                .task(taskRepository.findById(request.taskId()).orElseThrow())
                 .build());
     }
 

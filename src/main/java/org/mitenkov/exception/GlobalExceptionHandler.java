@@ -64,10 +64,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessageDto> validationException(ConstraintViolationException ex) {
         log.error("ConstraintViolationException", ex);
         ErrorCode error = ErrorCode.VALIDATION_ERROR;
-        ErrorMessageDto messageDto = new ErrorMessageDto(error);
         ConstraintViolation<?> constraintViolation = ex.getConstraintViolations().stream().findFirst().get();
-        messageDto.setMessage("Переданное значение: " + constraintViolation.getInvalidValue() +
-                ". Ошибка: " + constraintViolation.getMessage());
+        ErrorMessageDto messageDto = new ErrorMessageDto("Переданное значение: " +
+                constraintViolation.getInvalidValue() +
+                ". Ошибка: " + constraintViolation.getMessage(), error);
         return new ResponseEntity<>(messageDto, error.getHttpStatus());
     }
 
