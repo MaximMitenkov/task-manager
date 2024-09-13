@@ -18,13 +18,13 @@ public class TaskDtoConverter {
         if (type.equals(TaskType.BUG)) {
             version = ((Bug) task).getVersion();
         }
-        return new TaskDto(
-                task.getId(),
-                task.getDeadline(),
-                task.getPriority(),
-                type,
-                task.getTitle(),
-                version
-        );
+        return TaskDto.builder()
+                .id(task.getId())
+                .deadline(task.getDeadline())
+                .priority(task.getPriority())
+                .taskType(type)
+                .title(task.getTitle())
+                .version(version)
+                .build();
     }
 }
