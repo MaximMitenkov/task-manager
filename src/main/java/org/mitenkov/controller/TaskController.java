@@ -27,7 +27,9 @@ import java.util.List;
         @ApiResponse(responseCode = "400", description = "Invalid data supplied, bad request",
                 content = @Content),
         @ApiResponse(responseCode = "404", description = "Object not found",
-                content = @Content) })
+                content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error",
+                content = @Content)})
 @Slf4j
 @RequiredArgsConstructor
 public class TaskController {
