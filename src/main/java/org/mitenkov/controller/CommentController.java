@@ -1,5 +1,7 @@
 package org.mitenkov.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.controller.converter.CommentDtoConverter;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
+@Tag(name = "Comments")
 @Slf4j
 @AllArgsConstructor
 public class CommentController {
@@ -21,6 +24,7 @@ public class CommentController {
     private final CommentDtoConverter commentDtoConverter;
 
     @GetMapping
+    @Operation(summary = "get comments", description = "Get comments by author nickname.")
     public List<CommentDto> getCommentsByNickname(@RequestParam(value = "nick") String nickname) {
         return commentService.findAllByNickname(nickname).stream()
                 .map(commentDtoConverter::toDto)
@@ -28,6 +32,7 @@ public class CommentController {
     }
 
     @PostMapping
+    @Operation(summary = "add comment")
     @ResponseStatus(HttpStatus.CREATED)
     public void createComment(@RequestBody CommentAddRequest request) {
         commentService.add(request);

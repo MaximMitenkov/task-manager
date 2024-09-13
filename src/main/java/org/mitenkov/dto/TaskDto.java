@@ -1,6 +1,7 @@
 package org.mitenkov.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import org.mitenkov.enums.Priority;
@@ -17,5 +18,7 @@ public class TaskDto {
     private Priority priority;
     private TaskType type;
     private String title;
+
+    @Schema(example = "2.1.12")
     private String version;
 }

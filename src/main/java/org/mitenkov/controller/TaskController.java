@@ -1,5 +1,7 @@
 package org.mitenkov.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.controller.converter.TaskDtoConverter;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
+@Tag(name = "Tasks")
 @Slf4j
 @RequiredArgsConstructor
 public class TaskController {
@@ -23,6 +26,7 @@ public class TaskController {
     private final TaskDtoConverter taskDtoConverter;
 
     @GetMapping
+    @Operation(summary = "get tasks", description = "Getting sorted and filtered tasks by type")
     public List<TaskDto> getTasks(
             @RequestParam(value = "sort", required = false) SortType sort,
             @RequestParam(value = "type", required = false) TaskType type
@@ -34,12 +38,14 @@ public class TaskController {
     }
 
     @PostMapping
+    @Operation(summary = "add task", description = "Add task. For task type BUG version is required")
     @ResponseStatus(HttpStatus.CREATED)
     public void addTask(@RequestBody TaskAddRequest request) {
         taskService.addTask(request);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "delete task", description = "Delete task with written id")
     public void deleteTaskById(@PathVariable(value = "id") int id) {
         taskService.removeTask(id);
     }
