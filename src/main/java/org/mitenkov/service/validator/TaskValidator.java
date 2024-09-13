@@ -8,16 +8,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class TaskValidator {
 
     private final ValidationProperties validationProperties;
-    private final String versionRegex = "[0-9]+\\.[0-9]+\\.[0-9]+";
-    private final Pattern versionPattern = Pattern.compile(versionRegex);
 
     @Value("${app.validation.max-title-length}")
     private final int maxTitleLength;
@@ -31,13 +27,6 @@ public class TaskValidator {
     public void validateTitleLength(String title) {
         if (title.length() > maxTitleLength) {
             throw new ErrorCodeException(ErrorCode.ILLEGAL_TITLE);
-        }
-    }
-
-    public void validateVersionFormat(String version) {
-        Matcher matcher = versionPattern.matcher(version);
-        if (!matcher.matches()) {
-            throw new ErrorCodeException(ErrorCode.ILLEGAL_VERSION);
         }
     }
 

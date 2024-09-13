@@ -1,5 +1,6 @@
 package org.mitenkov.service;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.dto.TaskAddRequest;
@@ -13,12 +14,13 @@ import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.service.validator.TaskValidator;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.PatternSyntaxException;
 
 @Service
+@Validated
 @Slf4j
 @RequiredArgsConstructor
 public class TaskService {
@@ -26,13 +28,12 @@ public class TaskService {
     private final TaskValidator taskValidationService;
     private final TaskRepository taskRepository;
 
-    public void addTask(TaskAddRequest request) throws PatternSyntaxException {
+    public void addTask(@Valid TaskAddRequest request) {
         taskValidationService.validateTitleLength(request.getTitle());
 
             switch (request.getType()) {
                 case BUG -> {
                     String version = request.getVersion();
-                    taskValidationService.validateVersionFormat(version);
                     taskValidationService.validateVersionNumber(version);
                     taskRepository.save(Bug.builder()
                             .title(request.getTitle())
