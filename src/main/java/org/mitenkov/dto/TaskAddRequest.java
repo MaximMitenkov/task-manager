@@ -19,5 +19,6 @@ public record TaskAddRequest(
 
         LocalDate deadline,
         Priority priority,
-        TaskType type) {
+        TaskType type
+) {
 }
