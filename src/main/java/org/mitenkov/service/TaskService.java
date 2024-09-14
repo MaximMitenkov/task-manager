@@ -28,31 +28,31 @@ public class TaskService {
     private final TaskValidator taskValidationService;
     private final TaskRepository taskRepository;
 
-    public void addTask(@Valid TaskAddRequest request) {
+    public Task addTask(@Valid TaskAddRequest request) {
         taskValidationService.validateTitleLength(request.title());
 
-            switch (request.type()) {
-                case BUG -> {
-                    String version = request.version();
-                    taskValidationService.validateVersionNumber(version);
-                    taskRepository.save(Bug.builder()
-                            .title(request.title())
-                            .comments(new ArrayList<>())
-                            .priority(request.priority())
-                            .deadline(request.deadline())
-                            .version(request.version())
-                            .build());
-                }
-                case FEATURE -> {
-                    taskValidationService.validateDeadline(request.deadline());
-                    taskRepository.save(Feature.builder()
-                            .title(request.title())
-                            .comments(new ArrayList<>())
-                            .priority(request.priority())
-                            .deadline(request.deadline())
-                            .build());
-                }
+        return switch (request.type()) {
+            case BUG -> {
+                String version = request.version();
+                taskValidationService.validateVersionNumber(version);
+                yield taskRepository.save(Bug.builder()
+                        .title(request.title())
+                        .comments(new ArrayList<>())
+                        .priority(request.priority())
+                        .deadline(request.deadline())
+                        .version(request.version())
+                        .build());
             }
+            case FEATURE -> {
+                taskValidationService.validateDeadline(request.deadline());
+                yield  taskRepository.save(Feature.builder()
+                        .title(request.title())
+                        .comments(new ArrayList<>())
+                        .priority(request.priority())
+                        .deadline(request.deadline())
+                        .build());
+            }
+        };
     }
 
     public void removeTask(int id) {

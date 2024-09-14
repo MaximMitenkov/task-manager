@@ -1,6 +1,5 @@
 package org.mitenkov.helper;
 
-import org.mitenkov.BaseTest;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TaskGenerator extends BaseTest {
+public class TaskGenerator {
 
     @Autowired
     private TaskRepository taskRepository;

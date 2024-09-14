@@ -52,8 +52,8 @@ public class TaskController {
     @PostMapping
     @Operation(summary = "add task", description = "Add task. For task type BUG version is required")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addTask(@RequestBody TaskAddRequest request) {
-        taskService.addTask(request);
+    public TaskDto addTask(@RequestBody TaskAddRequest request) {
+        return taskDtoConverter.toDto(taskService.addTask(request));
     }
 
     @DeleteMapping("/{id}")

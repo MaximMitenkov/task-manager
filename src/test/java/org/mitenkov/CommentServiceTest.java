@@ -1,7 +1,6 @@
 package org.mitenkov;
 
 import org.junit.jupiter.api.AfterEach;
-import org.mitenkov.helper.TaskGenerator;
 import org.mitenkov.repository.CommentRepository;
 import org.mitenkov.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,6 @@ public class CommentServiceTest extends BaseTest {
 
     @SpyBean
     CommentRepository commentRepository;
-
-    @Autowired
-    TaskGenerator taskGenerator;
 
     @AfterEach
     void reset() {
