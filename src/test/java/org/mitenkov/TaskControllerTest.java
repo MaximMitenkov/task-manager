@@ -2,13 +2,14 @@ package org.mitenkov;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
+import org.mitenkov.helper.DBCleaner;
 import org.mitenkov.helper.TaskGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,6 +33,14 @@ public class TaskControllerTest extends BaseTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    DBCleaner dbCleaner;
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
+        dbCleaner.cleanTasks();
+    }
 
     @Test
     void addTaskTest() throws Exception {
@@ -67,17 +76,37 @@ public class TaskControllerTest extends BaseTest {
 
         TaskDto dto = objectMapper.readValue(addedTaskResponse, TaskDto.class);
 
-        Assertions.assertEquals(dto, result);
+        assertEquals(dto, result);
 
-        this.mockMvc.perform(delete("/tasks/" + result.id()))
-                .andExpect(status().isOk());
-
-        Assertions.assertThrows(Exception.class, () -> this.mockMvc.perform(get("/tasks/" + result.id())));
     }
 
     @Test
     void deleteTaskTest() throws Exception {
 
+        TaskAddRequest taskAddRequest = new TaskAddRequest(
+                "Test",
+                "2.1.1",
+                LocalDate.now().plusDays(30),
+                Priority.LOW,
+                TaskType.BUG
+        );
+
+        String json = objectMapper.writeValueAsString(taskAddRequest);
+
+        String responseBody = this.mockMvc.perform(post("/tasks")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        TaskDto result = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+
+        this.mockMvc.perform(delete("/tasks/" + result.id()))
+                .andExpect(status().isOk());
+
+        this.mockMvc.perform(get("/tasks/" + result.id()))
+                .andExpect(status().isNotFound());
     }
 
     @Test

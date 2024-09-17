@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Validated
@@ -86,7 +87,7 @@ public class TaskService {
     }
 
     public Task getTaskById(int id) {
-        return taskRepository.findById(id).orElse(null);
+        return taskRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     private Sort.Direction chooseSort(SortType sortType) {
