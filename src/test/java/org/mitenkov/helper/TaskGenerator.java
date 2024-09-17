@@ -1,5 +1,6 @@
 package org.mitenkov.helper;
 
+import org.mitenkov.dto.TaskDto;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
@@ -75,6 +76,10 @@ public class TaskGenerator {
         tasks.add(bug3);
 
         return tasks;
+    }
+
+    public List<TaskDto> generateDto() {
+        return new ArrayList<>();
     }
 
     public List<Task> generateAndSave() {

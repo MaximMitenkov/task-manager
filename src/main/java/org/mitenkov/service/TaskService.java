@@ -85,6 +85,10 @@ public class TaskService {
                 Sort.by(chooseSort(sort), sort.getColumn()));
     }
 
+    public Task getTaskById(int id) {
+        return taskRepository.findById(id).orElse(null);
+    }
+
     private Sort.Direction chooseSort(SortType sortType) {
         return switch (sortType) {
             case PRIORITY -> Sort.Direction.DESC;

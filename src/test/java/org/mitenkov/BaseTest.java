@@ -1,16 +1,18 @@
 package org.mitenkov;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-@SpringBootTest
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 public abstract class BaseTest {
@@ -28,5 +30,9 @@ public abstract class BaseTest {
         registry.add("spring.datasource.url", postrges::getJdbcUrl);
         registry.add("spring.datasource.username", postrges::getUsername);
         registry.add("spring.datasource.password", postrges::getPassword);
+    }
+
+    public Set<?> getSet(List<?> list) {
+        return new HashSet<>(list);
     }
 }

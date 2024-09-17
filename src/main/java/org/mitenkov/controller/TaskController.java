@@ -1,7 +1,6 @@
 package org.mitenkov.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +12,6 @@ import org.mitenkov.dto.TaskDto;
 import org.mitenkov.enums.SortType;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.service.TaskService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,14 +20,11 @@ import java.util.List;
 @RequestMapping("/tasks")
 @Tag(name = "Tasks")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Everything worked correct",
-                content = @Content(mediaType = "application/json")),
-        @ApiResponse(responseCode = "400", description = "Invalid data supplied, bad request",
-                content = @Content),
-        @ApiResponse(responseCode = "404", description = "Object not found",
-                content = @Content),
-        @ApiResponse(responseCode = "500", description = "Internal server error",
-                content = @Content)})
+        @ApiResponse(responseCode = "200", description = "Everything worked correct"),
+        @ApiResponse(responseCode = "400", description = "Invalid data supplied, bad request"),
+        @ApiResponse(responseCode = "404", description = "Object not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+})
 @Slf4j
 @RequiredArgsConstructor
 public class TaskController {
@@ -49,9 +44,15 @@ public class TaskController {
                 .toList();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "get task by id", description = "Get task by ID")
+    public TaskDto getTaskById(@PathVariable(value = "id") int id) {
+        log.info("Get task request for id {}", id);
+        return taskDtoConverter.toDto(taskService.getTaskById(id));
+    }
+
     @PostMapping
     @Operation(summary = "add task", description = "Add task. For task type BUG version is required")
-    @ResponseStatus(HttpStatus.CREATED)
     public TaskDto addTask(@RequestBody TaskAddRequest request) {
         return taskDtoConverter.toDto(taskService.addTask(request));
     }
