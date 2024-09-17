@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mitenkov.controller.converter.TaskDtoConverter;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
-import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.helper.DBCleaner;
@@ -112,9 +112,13 @@ public class TaskControllerTest extends BaseTest {
     @Test
     void getTaskTest() throws Exception {
 
-        List<Task> tasks = taskGenerator.generateAndSave();
-        for (Task task : tasks) {
-            this.mockMvc.perform(get("/task/" + task.getId()));
+        TaskDtoConverter converter = new TaskDtoConverter();
+        List<TaskDto> tasks = taskGenerator.generateAndSave().stream()
+                .map(converter::toDto)
+                .toList();
+
+        for (TaskDto task : tasks) {
+            this.mockMvc.perform(get("/task/" + task.id()));
         }
 
         String responseBody = this.mockMvc.perform(get("/tasks"))
