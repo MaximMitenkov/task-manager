@@ -58,7 +58,7 @@ public class TaskControllerTest extends BaseTest {
         String responseBody = this.mockMvc.perform(post("/tasks")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
         TaskDto result = objectMapper.readValue(responseBody, new TypeReference<>() {
@@ -112,7 +112,7 @@ public class TaskControllerTest extends BaseTest {
     @Test
     void getTaskTest() throws Exception {
 
-        List<Task> tasks = taskGenerator.generate();
+        List<Task> tasks = taskGenerator.generateAndSave();
         for (Task task : tasks) {
             this.mockMvc.perform(get("/task/" + task.getId()));
         }
