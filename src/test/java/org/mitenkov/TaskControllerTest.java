@@ -40,7 +40,7 @@ public class TaskControllerTest extends BaseTest {
     DBCleaner dbCleaner;
 
     @BeforeEach
-    public void beforeEach() throws Exception {
+    public void beforeEach() {
         dbCleaner.cleanTasks();
     }
 
