@@ -25,16 +25,14 @@ import java.util.List;
 @Tag(name = "Tasks")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Everything worked correct",
-                content = {@Content(
-                        mediaType = "application/json",
-                        schema = @Schema(implementation = TaskDto.class)
-                )}),
+                content = @Content(schema = @Schema(implementation = TaskDto.class))),
         @ApiResponse(responseCode = "400", description = "Invalid data supplied, bad request",
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
         @ApiResponse(responseCode = "404", description = "Object not found",
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error",
-                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+})
 @Slf4j
 @RequiredArgsConstructor
 public class TaskController {
@@ -56,7 +54,6 @@ public class TaskController {
 
     @PostMapping
     @Operation(summary = "add task", description = "Add task. For task type BUG version is required")
-    @ResponseStatus(HttpStatus.CREATED)
     public void addTask(@RequestBody TaskAddRequest request) {
         taskService.addTask(request);
     }
