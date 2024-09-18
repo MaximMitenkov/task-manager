@@ -1,12 +1,9 @@
 package org.mitenkov.helper;
 
-import org.mitenkov.dto.TaskDto;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
-import org.mitenkov.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -15,9 +12,6 @@ import java.util.List;
 
 @Component
 public class TaskGenerator {
-
-    @Autowired
-    private TaskRepository taskRepository;
 
     public List<Task> generate() {
         Feature feature1 = Feature.builder()
@@ -62,7 +56,7 @@ public class TaskGenerator {
         Bug bug3 = Bug.builder()
                 .deadline(LocalDate.now().plusDays(2))
                 .priority(Priority.MEDIUM)
-                .version("1.5.2")
+                .version("1.15.2")
                 .title("TestBug3")
                 .comments(new ArrayList<>())
                 .build();
@@ -75,27 +69,6 @@ public class TaskGenerator {
         tasks.add(bug2);
         tasks.add(bug3);
 
-        return tasks;
-    }
-
-    public List<TaskDto> generateDto() {
-        return new ArrayList<>();
-    }
-
-    public List<Task> generateAndSave() {
-        List<Task> tasks = generate();
-        taskRepository.saveAll(tasks);
-        return tasks;
-    }
-
-    public List<Task> generateAndSave(int numberOfTasks) {
-        List<Task> tasks = generate();
-        for (int i = 0; i < numberOfTasks; i++) {
-            if (numberOfTasks > tasks.size()) {
-                tasks.addAll(generate());
-            }
-            taskRepository.saveAndFlush(tasks.get(i));
-        }
         return tasks;
     }
 }

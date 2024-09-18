@@ -4,18 +4,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mitenkov.controller.converter.TaskDtoConverter;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
+import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.helper.DBCleaner;
+import org.mitenkov.helper.TaskConverter;
 import org.mitenkov.helper.TaskGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -112,13 +114,18 @@ public class TaskControllerTest extends BaseTest {
     @Test
     void getTaskTest() throws Exception {
 
-        TaskDtoConverter converter = new TaskDtoConverter();
-        List<TaskDto> tasks = taskGenerator.generateAndSave().stream()
-                .map(converter::toDto)
+        TaskConverter converter = new TaskConverter();
+
+        List<Task> tasks = taskGenerator.generate();
+
+        List<TaskAddRequest> tasksToAdd = tasks.stream()
+                .map(converter::toAddRequest)
                 .toList();
 
-        for (TaskDto task : tasks) {
-            this.mockMvc.perform(get("/task/" + task.id()));
+        for (TaskAddRequest task : tasksToAdd) {
+            this.mockMvc.perform(post("/tasks")
+                    .content(objectMapper.writeValueAsString(task))
+                    .contentType(MediaType.APPLICATION_JSON));
         }
 
         String responseBody = this.mockMvc.perform(get("/tasks"))
@@ -129,7 +136,13 @@ public class TaskControllerTest extends BaseTest {
         List<TaskDto> result = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
 
-        assertEquals(getSet(tasks), getSet(result));
+        List<TaskAddRequest> assertTaskDidNotChange = new ArrayList<>();
+
+        for (TaskDto task : result) {
+            assertTaskDidNotChange.add(converter.toAddRequest(task));
+        }
+
+        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange));
 
     }
 
