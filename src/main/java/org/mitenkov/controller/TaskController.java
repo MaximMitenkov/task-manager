@@ -15,7 +15,6 @@ import org.mitenkov.dto.TaskDto;
 import org.mitenkov.enums.SortType;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.service.TaskService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +23,7 @@ import java.util.List;
 @RequestMapping("/tasks")
 @Tag(name = "Tasks")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Everything worked correct",
-                content = @Content(schema = @Schema(implementation = TaskDto.class))),
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
         @ApiResponse(responseCode = "400", description = "Invalid data supplied, bad request",
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
         @ApiResponse(responseCode = "404", description = "Object not found",
