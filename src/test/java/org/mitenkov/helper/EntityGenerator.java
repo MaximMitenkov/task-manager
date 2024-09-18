@@ -1,7 +1,6 @@
 package org.mitenkov.helper;
 
 import org.mitenkov.entity.Bug;
-import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
@@ -10,8 +9,6 @@ import org.mitenkov.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +84,4 @@ public class EntityGenerator {
         return taskRepository.saveAll(generateTasks());
     }
 
-    public generateComments() {
-        List<Task> tasks = generateTasksAndSave();
-
-    }
 }
