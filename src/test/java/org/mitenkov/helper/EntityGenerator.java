@@ -1,19 +1,30 @@
 package org.mitenkov.helper;
 
 import org.mitenkov.entity.Bug;
+import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
+import org.mitenkov.repository.CommentRepository;
+import org.mitenkov.repository.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TaskGenerator {
+public class EntityGenerator {
 
-    public List<Task> generate() {
+    @Autowired
+    private TaskRepository taskRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+
+    public List<Task> generateTasks() {
         Feature feature1 = Feature.builder()
                 .title("TestFeature1")
                 .id(1)
@@ -70,5 +81,14 @@ public class TaskGenerator {
         tasks.add(bug3);
 
         return tasks;
+    }
+
+    public List<Task> generateTasksAndSave() {
+        return taskRepository.saveAll(generateTasks());
+    }
+
+    public generateComments() {
+        List<Task> tasks = generateTasksAndSave();
+
     }
 }

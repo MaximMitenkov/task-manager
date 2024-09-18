@@ -11,7 +11,7 @@ import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.helper.DBCleaner;
 import org.mitenkov.helper.TaskConverter;
-import org.mitenkov.helper.TaskGenerator;
+import org.mitenkov.helper.EntityGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +31,7 @@ public class TaskControllerTest extends BaseTest {
     private MockMvc mockMvc;
 
     @Autowired
-    TaskGenerator taskGenerator;
+    EntityGenerator entityGenerator;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -116,7 +116,7 @@ public class TaskControllerTest extends BaseTest {
 
         TaskConverter converter = new TaskConverter();
 
-        List<Task> tasks = taskGenerator.generate();
+        List<Task> tasks = entityGenerator.generateTasks();
 
         List<TaskAddRequest> tasksToAdd = tasks.stream()
                 .map(converter::toAddRequest)

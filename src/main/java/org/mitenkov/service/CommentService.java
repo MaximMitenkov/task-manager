@@ -17,8 +17,8 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final TaskRepository taskRepository;
 
-    public void add(CommentAddRequest request) {
-        commentRepository.save(Comment.builder()
+    public Comment add(CommentAddRequest request) {
+        return commentRepository.save(Comment.builder()
                 .dateTime(request.dateTime())
                 .author(request.author())
                 .content(request.content())
