@@ -22,17 +22,14 @@ import java.util.List;
 @RequestMapping("/comments")
 @Tag(name = "Comments")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Everything worked correct",
-                content = {@Content(
-                        mediaType = "application/json",
-                        schema = @Schema(implementation = CommentDto.class)
-                )}),
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
         @ApiResponse(responseCode = "400", description = "Invalid data supplied, bad request",
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
         @ApiResponse(responseCode = "404", description = "Object not found",
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
         @ApiResponse(responseCode = "500", description = "Internal server error",
-                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+})
 @Slf4j
 @AllArgsConstructor
 public class CommentController {
