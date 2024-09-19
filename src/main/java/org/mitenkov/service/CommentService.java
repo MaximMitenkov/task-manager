@@ -29,4 +29,8 @@ public class CommentService {
     public List<Comment> findAllByNickname(String nickname) {
         return  commentRepository.findByAuthor(nickname, Sort.by(Sort.Direction.DESC, "dateTime"));
     }
+
+    public Comment findById(Integer id) {
+        return commentRepository.findById(id).orElseThrow();
+    }
 }

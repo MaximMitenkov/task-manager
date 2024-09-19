@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class TaskServiceTest extends BaseTest{
                 .build();
 
         Comment testComment = Comment.builder()
-                .dateTime(Timestamp.valueOf(LocalDateTime.now()))
+                .dateTime(LocalDateTime.now())
                 .author("Tester")
                 .content("Test")
                 .task(testFeature)

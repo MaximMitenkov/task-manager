@@ -33,7 +33,6 @@ public class CommentController {
 
     @PostMapping
     @Operation(summary = "add comment")
-    @ResponseStatus(HttpStatus.CREATED)
     public CommentDto createComment(@RequestBody CommentAddRequest request) {
         return commentDtoConverter.toDto(commentService.add(request));
     }

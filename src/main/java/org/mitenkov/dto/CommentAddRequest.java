@@ -1,11 +1,11 @@
 package org.mitenkov.dto;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public record CommentAddRequest(
         String content,
         String author,
-        Timestamp dateTime,
+        LocalDateTime dateTime,
         Integer taskId
 ) {
 }
