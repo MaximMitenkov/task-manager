@@ -20,10 +20,10 @@ public class TaskDtoConverter {
         }
         return TaskDto.builder()
                 .id(task.getId())
-                .title(task.getTitle())
                 .deadline(task.getDeadline())
                 .priority(task.getPriority())
-                .type(type)
+                .taskType(type)
+                .title(task.getTitle())
                 .version(version)
                 .build();
     }
