@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changes/enumPriority.sql
   - include:
       file: db/changelog/changes/commentTable.sql
+  - include:
+      file: db/changelog/changes/userTable.sql

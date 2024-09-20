@@ -29,4 +29,8 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
     private Task task;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userId")
+    private User user;
 }

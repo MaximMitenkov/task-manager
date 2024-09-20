@@ -46,6 +46,10 @@ public abstract class Task {
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userId")
+    private User user;
+
     public abstract TaskType getTaskType();
 }
 

@@ -3,7 +3,6 @@ package org.mitenkov;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mitenkov.dto.CommentAddRequest;
@@ -16,8 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,10 +66,10 @@ public class CommentControllerTest extends BaseTest {
 
         CommentDto resultComment = objectMapper.readValue(result, CommentDto.class);
 
-        Assertions.assertEquals(comment.content(), resultComment.content());
-        Assertions.assertEquals(comment.author(), resultComment.author());
-        Assertions.assertEquals(comment.dateTime(), resultComment.dateTime());
-        Assertions.assertEquals(comment.taskId(), resultComment.taskId());
+        assertEquals(comment.content(), resultComment.content());
+        assertEquals(comment.author(), resultComment.author());
+        assertEquals(comment.dateTime(), resultComment.dateTime());
+        assertEquals(comment.taskId(), resultComment.taskId());
     }
 
     @Test
@@ -77,7 +78,7 @@ public class CommentControllerTest extends BaseTest {
         CommentAddRequest comment1 = new CommentAddRequest(
                 "Content",
                 "Author1",
-                LocalDateTime.now(),
+                LocalDateTime.now().truncatedTo(ChronoUnit.MICROS),
                 1
         );
 
@@ -86,7 +87,7 @@ public class CommentControllerTest extends BaseTest {
         CommentAddRequest comment2 = new CommentAddRequest(
                 "Content",
                 "Author2",
-                LocalDateTime.now(),
+                LocalDateTime.now().truncatedTo(ChronoUnit.MICROS),
                 1
         );
 
@@ -108,11 +109,11 @@ public class CommentControllerTest extends BaseTest {
         });
 
 
-        Assertions.assertEquals(resultComment.size(), 1);
-        Assertions.assertEquals(resultComment.get(0).author(), comment1.author());
-        Assertions.assertEquals(resultComment.get(0).content(), comment1.content());
-        Assertions.assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
-        Assertions.assertEquals(resultComment.get(0).taskId(), comment1.taskId());
+        assertEquals(1, resultComment.size());
+        assertEquals(comment1.author(), resultComment.get(0).author());
+        assertEquals(comment1.content(), resultComment.get(0).content());
+        assertEquals(comment1.dateTime(), resultComment.get(0).dateTime());
+        assertEquals(comment1.taskId(), resultComment.get(0).taskId());
 
     }
 
