@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.controller.converter.TaskDtoConverter;
+import org.mitenkov.dto.ErrorMessageDto;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
 import org.mitenkov.enums.SortType;
