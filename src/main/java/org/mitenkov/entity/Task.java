@@ -47,7 +47,7 @@ public abstract class Task {
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public abstract TaskType getTaskType();
