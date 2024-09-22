@@ -1,12 +1,15 @@
 package org.mitenkov.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.controller.converter.TaskDtoConverter;
+import org.mitenkov.dto.ErrorMessageDto;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
 import org.mitenkov.enums.SortType;
@@ -20,10 +23,13 @@ import java.util.List;
 @RequestMapping("/tasks")
 @Tag(name = "Tasks")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Everything worked correct"),
-        @ApiResponse(responseCode = "400", description = "Invalid data supplied, bad request"),
-        @ApiResponse(responseCode = "404", description = "Object not found"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(responseCode = "400", description = "Invalid data supplied, bad request",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "404", description = "Object not found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 })
 @Slf4j
 @RequiredArgsConstructor

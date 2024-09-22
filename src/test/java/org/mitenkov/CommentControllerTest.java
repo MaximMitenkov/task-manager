@@ -7,11 +7,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
+import org.mitenkov.helper.CommentClient;
 import org.mitenkov.helper.DBCleaner;
 import org.mitenkov.helper.EntityGenerator;
 import org.mitenkov.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CommentControllerTest extends BaseTest {
@@ -40,31 +39,26 @@ public class CommentControllerTest extends BaseTest {
     @Autowired
     EntityGenerator entityGenerator;
 
+    @Autowired
+    CommentClient commentClient;
+
     @BeforeEach
     public void beforeEach() {
-        cleaner.cleanAll();
+        cleaner.cleanComments();
         entityGenerator.generateTasksAndSave();
     }
 
     @Test
     void addComment() throws Exception {
 
-        CommentAddRequest comment = new CommentAddRequest(
-                "Content",
-                "Author1",
-                LocalDateTime.now(),
-                1
-        );
+        CommentAddRequest comment = CommentAddRequest.builder()
+                .content("Content")
+                .author("Author1")
+                .dateTime(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS))
+                .taskId(1)
+                .build();
 
-        String json = objectMapper.writeValueAsString(comment);
-
-        String result = this.mockMvc.perform(post("/comments")
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        CommentDto resultComment = objectMapper.readValue(result, CommentDto.class);
+        CommentDto resultComment = commentClient.create(comment);
 
         assertEquals(comment.content(), resultComment.content());
         assertEquals(comment.author(), resultComment.author());
@@ -78,28 +72,19 @@ public class CommentControllerTest extends BaseTest {
         CommentAddRequest comment1 = new CommentAddRequest(
                 "Content",
                 "Author1",
-                LocalDateTime.now().truncatedTo(ChronoUnit.MICROS),
+                LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
                 1
         );
-
-        String json1 = objectMapper.writeValueAsString(comment1);
 
         CommentAddRequest comment2 = new CommentAddRequest(
                 "Content",
                 "Author2",
-                LocalDateTime.now().truncatedTo(ChronoUnit.MICROS),
+                LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
                 1
         );
 
-        String json2 = objectMapper.writeValueAsString(comment2);
-
-        this.mockMvc.perform(post("/comments")
-                .content(json1)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        this.mockMvc.perform(post("/comments")
-                .content(json2)
-                .contentType(MediaType.APPLICATION_JSON));
+        commentClient.create(comment1);
+        commentClient.create(comment2);
 
         String result = this.mockMvc.perform(get("/comments?nick=Author1"))
                 .andExpect(status().isOk())
@@ -109,11 +94,11 @@ public class CommentControllerTest extends BaseTest {
         });
 
 
-        assertEquals(1, resultComment.size());
-        assertEquals(comment1.author(), resultComment.get(0).author());
-        assertEquals(comment1.content(), resultComment.get(0).content());
-        assertEquals(comment1.dateTime(), resultComment.get(0).dateTime());
-        assertEquals(comment1.taskId(), resultComment.get(0).taskId());
+        assertEquals(resultComment.size(), 1);
+        assertEquals(resultComment.get(0).author(), comment1.author());
+        assertEquals(resultComment.get(0).content(), comment1.content());
+        assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
+        assertEquals(resultComment.get(0).taskId(), comment1.taskId());
 
     }
 

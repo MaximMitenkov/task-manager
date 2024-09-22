@@ -16,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,7 +37,6 @@ public class TaskService {
                 taskValidationService.validateVersionNumber(version);
                 yield taskRepository.save(Bug.builder()
                         .title(request.title())
-                        .comments(new ArrayList<>())
                         .priority(request.priority())
                         .deadline(request.deadline())
                         .version(request.version())
@@ -46,9 +44,8 @@ public class TaskService {
             }
             case FEATURE -> {
                 taskValidationService.validateDeadline(request.deadline());
-                yield  taskRepository.save(Feature.builder()
+                yield taskRepository.save(Feature.builder()
                         .title(request.title())
-                        .comments(new ArrayList<>())
                         .priority(request.priority())
                         .deadline(request.deadline())
                         .build());

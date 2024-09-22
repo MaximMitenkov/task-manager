@@ -41,7 +41,7 @@ public class TaskControllerTest extends BaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        dbCleaner.cleanTasks();
+        dbCleaner.cleanAll();
     }
 
     @Test
