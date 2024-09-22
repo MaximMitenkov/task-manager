@@ -3,23 +3,23 @@ package org.mitenkov;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
+import org.mitenkov.helper.CommentClient;
 import org.mitenkov.helper.DBCleaner;
 import org.mitenkov.helper.EntityGenerator;
 import org.mitenkov.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CommentControllerTest extends BaseTest {
@@ -39,9 +39,12 @@ public class CommentControllerTest extends BaseTest {
     @Autowired
     EntityGenerator entityGenerator;
 
+    @Autowired
+    CommentClient commentClient;
+
     @BeforeEach
     public void beforeEach() {
-        cleaner.cleanAll();
+        cleaner.cleanComments();
         entityGenerator.generateTasksAndSave();
     }
 
@@ -51,24 +54,16 @@ public class CommentControllerTest extends BaseTest {
         CommentAddRequest comment = new CommentAddRequest(
                 "Content",
                 "Author1",
-                LocalDateTime.now(),
+                LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
                 1
         );
 
-        String json = objectMapper.writeValueAsString(comment);
+        CommentDto resultComment = commentClient.create(comment);
 
-        String result = this.mockMvc.perform(post("/comments")
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        CommentDto resultComment = objectMapper.readValue(result, CommentDto.class);
-
-        Assertions.assertEquals(comment.content(), resultComment.content());
-        Assertions.assertEquals(comment.author(), resultComment.author());
-        Assertions.assertEquals(comment.dateTime(), resultComment.dateTime());
-        Assertions.assertEquals(comment.taskId(), resultComment.taskId());
+        assertEquals(comment.content(), resultComment.content());
+        assertEquals(comment.author(), resultComment.author());
+        assertEquals(comment.dateTime(), resultComment.dateTime());
+        assertEquals(comment.taskId(), resultComment.taskId());
     }
 
     @Test
@@ -77,28 +72,19 @@ public class CommentControllerTest extends BaseTest {
         CommentAddRequest comment1 = new CommentAddRequest(
                 "Content",
                 "Author1",
-                LocalDateTime.now(),
+                LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
                 1
         );
-
-        String json1 = objectMapper.writeValueAsString(comment1);
 
         CommentAddRequest comment2 = new CommentAddRequest(
                 "Content",
                 "Author2",
-                LocalDateTime.now(),
+                LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
                 1
         );
 
-        String json2 = objectMapper.writeValueAsString(comment2);
-
-        this.mockMvc.perform(post("/comments")
-                .content(json1)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        this.mockMvc.perform(post("/comments")
-                .content(json2)
-                .contentType(MediaType.APPLICATION_JSON));
+        commentClient.create(comment1);
+        commentClient.create(comment2);
 
         String result = this.mockMvc.perform(get("/comments?nick=Author1"))
                 .andExpect(status().isOk())
@@ -108,11 +94,11 @@ public class CommentControllerTest extends BaseTest {
         });
 
 
-        Assertions.assertEquals(resultComment.size(), 1);
-        Assertions.assertEquals(resultComment.get(0).author(), comment1.author());
-        Assertions.assertEquals(resultComment.get(0).content(), comment1.content());
-        Assertions.assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
-        Assertions.assertEquals(resultComment.get(0).taskId(), comment1.taskId());
+        assertEquals(resultComment.size(), 1);
+        assertEquals(resultComment.get(0).author(), comment1.author());
+        assertEquals(resultComment.get(0).content(), comment1.content());
+        assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
+        assertEquals(resultComment.get(0).taskId(), comment1.taskId());
 
     }
 
