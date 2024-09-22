@@ -51,12 +51,12 @@ public class CommentControllerTest extends BaseTest {
     @Test
     void addComment() throws Exception {
 
-        CommentAddRequest comment = new CommentAddRequest(
-                "Content",
-                "Author1",
-                LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-                1
-        );
+        CommentAddRequest comment = CommentAddRequest.builder()
+                .content("Content")
+                .author("Author1")
+                .dateTime(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS))
+                .taskId(1)
+                .build();
 
         CommentDto resultComment = commentClient.create(comment);
 
