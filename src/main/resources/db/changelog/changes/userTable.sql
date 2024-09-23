@@ -10,4 +10,10 @@ ALTER TABLE task
     ADD user_id INTEGER references users (id);
 
 ALTER TABLE comment
-    ADD user_id INTEGER references users (id)
+    ADD user_id INTEGER references users (id);
+
+ALTER TABLE users
+    ALTER COLUMN password TYPE VARCHAR(100);
+
+ALTER TABLE users
+    ADD role VARCHAR(20)
