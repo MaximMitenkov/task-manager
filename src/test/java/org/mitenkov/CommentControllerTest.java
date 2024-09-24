@@ -86,12 +86,21 @@ public class CommentControllerTest extends BaseTest {
         commentClient.create(comment1);
         commentClient.create(comment2);
 
-        String result = this.mockMvc.perform(get("/comments?nick=Author1"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        List<CommentDto> resultComment = objectMapper.readValue(result, new TypeReference<>() {
-        });
+//        String result = this.mockMvc.perform(get("/comments?nick=Author1"))
+//                .andExpect(status().isOk())
+//                .andReturn().getResponse().getContentAsString();
+//
+//        List<CommentDto> resultComment = objectMapper.readValue(result, new TypeReference<>() {
+//        });
+//
+//
+//        assertEquals(resultComment.size(), 1);
+//        assertEquals(resultComment.get(0).author(), comment1.author());
+//        assertEquals(resultComment.get(0).content(), comment1.content());
+//        assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
+//        assertEquals(resultComment.get(0).taskId(), comment1.taskId());
+//
+//        List<CommentDto> resultComment = commentClient.getByNickname("Author1");
 
 
         assertEquals(resultComment.size(), 1);
@@ -99,6 +108,18 @@ public class CommentControllerTest extends BaseTest {
         assertEquals(resultComment.get(0).content(), comment1.content());
         assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
         assertEquals(resultComment.get(0).taskId(), comment1.taskId());
+
+        resultComment = commentClient.getByNickname("Author2");
+
+        assertEquals(resultComment.size(), 1);
+        assertEquals(resultComment.get(0).author(), comment2.author());
+        assertEquals(resultComment.get(0).content(), comment2.content());
+        assertEquals(resultComment.get(0).dateTime(), comment2.dateTime());
+        assertEquals(resultComment.get(0).taskId(), comment2.taskId());
+
+        resultComment = commentClient.getByNickname("Wrong Author");
+
+        assertEquals(resultComment.size(), 0);
 
     }
 
