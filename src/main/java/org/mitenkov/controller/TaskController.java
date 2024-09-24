@@ -52,7 +52,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     @Operation(summary = "get task by id", description = "Get task by ID")
-    public TaskDto getTaskById(@PathVariable(value = "id") int id) {
+    public TaskDto getTaskById(@PathVariable int id) {
         log.info("Get task request for id {}", id);
         return taskDtoConverter.toDto(taskService.getTaskById(id));
     }
@@ -65,7 +65,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "delete task", description = "Delete task with written id")
-    public void deleteTaskById(@PathVariable(value = "id") int id) {
+    public void deleteTaskById(@PathVariable int id) {
         taskService.removeTask(id);
     }
 
