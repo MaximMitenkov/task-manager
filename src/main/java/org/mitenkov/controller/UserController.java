@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mitenkov.controller.converter.UserDtoConverter;
 import org.mitenkov.dto.UserAddRequest;
 import org.mitenkov.dto.UserDto;
-import org.mitenkov.enums.UserRole;
 import org.mitenkov.service.UserService;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/user")
@@ -29,7 +27,6 @@ public class UserController {
         return userDtoConverter.toDto(userService.saveUser(request));
     }
 
-    @Secured(UserRole.Values.ADMIN)
     @PutMapping
     public UserDto updateUser(@RequestBody UserAddRequest request) {
         return userDtoConverter.toDto(userService.updateUser(request));

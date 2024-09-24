@@ -11,8 +11,8 @@ public class LoggingFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.info("Request: {}", request.getCharacterEncoding());
+        log.info("Request");
         chain.doFilter(request, response);
-        log.info("Response: {}", response.getCharacterEncoding());
+        log.info("Response");
     }
 }
