@@ -2,6 +2,7 @@ package org.mitenkov.helper;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class TaskClient {
     @Autowired
     MockMvc mockMvc;
 
-    public TaskDto create(TaskAddRequest request) throws Exception {
+    @SneakyThrows
+    public TaskDto create(TaskAddRequest request) {
 
         String json = objectMapper.writeValueAsString(request);
 

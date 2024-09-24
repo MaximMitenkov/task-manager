@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -93,9 +92,7 @@ public class TaskControllerTest extends BaseTest {
     void getTaskTest() throws Exception {
 
         TaskConverter converter = new TaskConverter();
-
         List<Task> tasks = entityGenerator.generateTasks();
-
         List<TaskAddRequest> tasksToAdd = tasks.stream()
                 .map(converter::toAddRequest)
                 .toList();
@@ -104,13 +101,9 @@ public class TaskControllerTest extends BaseTest {
             taskClient.create(t);
         }
 
-        List<TaskDto> result = taskClient.getAll();
-
-        List<TaskAddRequest> assertTaskDidNotChange = new ArrayList<>();
-
-        for (TaskDto task : result) {
-            assertTaskDidNotChange.add(converter.toAddRequest(task));
-        }
+        List<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().stream()
+                .map(converter::toAddRequest)
+                .toList();
 
         assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange));
 
