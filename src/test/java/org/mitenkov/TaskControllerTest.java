@@ -102,7 +102,7 @@ public class TaskControllerTest extends BaseTest {
 
         for (TaskAddRequest t : tasksToAdd) {
             taskClient.create(t);
-        };
+        }
 
         List<TaskDto> result = taskClient.getAll();
 
