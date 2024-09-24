@@ -12,8 +12,7 @@ public class UserDtoConverter {
         return new UserDto(
                 user.getId(),
                 user.getUsername(),
-                user.getEmail(),
-                user.getPassword()
+                user.getEmail()
         );
     }
 }

@@ -7,7 +7,6 @@ public record UserDto(
         String username,
 
         @Email
-        String email,
-        String password
+        String email
 ) {
 }

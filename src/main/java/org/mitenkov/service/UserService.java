@@ -34,6 +34,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUser(UserAddRequest request) {
+
         return userRepository.save(User.builder()
                 .email(request.email())
                 .username(request.username())
@@ -43,24 +44,23 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(username);
+
         return new UserDetails() {
 
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return List.of();
+                return List.of(user.getRole());
             }
 
             @Override
             public String getPassword() {
-                return userRepository.findByUsername(username).getPassword();
+                return user.getPassword();
             }
 
             @Override
             public String getUsername() {
-                String result = userRepository.findByUsername(username).getUsername();
-                if (result == null) {
-                    throw new UsernameNotFoundException(username);
-                }
                 return username;
             }
         };

@@ -24,4 +24,3 @@ app:
     feature:
       min-time-to-do: p10d
     max-title-length: 15
-

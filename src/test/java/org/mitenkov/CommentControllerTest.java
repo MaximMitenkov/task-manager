@@ -1,7 +1,6 @@
 package org.mitenkov;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +18,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CommentControllerTest extends BaseTest {
 
@@ -86,12 +83,7 @@ public class CommentControllerTest extends BaseTest {
         commentClient.create(comment1);
         commentClient.create(comment2);
 
-        String result = this.mockMvc.perform(get("/comments?nick=Author1"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        List<CommentDto> resultComment = objectMapper.readValue(result, new TypeReference<>() {
-        });
+        List<CommentDto> resultComment = commentClient.getByNickname("Author1");
 
 
         assertEquals(resultComment.size(), 1);
@@ -100,6 +92,17 @@ public class CommentControllerTest extends BaseTest {
         assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
         assertEquals(resultComment.get(0).taskId(), comment1.taskId());
 
+        resultComment = commentClient.getByNickname("Author2");
+
+        assertEquals(resultComment.size(), 1);
+        assertEquals(resultComment.get(0).author(), comment2.author());
+        assertEquals(resultComment.get(0).content(), comment2.content());
+        assertEquals(resultComment.get(0).dateTime(), comment2.dateTime());
+        assertEquals(resultComment.get(0).taskId(), comment2.taskId());
+
+        resultComment = commentClient.getByNickname("Wrong Author");
+
+        assertEquals(resultComment.size(), 0);
     }
 
 }
