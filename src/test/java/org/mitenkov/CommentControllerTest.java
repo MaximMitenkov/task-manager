@@ -1,7 +1,6 @@
 package org.mitenkov;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +18,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CommentControllerTest extends BaseTest {
 
@@ -86,22 +83,7 @@ public class CommentControllerTest extends BaseTest {
         commentClient.create(comment1);
         commentClient.create(comment2);
 
-//        String result = this.mockMvc.perform(get("/comments?nick=Author1"))
-//                .andExpect(status().isOk())
-//                .andReturn().getResponse().getContentAsString();
-//
-//        List<CommentDto> resultComment = objectMapper.readValue(result, new TypeReference<>() {
-//        });
-//
-//
-//        assertEquals(resultComment.size(), 1);
-//        assertEquals(resultComment.get(0).author(), comment1.author());
-//        assertEquals(resultComment.get(0).content(), comment1.content());
-//        assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
-//        assertEquals(resultComment.get(0).taskId(), comment1.taskId());
-//
-//        List<CommentDto> resultComment = commentClient.getByNickname("Author1");
-
+        List<CommentDto> resultComment = commentClient.getByNickname("Author1");
 
         assertEquals(resultComment.size(), 1);
         assertEquals(resultComment.get(0).author(), comment1.author());

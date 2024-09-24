@@ -1,5 +1,6 @@
 package org.mitenkov.helper;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
@@ -8,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,5 +36,14 @@ public class CommentClient {
 
         return objectMapper.readValue(result, CommentDto.class);
 
+    }
+
+    public List<CommentDto> getByNickname(String nickname) throws Exception {
+        String result = this.mockMvc.perform(get("/comments?nick=" + nickname))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        return objectMapper.readValue(result, new TypeReference<>() {
+        });
     }
 }
