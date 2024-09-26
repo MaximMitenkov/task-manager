@@ -16,4 +16,7 @@ ALTER TABLE users
     ALTER COLUMN password TYPE VARCHAR(100);
 
 ALTER TABLE users
-    ADD role VARCHAR(20)
+    ADD role VARCHAR(20);
+
+ALTER TABLE users
+    ADD is_active BOOLEAN

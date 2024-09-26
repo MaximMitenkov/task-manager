@@ -7,6 +7,8 @@ public record UserDto(
         String username,
 
         @Email
-        String email
+        String email,
+
+        Boolean isActive
 ) {
 }
