@@ -42,7 +42,7 @@ public class TaskController {
     @GetMapping
     @Operation(summary = "get tasks", description = "Getting sorted and filtered tasks by type")
     public List<TaskDto> getTasks(
-            @RequestParam(value = "sort", required = false) SortType sort,
+            @RequestParam(value = "taskSort", required = false) SortType sort,
             @RequestParam(value = "type", required = false) TaskType type,
             Pageable pageable
     ) {

@@ -81,8 +81,8 @@ public class TaskService {
             return getFilteredTasks(type, pageable);
         }
         return taskRepository.getFilteredTasks(
-                type.getTaskClass(),
-                Sort.by(chooseSort(sort), sort.getColumn()), pageable);
+                type.getTaskClass(), pageable
+        );
     }
 
     public Task getTaskById(int id) {
