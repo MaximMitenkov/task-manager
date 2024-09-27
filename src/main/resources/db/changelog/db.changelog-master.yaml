@@ -1,9 +1,9 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/changes/init.sql
+      file: db/changelog/changes/1-init.sql
   - include:
-      file: db/changelog/changes/enumPriority.sql
+      file: db/changelog/changes/2-enumPriority.sql
   - include:
-      file: db/changelog/changes/commentTable.sql
+      file: db/changelog/changes/3-commentTable.sql
   - include:
-      file: db/changelog/changes/userTable.sql
+      file: db/changelog/changes/4-userTable.sql
