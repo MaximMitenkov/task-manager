@@ -14,7 +14,6 @@ import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.service.validator.TaskValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -87,13 +86,6 @@ public class TaskService {
 
     public Task getTaskById(int id) {
         return taskRepository.findById(id).orElseThrow(NoSuchElementException::new);
-    }
-
-    private Sort.Direction chooseSort(SortType sortType) {
-        return switch (sortType) {
-            case PRIORITY -> Sort.Direction.DESC;
-            default -> Sort.Direction.ASC;
-        };
     }
 
     public Page<Task> getTasks(Pageable pageable) {
