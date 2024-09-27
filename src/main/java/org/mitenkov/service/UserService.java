@@ -5,9 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.UserAddRequest;
 import org.mitenkov.dto.UserUpdateRequest;
 import org.mitenkov.entity.User;
+import org.mitenkov.enums.ErrorCode;
+import org.mitenkov.exception.ErrorCodeException;
 import org.mitenkov.repository.UserRepository;
-import org.mitenkov.service.validator.UserProvider;
+import org.mitenkov.service.provider.UserProvider;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Validated
@@ -31,19 +35,30 @@ public class UserService implements UserDetailsService {
     }
 
     public User saveUser(@Valid UserAddRequest request) {
-        return userRepository.save(userProvider.validateUser(request));
+        if (userRepository.findByUsername(request.username()) != null) {
+            throw new ErrorCodeException(ErrorCode.VALIDATION_ERROR);
+        }
+        return userRepository.save(userProvider.createUser(request));
     }
 
     public User updateCurrentUser(@Valid UserUpdateRequest request) {
-        return userRepository.save(userProvider.validateCurrentUser(request));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username);
+        return userRepository.save(userProvider.updateUser(request, user));
     }
 
     public User updateUser(@Valid UserUpdateRequest request) {
-        return userRepository.save(userProvider.validateUser(request));
+        User originalUser = getIfPresent(request.id());
+        if (request.username() != null) {
+            validateUnique(request.username());
+        }
+        return userRepository.save(userProvider.updateUser(request, originalUser));
     }
 
     public User blockUser(int id) {
-        return userRepository.save(userProvider.blockUser(id));
+        User user = getIfPresent(id);
+        user.setActive(!user.isActive());
+        return userRepository.save(user);
     }
 
     @Override
@@ -68,5 +83,17 @@ public class UserService implements UserDetailsService {
                 return user.getUsername();
             }
         };
+    }
+
+    private User getIfPresent(int id) {
+        return Optional.of(userRepository.findUserById(id))
+                .orElseThrow(() -> new ErrorCodeException(ErrorCode.NO_SUCH_ELEMENT));
+    }
+
+    private void validateUnique(String username) {
+        User original = userRepository.findByUsername(username);
+        if (original != null) {
+            throw new ErrorCodeException(ErrorCode.VALIDATION_ERROR);
+        }
     }
 }
