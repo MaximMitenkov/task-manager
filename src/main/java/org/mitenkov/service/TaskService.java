@@ -8,7 +8,6 @@ import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
-import org.mitenkov.enums.SortType;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.service.validator.TaskValidator;
@@ -63,25 +62,6 @@ public class TaskService {
             return getTasks(pageable);
         }
         return taskRepository.getFilteredTasks(type.getTaskClass(), pageable);
-    }
-
-    public Page<Task> getSortedTasks(SortType type, Pageable pageable) {
-        if (type == null) {
-            return getTasks(pageable);
-        }
-        return taskRepository.findAll(pageable);
-    }
-
-    public Page<Task> getSortedAndFilteredTasks(TaskType type, SortType sort, Pageable pageable) {
-        if (type == null) {
-            return getSortedTasks(sort, pageable);
-        }
-        if (sort == null) {
-            return getFilteredTasks(type, pageable);
-        }
-        return taskRepository.getFilteredTasks(
-                type.getTaskClass(), pageable
-        );
     }
 
     public Task getTaskById(int id) {
