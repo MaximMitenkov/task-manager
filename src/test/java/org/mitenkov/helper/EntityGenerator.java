@@ -4,7 +4,6 @@ import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
-import org.mitenkov.repository.CommentRepository;
 import org.mitenkov.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,8 +17,6 @@ public class EntityGenerator {
 
     @Autowired
     private TaskRepository taskRepository;
-    @Autowired
-    private CommentRepository commentRepository;
 
     public List<Task> generateTasks() {
         Feature feature1 = Feature.builder()

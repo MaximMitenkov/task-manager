@@ -6,11 +6,10 @@ import lombok.SneakyThrows;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -54,14 +53,12 @@ public class TaskClient {
                 .andExpect(status().isOk());
     }
 
-    public List<TaskDto> getAll() throws Exception {
+    public Page<TaskDto> getAll() throws Exception {
         String responseBody = this.mockMvc.perform(get("/tasks"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
-
         return objectMapper.readValue(responseBody, new TypeReference<>() {
         });
     }
-
 }
