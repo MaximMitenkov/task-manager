@@ -13,6 +13,7 @@ import org.mitenkov.helper.EntityGenerator;
 import org.mitenkov.helper.TaskClient;
 import org.mitenkov.helper.TaskConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -101,9 +102,9 @@ public class TaskControllerTest extends BaseTest {
             taskClient.create(t);
         }
 
-        List<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().map(converter::toAddRequest).stream().toList();
+        Page<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().map(converter::toAddRequest);
 
-        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange));
+        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange.stream().toList()));
 
     }
 }
