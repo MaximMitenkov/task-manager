@@ -15,6 +15,7 @@ import org.mitenkov.dto.TaskDto;
 import org.mitenkov.enums.SortType;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.service.TaskService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,10 +43,11 @@ public class TaskController {
     @Operation(summary = "get tasks", description = "Getting sorted and filtered tasks by type")
     public List<TaskDto> getTasks(
             @RequestParam(value = "sort", required = false) SortType sort,
-            @RequestParam(value = "type", required = false) TaskType type
+            @RequestParam(value = "type", required = false) TaskType type,
+            Pageable pageable
     ) {
         log.info("Get task request for type {} and sort {}", type, sort);
-        return taskService.getSortedAndFilteredTasks(type, sort).stream()
+        return taskService.getSortedAndFilteredTasks(type, sort, pageable).stream()
                 .map(taskDtoConverter::toDto)
                 .toList();
     }
