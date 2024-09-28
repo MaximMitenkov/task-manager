@@ -4,12 +4,14 @@ import org.mitenkov.dto.UserAddRequest;
 import org.mitenkov.dto.UserUpdateRequest;
 import org.mitenkov.entity.User;
 import org.mitenkov.enums.UserRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserProvider {
 
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     public User updateUser(UserUpdateRequest request, User original) {
