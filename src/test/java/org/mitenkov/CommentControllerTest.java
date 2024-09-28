@@ -83,7 +83,7 @@ public class CommentControllerTest extends BaseTest {
         commentClient.create(comment1);
         commentClient.create(comment2);
 
-        List<CommentDto> resultComment = commentClient.getByNickname("Author1");
+        List<CommentDto> resultComment = commentClient.getByNickname("Author1").stream().toList();
 
         assertEquals(resultComment.size(), 1);
         assertEquals(resultComment.get(0).author(), comment1.author());
@@ -91,7 +91,7 @@ public class CommentControllerTest extends BaseTest {
         assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
         assertEquals(resultComment.get(0).taskId(), comment1.taskId());
 
-        resultComment = commentClient.getByNickname("Author2");
+        resultComment = commentClient.getByNickname("Author2").stream().toList();
 
         assertEquals(resultComment.size(), 1);
         assertEquals(resultComment.get(0).author(), comment2.author());
@@ -99,7 +99,7 @@ public class CommentControllerTest extends BaseTest {
         assertEquals(resultComment.get(0).dateTime(), comment2.dateTime());
         assertEquals(resultComment.get(0).taskId(), comment2.taskId());
 
-        resultComment = commentClient.getByNickname("Wrong Author");
+        resultComment = commentClient.getByNickname("Wrong Author").stream().toList();
 
         assertEquals(resultComment.size(), 0);
 
