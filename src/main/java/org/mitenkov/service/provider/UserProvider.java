@@ -1,38 +1,35 @@
 package org.mitenkov.service.provider;
 
+import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.UserAddRequest;
 import org.mitenkov.dto.UserUpdateRequest;
 import org.mitenkov.entity.User;
 import org.mitenkov.enums.UserRole;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserProvider {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public User updateUser(UserUpdateRequest request, User original) {
         int id = original.getId();
-        String username;
         String password;
         String email;
 
-        if (request.username() == null || request.username().isEmpty()) {
-            username = original.getUsername();
-        } else {
-            username = request.username();
-        }
+        String username = request.username() == null || request.username().isEmpty()
+                ? original.getUsername()
+                : request.username();
 
-        if (request.password() == null || request.password().isEmpty() || request.password().isBlank()) {
+        if (request.password() == null || request.password().isBlank()) {
             password = original.getPassword();
         } else {
             password = passwordEncoder.encode(request.password());
         }
 
-        if (request.email() == null || request.email().isEmpty() || request.email().isBlank()) {
+        if (request.email() == null || request.email().isBlank()) {
             email = null;
         } else {
             email = request.email();
