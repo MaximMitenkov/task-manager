@@ -41,7 +41,7 @@ public class CommentControllerTest extends BaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        cleaner.cleanComments();
+        cleaner.cleanAll();
         entityGenerator.generateTasksAndSave();
     }
 

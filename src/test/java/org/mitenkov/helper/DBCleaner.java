@@ -1,30 +1,19 @@
 package org.mitenkov.helper;
 
+import lombok.RequiredArgsConstructor;
 import org.mitenkov.repository.CommentRepository;
 import org.mitenkov.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class DBCleaner {
 
-    @Autowired
-    TaskRepository taskRepository;
-
-    @Autowired
-    CommentRepository commentRepository;
+    private final TaskRepository taskRepository;
+    private final CommentRepository commentRepository;
 
     public void cleanAll() {
         commentRepository.deleteAll();
         taskRepository.deleteAll();
     }
-
-    public void cleanTasks() {
-        taskRepository.deleteAll();
-    }
-
-    public void cleanComments() {
-        commentRepository.deleteAll();
-    }
-
 }
