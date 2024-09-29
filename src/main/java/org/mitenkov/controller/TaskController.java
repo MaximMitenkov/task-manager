@@ -12,12 +12,11 @@ import org.mitenkov.controller.converter.TaskDtoConverter;
 import org.mitenkov.dto.ErrorMessageDto;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
-import org.mitenkov.enums.SortType;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.service.TaskService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
@@ -40,14 +39,20 @@ public class TaskController {
 
     @GetMapping
     @Operation(summary = "get tasks", description = "Getting sorted and filtered tasks by type")
-    public List<TaskDto> getTasks(
-            @RequestParam(value = "sort", required = false) SortType sort,
-            @RequestParam(value = "type", required = false) TaskType type
+    public Page<TaskDto> getTasks(
+            @RequestParam(value = "type", required = false) TaskType type,
+            Pageable pageable
     ) {
-        log.info("Get task request for type {} and sort {}", type, sort);
-        return taskService.getSortedAndFilteredTasks(type, sort).stream()
-                .map(taskDtoConverter::toDto)
-                .toList();
+        log.info("Get task request for type {}", type);
+        return taskService.getFilteredTasks(type, pageable)
+                .map(taskDtoConverter::toDto);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "get task by id", description = "Get task by ID")
+    public TaskDto getTaskById(@PathVariable int id) {
+        log.info("Get task request for id {}", id);
+        return taskDtoConverter.toDto(taskService.getTaskById(id));
     }
 
     @GetMapping("/{id}")

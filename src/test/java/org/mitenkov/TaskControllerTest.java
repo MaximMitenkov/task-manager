@@ -1,6 +1,5 @@
 package org.mitenkov;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,19 +9,18 @@ import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.helper.DBCleaner;
-import org.mitenkov.helper.TaskConverter;
 import org.mitenkov.helper.EntityGenerator;
+import org.mitenkov.helper.TaskClient;
+import org.mitenkov.helper.TaskConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.Page;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TaskControllerTest extends BaseTest {
@@ -32,6 +30,9 @@ public class TaskControllerTest extends BaseTest {
 
     @Autowired
     EntityGenerator entityGenerator;
+
+    @Autowired
+    TaskClient taskClient;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -55,16 +56,7 @@ public class TaskControllerTest extends BaseTest {
                 TaskType.BUG
         );
 
-        String json = objectMapper.writeValueAsString(taskAddRequest);
-
-        String responseBody = this.mockMvc.perform(post("/tasks")
-                        .content(json)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        TaskDto result = objectMapper.readValue(responseBody, new TypeReference<>() {
-        });
+        TaskDto result = taskClient.create(taskAddRequest);
 
         assertEquals(result.title(), taskAddRequest.title());
         assertEquals(result.version(), taskAddRequest.version());
@@ -72,11 +64,7 @@ public class TaskControllerTest extends BaseTest {
         assertEquals(result.priority(), taskAddRequest.priority());
         assertEquals(result.taskType(), taskAddRequest.type());
 
-        String addedTaskResponse = this.mockMvc.perform(get("/tasks/" + result.id()))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        TaskDto dto = objectMapper.readValue(addedTaskResponse, TaskDto.class);
+        TaskDto dto = taskClient.getById(result.id());
 
         assertEquals(dto, result);
 
@@ -93,19 +81,9 @@ public class TaskControllerTest extends BaseTest {
                 TaskType.BUG
         );
 
-        String json = objectMapper.writeValueAsString(taskAddRequest);
+        TaskDto result = taskClient.create(taskAddRequest);
 
-        String responseBody = this.mockMvc.perform(post("/tasks")
-                        .content(json)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        TaskDto result = objectMapper.readValue(responseBody, new TypeReference<>() {
-        });
-
-        this.mockMvc.perform(delete("/tasks/" + result.id()))
-                .andExpect(status().isOk());
+        taskClient.deleteById(result.id());
 
         this.mockMvc.perform(get("/tasks/" + result.id()))
                 .andExpect(status().isNotFound());
@@ -115,35 +93,18 @@ public class TaskControllerTest extends BaseTest {
     void getTaskTest() throws Exception {
 
         TaskConverter converter = new TaskConverter();
-
         List<Task> tasks = entityGenerator.generateTasks();
-
         List<TaskAddRequest> tasksToAdd = tasks.stream()
                 .map(converter::toAddRequest)
                 .toList();
 
-        for (TaskAddRequest task : tasksToAdd) {
-            this.mockMvc.perform(post("/tasks")
-                    .content(objectMapper.writeValueAsString(task))
-                    .contentType(MediaType.APPLICATION_JSON));
+        for (TaskAddRequest t : tasksToAdd) {
+            taskClient.create(t);
         }
 
-        String responseBody = this.mockMvc.perform(get("/tasks"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+        Page<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().map(converter::toAddRequest);
 
-        List<TaskDto> result = objectMapper.readValue(responseBody, new TypeReference<>() {
-        });
-
-        List<TaskAddRequest> assertTaskDidNotChange = new ArrayList<>();
-
-        for (TaskDto task : result) {
-            assertTaskDidNotChange.add(converter.toAddRequest(task));
-        }
-
-        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange));
+        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange.stream().toList()));
 
     }
-
 }

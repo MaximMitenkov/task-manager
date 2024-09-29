@@ -5,7 +5,9 @@ import org.mitenkov.dto.TaskDto;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TaskConverter {
 
     public TaskAddRequest toAddRequest(Task task) {

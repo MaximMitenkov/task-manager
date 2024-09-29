@@ -8,11 +8,11 @@ import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
-import org.mitenkov.enums.SortType;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.service.validator.TaskValidator;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -57,45 +57,19 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public List<Task> getFilteredTasks(TaskType type) {
+    public Page<Task> getFilteredTasks(TaskType type, Pageable pageable) {
         if (type == null) {
-            return getTasks();
+            return getTasks(pageable);
         }
-        return taskRepository.getFilteredTasks(type.getTaskClass());
-    }
-
-    public List<Task> getSortedTasks(SortType type) {
-        if (type == null) {
-            return getTasks();
-        }
-        return taskRepository.findAll(Sort.by(chooseSort(type), type.getColumn()));
-    }
-
-    public List<Task> getSortedAndFilteredTasks(TaskType type, SortType sort) {
-        if (type == null) {
-            return getSortedTasks(sort);
-        }
-        if (sort == null) {
-            return getFilteredTasks(type);
-        }
-        return taskRepository.getFilteredTasks(
-                type.getTaskClass(),
-                Sort.by(chooseSort(sort), sort.getColumn()));
+        return taskRepository.getFilteredTasks(type.getTaskClass(), pageable);
     }
 
     public Task getTaskById(int id) {
         return taskRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    private Sort.Direction chooseSort(SortType sortType) {
-        return switch (sortType) {
-            case PRIORITY -> Sort.Direction.DESC;
-            default -> Sort.Direction.ASC;
-        };
-    }
-
-    public List<Task> getTasks() {
-        return taskRepository.findAll();
+    public Page<Task> getTasks(Pageable pageable) {
+        return taskRepository.findAll(pageable);
     }
 
     public List<Comment> findCommentsByTaskId(Task task) {

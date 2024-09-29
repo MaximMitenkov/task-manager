@@ -11,6 +11,7 @@ import org.mitenkov.service.TaskService;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class TaskServiceTest extends BaseTest{
     void getAllTasksTest() {
         ArrayList<Task> emptyTaskList = new ArrayList<>();
         Mockito.doReturn(emptyTaskList).when(taskRepository).findAll();
-        assertEquals(taskService.getTasks(), emptyTaskList);
+        assertEquals(taskService.getTasks(Pageable.unpaged()), emptyTaskList);
     }
 
     @Test

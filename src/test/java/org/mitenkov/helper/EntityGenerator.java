@@ -1,12 +1,10 @@
 package org.mitenkov.helper;
 
+import lombok.RequiredArgsConstructor;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
-import org.mitenkov.repository.CommentRepository;
-import org.mitenkov.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -14,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class EntityGenerator {
 
-    @Autowired
-    private TaskRepository taskRepository;
-    @Autowired
-    private CommentRepository commentRepository;
+    private final TaskClient taskClient;
+    private final TaskConverter taskConverter;
 
     public List<Task> generateTasks() {
         Feature feature1 = Feature.builder()
@@ -80,8 +77,10 @@ public class EntityGenerator {
         return tasks;
     }
 
-    public List<Task> generateTasksAndSave() {
-        return taskRepository.saveAll(generateTasks());
+    public void generateTasksAndSave() {
+        List<Task> tasks = generateTasks();
+        for (Task task : tasks) {
+            taskClient.create(taskConverter.toAddRequest(task));
+        }
     }
-
 }

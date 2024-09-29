@@ -2,27 +2,24 @@ package org.mitenkov.helper;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
+@RequiredArgsConstructor
 public class CommentClient {
 
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
-    MockMvc mockMvc;
+    private final ObjectMapper objectMapper;
+    private final MockMvc mockMvc;
 
     public CommentDto create(CommentAddRequest commentAddRequest) throws Exception {
 
@@ -38,7 +35,7 @@ public class CommentClient {
 
     }
 
-    public List<CommentDto> getByNickname(String nickname) throws Exception {
+    public Page<CommentDto> getByNickname(String nickname) throws Exception {
         String result = this.mockMvc.perform(get("/comments?nick=" + nickname))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
