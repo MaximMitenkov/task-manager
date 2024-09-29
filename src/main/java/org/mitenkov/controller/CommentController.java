@@ -13,10 +13,9 @@ import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
 import org.mitenkov.dto.ErrorMessageDto;
 import org.mitenkov.service.CommentService;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
@@ -39,17 +38,15 @@ public class CommentController {
 
     @GetMapping
     @Operation(summary = "get comments", description = "Get comments by author nickname.")
-    public List<CommentDto> getCommentsByNickname(@RequestParam(value = "nick") String nickname) {
-        return commentService.findAllByNickname(nickname).stream()
-                .map(commentDtoConverter::toDto)
-                .toList();
+    public Page<CommentDto> getCommentsByNickname(@RequestParam(value = "nick") String nickname,
+                                                  Pageable pageable) {
+        return commentService.findAllByNickname(nickname, pageable).map(commentDtoConverter::toDto);
     }
 
     @PostMapping
     @Operation(summary = "add comment")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createComment(@RequestBody CommentAddRequest request) {
-        commentService.add(request);
+    public CommentDto createComment(@RequestBody CommentAddRequest request) {
+        return commentDtoConverter.toDto(commentService.add(request));
     }
 
 }

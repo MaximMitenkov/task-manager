@@ -5,10 +5,9 @@ import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.entity.Comment;
 import org.mitenkov.repository.CommentRepository;
 import org.mitenkov.repository.TaskRepository;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -17,8 +16,8 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final TaskRepository taskRepository;
 
-    public void add(CommentAddRequest request) {
-        commentRepository.save(Comment.builder()
+    public Comment add(CommentAddRequest request) {
+        return commentRepository.save(Comment.builder()
                 .dateTime(request.dateTime())
                 .author(request.author())
                 .content(request.content())
@@ -26,7 +25,7 @@ public class CommentService {
                 .build());
     }
 
-    public List<Comment> findAllByNickname(String nickname) {
-        return  commentRepository.findByAuthor(nickname, Sort.by(Sort.Direction.DESC, "dateTime"));
+    public Page<Comment> findAllByNickname(String nickname, Pageable pageable) {
+        return  commentRepository.findByAuthor(nickname, pageable);
     }
 }

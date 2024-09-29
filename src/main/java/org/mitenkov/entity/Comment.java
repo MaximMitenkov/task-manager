@@ -1,9 +1,12 @@
 package org.mitenkov.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Table
 @Entity
@@ -21,7 +24,7 @@ public class Comment {
 
     private String author;
 
-    private Timestamp dateTime;
+    private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")

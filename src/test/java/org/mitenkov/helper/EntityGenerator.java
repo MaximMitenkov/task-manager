@@ -1,12 +1,10 @@
 package org.mitenkov.helper;
 
-import org.mitenkov.BaseTest;
+import lombok.RequiredArgsConstructor;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
-import org.mitenkov.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -14,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TaskGenerator extends BaseTest {
+@RequiredArgsConstructor
+public class EntityGenerator {
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskClient taskClient;
+    private final TaskConverter taskConverter;
 
-    public List<Task> generate() {
+    public List<Task> generateTasks() {
         Feature feature1 = Feature.builder()
                 .title("TestFeature1")
                 .id(1)
@@ -62,7 +61,7 @@ public class TaskGenerator extends BaseTest {
         Bug bug3 = Bug.builder()
                 .deadline(LocalDate.now().plusDays(2))
                 .priority(Priority.MEDIUM)
-                .version("1.5.2")
+                .version("1.15.2")
                 .title("TestBug3")
                 .comments(new ArrayList<>())
                 .build();
@@ -78,20 +77,10 @@ public class TaskGenerator extends BaseTest {
         return tasks;
     }
 
-    public List<Task> generateAndSave() {
-        List<Task> tasks = generate();
-        taskRepository.saveAll(tasks);
-        return tasks;
-    }
-
-    public List<Task> generateAndSave(int numberOfTasks) {
-        List<Task> tasks = generate();
-        for (int i = 0; i < numberOfTasks; i++) {
-            if (numberOfTasks > tasks.size()) {
-                tasks.addAll(generate());
-            }
-            taskRepository.saveAndFlush(tasks.get(i));
+    public void generateTasksAndSave() {
+        List<Task> tasks = generateTasks();
+        for (Task task : tasks) {
+            taskClient.create(taskConverter.toAddRequest(task));
         }
-        return tasks;
     }
 }

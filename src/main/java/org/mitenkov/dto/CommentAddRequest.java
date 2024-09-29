@@ -1,11 +1,14 @@
 package org.mitenkov.dto;
 
-import java.sql.Timestamp;
+import lombok.Builder;
 
+import java.time.LocalDateTime;
+
+@Builder
 public record CommentAddRequest(
         String content,
         String author,
-        Timestamp dateTime,
+        LocalDateTime dateTime,
         Integer taskId
 ) {
 }
