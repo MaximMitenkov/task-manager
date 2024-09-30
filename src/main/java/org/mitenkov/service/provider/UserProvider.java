@@ -17,7 +17,6 @@ public class UserProvider {
 
     public User updateUser(UserUpdateRequest request, User original) {
         int id = original.getId();
-        String password;
         String email;
 
         String username = request.username() == null || request.username().isEmpty()
