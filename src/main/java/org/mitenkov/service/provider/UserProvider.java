@@ -24,11 +24,6 @@ public class UserProvider {
                 ? original.getUsername()
                 : request.username();
 
-        if (request.password() == null || request.password().isBlank()) {
-            password = original.getPassword();
-        } else {
-            password = passwordEncoder.encode(request.password());
-        }
 
         if (request.email() == null || request.email().isBlank()) {
             email = null;
@@ -39,7 +34,7 @@ public class UserProvider {
         return User.builder()
                 .id(id)
                 .username(username)
-                .password(password)
+                .password(original.getPassword())
                 .email(email)
                 .isActive(original.isActive())
                 .role(original.getRole())

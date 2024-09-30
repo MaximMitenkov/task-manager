@@ -58,10 +58,9 @@ public class UserControllerTest extends BaseTest {
         userClient.update(UserUpdateRequest.builder()
                 .id(user.id())
                 .username("Tester")
-                .password("TestPassword")
                 .build());
 
-        userClient.getUser(user.id(), "Tester", "TestPassword");
+        userClient.getUser(user.id(), "Tester", "1234");
 
 
     }
