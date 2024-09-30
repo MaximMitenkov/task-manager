@@ -2,6 +2,7 @@ package org.mitenkov.service.provider;
 
 import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.UserAddRequest;
+import org.mitenkov.dto.UserPasswordUpdateRequest;
 import org.mitenkov.dto.UserUpdateRequest;
 import org.mitenkov.entity.User;
 import org.mitenkov.enums.UserRole;
@@ -40,6 +41,17 @@ public class UserProvider {
                 .username(username)
                 .password(password)
                 .email(email)
+                .isActive(original.isActive())
+                .role(original.getRole())
+                .build();
+    }
+
+    public User updatePassword(UserPasswordUpdateRequest request, User original) {
+        return User.builder()
+                .id(original.getId())
+                .username(original.getUsername())
+                .password(request.password())
+                .email(original.getEmail())
                 .isActive(original.isActive())
                 .role(original.getRole())
                 .build();

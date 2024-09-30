@@ -3,22 +3,28 @@ package org.mitenkov.service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.UserAddRequest;
+import org.mitenkov.dto.UserPasswordUpdateRequest;
 import org.mitenkov.dto.UserUpdateRequest;
 import org.mitenkov.entity.User;
 import org.mitenkov.enums.ErrorCode;
+import org.mitenkov.enums.UserRole;
 import org.mitenkov.exception.ErrorCodeException;
 import org.mitenkov.repository.UserRepository;
 import org.mitenkov.service.provider.UserProvider;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -29,6 +35,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserProvider userProvider;
+    private final PasswordEncoder passwordEncoder;
 
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(null);
@@ -45,6 +52,14 @@ public class UserService implements UserDetailsService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username);
         return userRepository.save(userProvider.updateUser(request, user));
+    }
+
+    public User updateCurrentPassword(@Valid UserPasswordUpdateRequest request) {
+        User originalUser = getIfPresent(request.id());
+        if (!Objects.equals(originalUser.getUsername(), SecurityContextHolder.getContext().getAuthentication().getName())) {
+            throw new ErrorCodeException(ErrorCode.VALIDATION_ERROR);
+        }
+        return userRepository.save(userProvider.updatePassword(request, originalUser));
     }
 
     public User updateUser(@Valid UserUpdateRequest request) {
@@ -95,5 +110,15 @@ public class UserService implements UserDetailsService {
         if (original != null) {
             throw new ErrorCodeException(ErrorCode.VALIDATION_ERROR);
         }
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    protected void createInitAdminUser() {
+        userRepository.save(User.builder()
+                .role(UserRole.ADMIN)
+                .username("admin")
+                .isActive(true)
+                .password(passwordEncoder.encode("admin"))
+                .build());
     }
 }

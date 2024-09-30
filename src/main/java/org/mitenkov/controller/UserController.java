@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mitenkov.controller.converter.UserDtoConverter;
 import org.mitenkov.dto.UserAddRequest;
 import org.mitenkov.dto.UserDto;
+import org.mitenkov.dto.UserPasswordUpdateRequest;
 import org.mitenkov.dto.UserUpdateRequest;
 import org.mitenkov.enums.UserRole;
 import org.mitenkov.service.UserService;
@@ -25,7 +26,7 @@ public class UserController {
         return userDtoConverter.toDto(userService.getUserById(id));
     }
 
-    @PostMapping
+    @PostMapping("/reg")
     public UserDto addUser(@RequestBody UserAddRequest request) {
         return userDtoConverter.toDto(userService.saveUser(request));
     }
@@ -33,6 +34,11 @@ public class UserController {
     @PutMapping("/current")
     public UserDto updateCurrentUser(@RequestBody UserUpdateRequest request) {
         return userDtoConverter.toDto(userService.updateCurrentUser(request));
+    }
+
+    @PutMapping("/current/password")
+    public UserDto updateCurrentUserPassword(@RequestBody UserPasswordUpdateRequest request) {
+        return userDtoConverter.toDto(userService.updateCurrentPassword(request));
     }
 
     @Secured(UserRole.Values.ADMIN)

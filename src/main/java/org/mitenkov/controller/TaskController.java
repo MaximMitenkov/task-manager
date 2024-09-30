@@ -55,13 +55,6 @@ public class TaskController {
         return taskDtoConverter.toDto(taskService.getTaskById(id));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "get task by id", description = "Get task by ID")
-    public TaskDto getTaskById(@PathVariable int id) {
-        log.info("Get task request for id {}", id);
-        return taskDtoConverter.toDto(taskService.getTaskById(id));
-    }
-
     @PostMapping
     @Operation(summary = "add task", description = "Add task. For task type BUG version is required")
     public TaskDto addTask(@RequestBody TaskAddRequest request) {
