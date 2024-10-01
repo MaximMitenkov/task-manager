@@ -8,7 +8,7 @@ import lombok.Builder;
 @Builder
 public record UserUpdateRequest(
 
-        Integer id,
+        int id,
 
         @NotBlank
         @Size(max = 50)
