@@ -17,18 +17,14 @@ public class UserProvider {
 
     public User updateUser(UserUpdateRequest request, User original) {
         int id = original.getId();
-        String email;
 
         String username = request.username() == null || request.username().isEmpty()
                 ? original.getUsername()
                 : request.username();
 
-
-        if (request.email() == null || request.email().isBlank()) {
-            email = null;
-        } else {
-            email = request.email();
-        }
+        String email = request.email() == null || request.email().isBlank()
+                ? null
+                : request.email();
 
         return User.builder()
                 .id(id)

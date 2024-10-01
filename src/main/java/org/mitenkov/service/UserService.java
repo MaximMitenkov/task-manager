@@ -11,6 +11,8 @@ import org.mitenkov.enums.UserRole;
 import org.mitenkov.exception.ErrorCodeException;
 import org.mitenkov.repository.UserRepository;
 import org.mitenkov.service.provider.UserProvider;
+import org.mitenkov.service.validator.UserValidator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,7 +37,14 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserProvider userProvider;
+    private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${app.admin.username}")
+    private String adminUsername;
+
+    @Value("${app.admin.password}")
+    private String adminPassword;
 
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(null);
@@ -51,6 +60,7 @@ public class UserService implements UserDetailsService {
     public User updateCurrentUser(@Valid UserUpdateRequest request) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username);
+        userValidator.validate(user);
         return userRepository.save(userProvider.updateUser(request, user));
     }
 
@@ -58,7 +68,14 @@ public class UserService implements UserDetailsService {
         User originalUser = getIfPresent(request.id());
         if (!Objects.equals(originalUser.getUsername(), SecurityContextHolder.getContext().getAuthentication().getName())) {
             throw new ErrorCodeException(ErrorCode.VALIDATION_ERROR);
+        } else {
+            userValidator.validate(originalUser);
         }
+        return userRepository.save(userProvider.updatePassword(request, originalUser));
+    }
+
+    public User updatePassword(@Valid UserPasswordUpdateRequest request) {
+        User originalUser = getIfPresent(request.id());
         return userRepository.save(userProvider.updatePassword(request, originalUser));
     }
 
@@ -114,11 +131,17 @@ public class UserService implements UserDetailsService {
 
     @EventListener(ApplicationReadyEvent.class)
     protected void createInitAdminUser() {
+        if (userRepository.findByRole(UserRole.ADMIN).isEmpty()) {
+            addAdmin();
+        }
+    }
+
+    private void addAdmin() {
         userRepository.save(User.builder()
                 .role(UserRole.ADMIN)
-                .username("admin")
+                .username(adminUsername)
                 .isActive(true)
-                .password(passwordEncoder.encode("admin"))
+                .password(passwordEncoder.encode(adminPassword))
                 .build());
     }
 }

@@ -26,7 +26,7 @@ public class UserController {
         return userDtoConverter.toDto(userService.getUserById(id));
     }
 
-    @PostMapping("/reg")
+    @PostMapping
     public UserDto addUser(@RequestBody UserAddRequest request) {
         return userDtoConverter.toDto(userService.saveUser(request));
     }
@@ -39,6 +39,12 @@ public class UserController {
     @PutMapping("/current/password")
     public UserDto updateCurrentUserPassword(@RequestBody UserPasswordUpdateRequest request) {
         return userDtoConverter.toDto(userService.updateCurrentPassword(request));
+    }
+
+    @Secured(UserRole.Values.ADMIN)
+    @PutMapping("/password")
+    public UserDto updatePassword(@RequestBody UserPasswordUpdateRequest request) {
+        return userDtoConverter.toDto(userService.updatePassword(request));
     }
 
     @Secured(UserRole.Values.ADMIN)
