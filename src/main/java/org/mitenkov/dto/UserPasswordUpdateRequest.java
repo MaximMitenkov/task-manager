@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record UserPasswordUpdateRequest(
-        Integer id,
+        int id,
 
         @NotBlank
         @Size(max = 20)
