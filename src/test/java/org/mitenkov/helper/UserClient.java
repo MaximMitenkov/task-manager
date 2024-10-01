@@ -78,8 +78,12 @@ public class UserClient {
     }
 
     public void updatePassword(UserPasswordUpdateRequest request, String username, String password) throws Exception {
+        String json = objectMapper.writeValueAsString(request);
+
         this.mockMvc.perform(put("/users/password")
-                        .with(user(username).password(password)))
+                        .with(user(username).password(password))
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
     }
 }
