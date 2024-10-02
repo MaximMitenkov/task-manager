@@ -17,7 +17,6 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final TaskRepository taskRepository;
-    private final CommentDtoConverter commentDtoConverter;
     private final UserRepository userRepository;
 
     public Comment add(CommentAddRequest request) {
