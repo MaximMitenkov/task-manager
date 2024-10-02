@@ -72,16 +72,16 @@ public class UserService implements UserDetailsService {
         return userRepository.save(result);
     }
 
-    public User updatePassword(@Valid UserPasswordUpdateRequest request) {
-        User originalUser = getByIdOrElseThrow(request.id());
-        User result = userProvider.updatePassword(request, originalUser);
-        return userRepository.save(result);
-    }
-
     public User updateUser(@Valid UserUpdateRequest request) {
         User originalUser = getByIdOrElseThrow(request.id());
         userValidator.validateUnique(request.username());
         User result = userProvider.updateUser(request, originalUser);
+        return userRepository.save(result);
+    }
+
+    public User updatePassword(@Valid UserPasswordUpdateRequest request) {
+        User originalUser = getByIdOrElseThrow(request.id());
+        User result = userProvider.updatePassword(request, originalUser);
         return userRepository.save(result);
     }
 
