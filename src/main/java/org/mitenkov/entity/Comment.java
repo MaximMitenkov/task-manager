@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table
 @Entity
+@Table
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,8 +22,6 @@ public class Comment {
 
     private String content;
 
-    private String author;
-
     private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -32,5 +30,5 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User createdBy;
 }

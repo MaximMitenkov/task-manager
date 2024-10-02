@@ -49,7 +49,7 @@ public class CommentServiceTest extends BaseTest {
                 .taskId(1)
                 .dateTime(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS))
                 .content("Content")
-                .author("Author1")
+                .authorId(1)
                 .build();
 
         Comment comment = commentService.add(commentAddRequest);
