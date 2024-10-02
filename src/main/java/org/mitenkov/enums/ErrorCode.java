@@ -18,7 +18,9 @@ public enum ErrorCode {
     NO_SUCH_ELEMENT("Требуемый элемент не был найден", HttpStatus.NOT_FOUND),
     NO_SUCH_RESOURCE("Требуемый ресурс не найден", HttpStatus.NOT_FOUND),
     VALIDATION_ERROR("Ошибка валидации", HttpStatus.BAD_REQUEST),
-    NEED_PARAMETER("Требуется указать параметр", HttpStatus.BAD_REQUEST),;
+    NEED_PARAMETER("Требуется указать параметр", HttpStatus.BAD_REQUEST),
+    NOT_UNIQUE("Переданное значение не соответствует ограничению на уникальность", HttpStatus.BAD_REQUEST),
+    NOT_CURRENT_USER("Попытка изменения не авторизованного пользователя", HttpStatus.BAD_REQUEST),;
 
     private final String message;
     private final HttpStatus httpStatus;

@@ -16,35 +16,14 @@ public class UserProvider {
     private final PasswordEncoder passwordEncoder;
 
     public User updateUser(UserUpdateRequest request, User original) {
-        int id = original.getId();
-
-        String username = request.username() == null || request.username().isEmpty()
-                ? original.getUsername()
-                : request.username();
-
-        String email = request.email() == null || request.email().isBlank()
-                ? null
-                : request.email();
-
-        return User.builder()
-                .id(id)
-                .username(username)
-                .password(original.getPassword())
-                .email(email)
-                .isActive(original.isActive())
-                .role(original.getRole())
-                .build();
+        original.setUsername(request.username());
+        original.setEmail(request.email());
+        return original;
     }
 
     public User updatePassword(UserPasswordUpdateRequest request, User original) {
-        return User.builder()
-                .id(original.getId())
-                .username(original.getUsername())
-                .password(request.password())
-                .email(original.getEmail())
-                .isActive(original.isActive())
-                .role(original.getRole())
-                .build();
+        original.setPassword(passwordEncoder.encode(request.password()));
+        return original;
     }
 
     public User createUser(UserAddRequest request) {
