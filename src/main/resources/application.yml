@@ -1,7 +1,7 @@
 logging:
   level:
     root: INFO
-    org.springframework.security: DEBUG
+    org.springframework.security: INFO
 
 spring:
   datasource:
