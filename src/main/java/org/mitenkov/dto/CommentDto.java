@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public record CommentDto(
         int id,
         String content,
-        String author,
         LocalDateTime dateTime,
-        Integer taskId
+        int taskId,
+        int authorId
 ) {
 }

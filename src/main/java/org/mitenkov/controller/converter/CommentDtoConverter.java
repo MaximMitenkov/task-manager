@@ -14,7 +14,7 @@ public class CommentDtoConverter {
                 .taskId(comment.getTask().getId())
                 .id(comment.getId())
                 .content(comment.getContent())
-                .author(comment.getAuthor())
+                .authorId(comment.getCreatedBy().getId())
                 .dateTime(comment.getDateTime())
                 .build();
     }
