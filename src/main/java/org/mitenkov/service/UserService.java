@@ -87,14 +87,15 @@ public class UserService implements UserDetailsService {
 
     public User blockUser(int id) {
         User user = getByIdOrElseThrow(id);
-        user.setActive(!user.isActive());
+        user.setActive(false);
         return userRepository.save(user);
     }
 
-    //TODO  public User unblockUser(int id) {
-    //          User user = getByIdOrElseThrow(id);
-    //
-    //      }
+    public User unblockUser(int id) {
+        User user = getByIdOrElseThrow(id);
+        user.setActive(true);
+        return userRepository.save(user);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

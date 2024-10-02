@@ -59,4 +59,10 @@ public class UserController {
         return userDtoConverter.toDto(userService.blockUser(id));
     }
 
+    @Secured(UserRole.Values.ADMIN)
+    @PutMapping("/{id}/unblock")
+    public UserDto unblockUser(@PathVariable Integer id) {
+        return userDtoConverter.toDto(userService.unblockUser(id));
+    }
+
 }
