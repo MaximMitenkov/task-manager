@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
-    @Query("select t from Task t where t.class = :type")
+    @Query("select t from Task t join fetch t.user where t.class = :type")
     Page<Task> getFilteredTasks(@Param("type") Class<? extends Task> type, Pageable pageable);
 
     @Query("select t.comments from Task t where t.id = :id")

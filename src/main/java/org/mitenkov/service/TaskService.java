@@ -3,6 +3,7 @@ package org.mitenkov.service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mitenkov.Authintication.AuthHolder;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Comment;
@@ -40,6 +41,7 @@ public class TaskService {
                         .priority(request.priority())
                         .deadline(request.deadline())
                         .version(request.version())
+                        .user(AuthHolder.getCurrentUser().getUser())
                         .build());
             }
             case FEATURE -> {
@@ -48,6 +50,7 @@ public class TaskService {
                         .title(request.title())
                         .priority(request.priority())
                         .deadline(request.deadline())
+                        .user(AuthHolder.getCurrentUser().getUser())
                         .build());
             }
         };

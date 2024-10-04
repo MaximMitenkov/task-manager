@@ -25,6 +25,7 @@ public class TaskDtoConverter {
                 .taskType(type)
                 .title(task.getTitle())
                 .version(version)
+                .authorId(task.getUser().getId())
                 .build();
     }
 }
