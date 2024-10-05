@@ -1,5 +1,6 @@
 package org.mitenkov;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mitenkov.dto.UserAddRequest;
@@ -10,10 +11,12 @@ import org.mitenkov.helper.DBCleaner;
 import org.mitenkov.helper.EntityGenerator;
 import org.mitenkov.helper.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@RequiredArgsConstructor
 public class UserControllerTest extends BaseTest {
 
     @Autowired
@@ -28,6 +31,16 @@ public class UserControllerTest extends BaseTest {
     @Autowired
     EntityGenerator entityGenerator;
 
+    final String defaultUsername = "TestUser";
+
+    final String defaultPassword = "1234";
+
+    @Value("${app.admin.username}")
+    final String adminUsername;
+
+    @Value("${app.admin.password}")
+    final String adminPassword;
+
     @BeforeEach
     public void beforeEach() {
         dbCleaner.cleanAll();
@@ -36,18 +49,15 @@ public class UserControllerTest extends BaseTest {
     @Test
     public void addUserTest() throws Exception {
 
-        String username = "TestUser1";
-        String password = "TestPassword1";
-
         UserAddRequest userAddRequest = UserAddRequest.builder()
-                .username(username)
-                .password(password)
+                .username(defaultUsername)
+                .password(defaultPassword)
                 .build();
 
 
         Integer id = userClient.create(userAddRequest).id();
 
-        UserDto user = userClient.getUser(id, username, password);
+        UserDto user = userClient.getUser(id, defaultUsername, defaultPassword);
 
         assertEquals(userAddRequest.username(), user.username());
         assertEquals(userAddRequest.email(), user.email());
@@ -56,29 +66,26 @@ public class UserControllerTest extends BaseTest {
     @Test
     public void updateUserTest() throws Exception {
         UserDto user = userClient.create(UserAddRequest.builder()
-                .username("TestUser")
-                .password("1234")
+                .username(defaultUsername)
+                .password(defaultPassword)
                 .build());
 
-        userClient.getUser(user.id(), "TestUser", "1234");
+        userClient.getUser(user.id(), defaultUsername, defaultPassword);
 
         userClient.update(UserUpdateRequest.builder()
                 .id(user.id())
                 .username("Tester")
                 .build());
 
-        userClient.getUser(user.id(), "Tester", "1234");
+        userClient.getUser(user.id(), "Tester", defaultPassword);
 
     }
 
     @Test
     public void updateCurrentUserTest() throws Exception {
-        String username = "TestUser";
-        String password = "1234";
-
         UserDto user = userClient.create(UserAddRequest.builder()
-                .username(username)
-                .password(password)
+                .username(defaultUsername)
+                .password(defaultPassword)
                 .build());
 
         UserUpdateRequest request = UserUpdateRequest.builder()
@@ -86,23 +93,25 @@ public class UserControllerTest extends BaseTest {
                 .id(user.id())
                 .build();
 
-        userClient.updateCurrent(request, username, password);
+        userClient.updateCurrent(request, defaultUsername, defaultPassword);
+        UserDto result = userClient.getUser(user.id(), adminUsername, adminPassword);
+
+        assertEquals(request.username(), result.username());
     }
 
 
     @Test
     public void blockUserTest() throws Exception {
         UserDto user = userClient.create(UserAddRequest.builder()
-                .username("TestUser")
-                .password("1234")
+                .username(defaultUsername)
+                .password(defaultPassword)
                 .build());
         assertEquals(true, user.isActive());
 
-        userClient.blockUser(user.id(), "admin", "admin");
+        userClient.blockUser(user.id(), adminUsername, adminPassword);
+        UserDto blockedUser = userClient.getUser(user.id(), adminUsername, adminPassword);
 
-        UserDto blockedUser = userClient.getUser(user.id(), "admin", "admin");
         assertEquals(false, blockedUser.isActive());
-
         assertEquals(user.id(), blockedUser.id());
         assertEquals(user.username(), blockedUser.username());
         assertEquals(user.email(), blockedUser.email());
@@ -112,18 +121,17 @@ public class UserControllerTest extends BaseTest {
                 .username("BlockedUser")
                 .build();
 
-        userClient.updateCurrent(request, "TestUser", "1234");
+        userClient.updateCurrent(request, defaultUsername, adminPassword);
+        userClient.getUser(user.id(), adminUsername, adminPassword);
 
-        blockedUser = userClient.getUser(user.id(), "admin", "admin");
-
-        assertNotEquals(request.username(), blockedUser.username());
+        assertEquals(request.username(), defaultUsername);
     }
 
     @Test
     public void updatePasswordTest() throws Exception {
         UserDto user = userClient.create(UserAddRequest.builder()
-                .username("TestUser")
-                .password("1234")
+                .username(defaultUsername)
+                .password(defaultPassword)
                 .build());
 
         UserPasswordUpdateRequest request = UserPasswordUpdateRequest.builder()
@@ -131,8 +139,8 @@ public class UserControllerTest extends BaseTest {
                 .password("new password")
                 .build();
 
-        userClient.updatePassword(request, "admin", "admin");
-        userClient.getUser(user.id(), "TestUser", "new password");
+        userClient.updatePassword(request, adminUsername, adminPassword);
+        userClient.getUser(user.id(), defaultUsername, "new password");
     }
 
 }

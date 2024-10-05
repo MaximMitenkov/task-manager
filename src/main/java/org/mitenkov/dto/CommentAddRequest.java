@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public record CommentAddRequest(
         String content,
         LocalDateTime dateTime,
-        int taskId,
-        int authorId
+        int taskId
 ) {
 }

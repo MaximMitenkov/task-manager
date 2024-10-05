@@ -1,5 +1,6 @@
 package org.mitenkov;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import java.util.Set;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@RequiredArgsConstructor
 public abstract class BaseTest {
     static PostgreSQLContainer<?> postrges = new PostgreSQLContainer<>("postgres:16.4-alpine");
 

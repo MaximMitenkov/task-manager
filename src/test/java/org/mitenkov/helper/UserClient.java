@@ -51,18 +51,19 @@ public class UserClient {
         });
     }
 
-    public void updateCurrent(UserUpdateRequest user, String username, String password) throws Exception {
+    public int updateCurrent(UserUpdateRequest user, String username, String password) throws Exception {
         String json = objectMapper.writeValueAsString(user);
 
-        this.mockMvc.perform(put("/users/current")
+        return this.mockMvc.perform(put("/users/current")
                         .with(user(username).password(password))
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getStatus();
     }
 
     public UserDto getUser(Integer id, String username, String password) throws Exception {
-        String response = this.mockMvc.perform(get("/users/" + id).with(user(username).password(password)))
+        String response = this.mockMvc.perform(get("/users/" + id)
+                        .with(user(username).password(password)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
@@ -70,20 +71,25 @@ public class UserClient {
         });
     }
 
-    public void blockUser(Integer id, String username, String password) throws Exception {
-        this.mockMvc.perform(put("/users/{id}/block", id)
+    public int blockUser(Integer id, String username, String password) throws Exception {
+        return this.mockMvc.perform(put("/users/{id}/block", id)
                         .with(user(username).password(password)))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getStatus();
     }
 
-    public void updatePassword(UserPasswordUpdateRequest request, String username, String password) throws Exception {
+    public int unblockUser(Integer id, String username, String password) throws Exception {
+        return this.mockMvc.perform(put("/users/{id}/unblock", id)
+                        .with(user(username).password(password)))
+                .andReturn().getResponse().getStatus();
+    }
+
+    public int updatePassword(UserPasswordUpdateRequest request, String username, String password) throws Exception {
         String json = objectMapper.writeValueAsString(request);
 
-        this.mockMvc.perform(put("/users/password")
+        return this.mockMvc.perform(put("/users/password")
                         .with(user(username).password(password))
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getStatus();
     }
 }

@@ -7,8 +7,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.mitenkov.enums.TaskType;
 
-import java.util.ArrayList;
-
 @Entity
 @DiscriminatorValue("BUG")
 @JsonTypeName("bug")
@@ -20,9 +18,6 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class Bug extends Task {
     private String version;
-
-    @Builder.Default
-    ArrayList<Comment> comments = new ArrayList<>();
 
     @Override
     public TaskType getTaskType() {

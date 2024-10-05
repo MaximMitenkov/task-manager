@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.Authintication.AuthHolder;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.entity.Bug;
-import org.mitenkov.entity.Comment;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.TaskType;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -73,9 +71,5 @@ public class TaskService {
 
     public Page<Task> getTasks(Pageable pageable) {
         return taskRepository.findAll(pageable);
-    }
-
-    public List<Comment> findCommentsByTaskId(Task task) {
-        return taskRepository.findCommentsByTaskId(task.getId());
     }
 }

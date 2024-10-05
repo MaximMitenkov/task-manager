@@ -4,6 +4,7 @@ package org.mitenkov;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mitenkov.Authintication.AuthHolder;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
 import org.mitenkov.helper.CommentClient;
@@ -50,7 +51,6 @@ public class CommentControllerTest extends BaseTest {
 
         CommentAddRequest comment = CommentAddRequest.builder()
                 .content("Content")
-                .author("Author1")
                 .dateTime(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS))
                 .taskId(1)
                 .build();
@@ -58,7 +58,7 @@ public class CommentControllerTest extends BaseTest {
         CommentDto resultComment = commentClient.create(comment);
 
         assertEquals(comment.content(), resultComment.content());
-        assertEquals(comment.author(), resultComment.author());
+        assertEquals(AuthHolder.getCurrentUser().getUser().getId(), resultComment.authorId());
         assertEquals(comment.dateTime(), resultComment.dateTime());
         assertEquals(comment.taskId(), resultComment.taskId());
     }
@@ -68,14 +68,12 @@ public class CommentControllerTest extends BaseTest {
 
         CommentAddRequest comment1 = new CommentAddRequest(
                 "Content",
-                "Author1",
                 LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
                 1
         );
 
         CommentAddRequest comment2 = new CommentAddRequest(
                 "Content",
-                "Author2",
                 LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
                 1
         );
@@ -86,7 +84,6 @@ public class CommentControllerTest extends BaseTest {
         List<CommentDto> resultComment = commentClient.getByNickname("Author1").stream().toList();
 
         assertEquals(resultComment.size(), 1);
-        assertEquals(resultComment.get(0).author(), comment1.author());
         assertEquals(resultComment.get(0).content(), comment1.content());
         assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
         assertEquals(resultComment.get(0).taskId(), comment1.taskId());
@@ -94,7 +91,6 @@ public class CommentControllerTest extends BaseTest {
         resultComment = commentClient.getByNickname("Author2").stream().toList();
 
         assertEquals(resultComment.size(), 1);
-        assertEquals(resultComment.get(0).author(), comment2.author());
         assertEquals(resultComment.get(0).content(), comment2.content());
         assertEquals(resultComment.get(0).dateTime(), comment2.dateTime());
         assertEquals(resultComment.get(0).taskId(), comment2.taskId());
