@@ -1,8 +1,6 @@
 package org.mitenkov.helper;
 
 import lombok.RequiredArgsConstructor;
-import org.mitenkov.dto.UserAddRequest;
-import org.mitenkov.dto.UserDto;
 import org.mitenkov.entity.Bug;
 import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
@@ -11,9 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -82,33 +78,4 @@ public class EntityGenerator {
             taskClient.create(taskConverter.toAddRequest(task));
         }
     }
-
-    public Map<UserDto, String> generateUsersAndSave() throws Exception {
-        UserAddRequest userAddRequest1 = UserAddRequest.builder()
-                .username("TestUser1")
-                .password("TestPassword1")
-                .build();
-
-        UserAddRequest userAddRequest2 = UserAddRequest.builder()
-                .username("TestUser2")
-                .password("TestPassword2")
-                .email("TestEmail2")
-                .build();
-
-
-        UserAddRequest userAddRequest3 = UserAddRequest.builder()
-                .username("TestUser3")
-                .password("TestPassword3")
-                .email("TestEmail3")
-                .build();
-
-        Map<UserDto, String> usersAndPasswords = new HashMap<>();
-
-        usersAndPasswords.put(userClient.create(userAddRequest1), userAddRequest1.password());
-        usersAndPasswords.put(userClient.create(userAddRequest2), userAddRequest2.password());
-        usersAndPasswords.put(userClient.create(userAddRequest3), userAddRequest3.password());
-
-        return usersAndPasswords;
-    }
-
 }
