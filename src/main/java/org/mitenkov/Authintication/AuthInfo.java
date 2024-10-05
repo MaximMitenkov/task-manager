@@ -29,4 +29,4 @@ public class AuthInfo implements UserDetails {
     public String getUsername() {
         return user.getUsername();
     }
-};
+}
