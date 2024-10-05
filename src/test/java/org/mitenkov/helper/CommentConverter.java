@@ -7,7 +7,6 @@ public class CommentConverter {
 
     public CommentAddRequest createAddRequest(Comment comment) {
         return CommentAddRequest.builder()
-                .author(comment.getAuthor())
                 .content(comment.getContent())
                 .dateTime(comment.getDateTime())
                 .taskId(comment.getId())

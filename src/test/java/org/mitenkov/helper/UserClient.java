@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mitenkov.helper.AuthHolderTest.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -83,11 +84,11 @@ public class UserClient {
                 .andReturn().getResponse().getStatus();
     }
 
-    public int updatePassword(UserPasswordUpdateRequest request, String username, String password) throws Exception {
+    public int updatePassword(UserPasswordUpdateRequest request) throws Exception {
         String json = objectMapper.writeValueAsString(request);
 
         return this.mockMvc.perform(put("/users/password")
-                        .with(user(username).password(password))
+                        .with(user(currentUsername).password(currentPassword))
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getStatus();

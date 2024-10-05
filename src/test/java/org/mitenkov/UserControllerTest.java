@@ -139,7 +139,7 @@ public class UserControllerTest extends BaseTest {
                 .password("new password")
                 .build();
 
-        userClient.updatePassword(request, adminUsername, adminPassword);
+        userClient.updatePassword(request);
         userClient.getUser(user.id(), defaultUsername, "new password");
     }
 

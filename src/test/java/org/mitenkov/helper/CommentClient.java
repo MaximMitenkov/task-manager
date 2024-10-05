@@ -41,7 +41,8 @@ public class CommentClient {
     }
 
     public Page<CommentDto> getByNickname(String nickname) throws Exception {
-        String result = this.mockMvc.perform(get("/comments?nick=" + nickname))
+        String result = this.mockMvc.perform(get("/comments?nick=" + nickname)
+                        .with(user("admin").password("12345")))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
