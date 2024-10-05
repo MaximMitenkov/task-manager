@@ -17,7 +17,6 @@ public class EntityGenerator {
 
     private final TaskClient taskClient;
     private final TaskConverter taskConverter;
-    private final UserClient userClient;
 
     public List<Task> generateTasks() {
         Feature feature1 = Feature.builder()
