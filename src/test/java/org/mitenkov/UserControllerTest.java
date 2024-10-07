@@ -7,14 +7,16 @@ import org.mitenkov.dto.UserAddRequest;
 import org.mitenkov.dto.UserDto;
 import org.mitenkov.dto.UserPasswordUpdateRequest;
 import org.mitenkov.dto.UserUpdateRequest;
+import org.mitenkov.helper.AuthTestHolder;
 import org.mitenkov.helper.DBCleaner;
 import org.mitenkov.helper.EntityGenerator;
 import org.mitenkov.helper.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mitenkov.helper.AuthTestHolder.defaultPassword;
+import static org.mitenkov.helper.AuthTestHolder.defaultUsername;
 
 @RequiredArgsConstructor
 public class UserControllerTest extends BaseTest {
@@ -31,15 +33,8 @@ public class UserControllerTest extends BaseTest {
     @Autowired
     EntityGenerator entityGenerator;
 
-    final String defaultUsername = "TestUser";
-
-    final String defaultPassword = "1234";
-
-    @Value("${app.admin.username}")
-    final String adminUsername;
-
-    @Value("${app.admin.password}")
-    final String adminPassword;
+    @Autowired
+    AuthTestHolder authHolder;
 
     @BeforeEach
     public void beforeEach() {
@@ -57,7 +52,7 @@ public class UserControllerTest extends BaseTest {
 
         Integer id = userClient.create(userAddRequest).id();
 
-        UserDto user = userClient.getUser(id, defaultUsername, defaultPassword);
+        UserDto user = userClient.getUser(id);
 
         assertEquals(userAddRequest.username(), user.username());
         assertEquals(userAddRequest.email(), user.email());
@@ -70,14 +65,14 @@ public class UserControllerTest extends BaseTest {
                 .password(defaultPassword)
                 .build());
 
-        userClient.getUser(user.id(), defaultUsername, defaultPassword);
+        userClient.getUser(user.id());
 
         userClient.update(UserUpdateRequest.builder()
                 .id(user.id())
                 .username("Tester")
                 .build());
 
-        userClient.getUser(user.id(), "Tester", defaultPassword);
+        userClient.getUser(user.id());
 
     }
 
@@ -93,8 +88,8 @@ public class UserControllerTest extends BaseTest {
                 .id(user.id())
                 .build();
 
-        userClient.updateCurrent(request, defaultUsername, defaultPassword);
-        UserDto result = userClient.getUser(user.id(), adminUsername, adminPassword);
+        userClient.updateCurrent(request);
+        UserDto result = userClient.getUser(user.id());
 
         assertEquals(request.username(), result.username());
     }
@@ -108,8 +103,8 @@ public class UserControllerTest extends BaseTest {
                 .build());
         assertEquals(true, user.isActive());
 
-        userClient.blockUser(user.id(), adminUsername, adminPassword);
-        UserDto blockedUser = userClient.getUser(user.id(), adminUsername, adminPassword);
+        userClient.blockUser(user.id());
+        UserDto blockedUser = userClient.getUser(user.id());
 
         assertEquals(false, blockedUser.isActive());
         assertEquals(user.id(), blockedUser.id());
@@ -121,8 +116,8 @@ public class UserControllerTest extends BaseTest {
                 .username("BlockedUser")
                 .build();
 
-        userClient.updateCurrent(request, defaultUsername, adminPassword);
-        userClient.getUser(user.id(), adminUsername, adminPassword);
+        userClient.updateCurrent(request);
+        userClient.getUser(user.id());
 
         assertEquals(request.username(), defaultUsername);
     }
@@ -140,7 +135,7 @@ public class UserControllerTest extends BaseTest {
                 .build();
 
         userClient.updatePassword(request);
-        userClient.getUser(user.id(), defaultUsername, "new password");
+        userClient.getUser(user.id());
     }
 
 }

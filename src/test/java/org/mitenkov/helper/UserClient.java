@@ -11,8 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mitenkov.helper.AuthHolderTest.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.mitenkov.helper.AuthTestHolder.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,6 +21,7 @@ public class UserClient {
 
     private final ObjectMapper objectMapper;
     private final MockMvc mockMvc;
+    private final HeaderCreator headerCreator;
 
     public UserDto create(UserAddRequest user) throws Exception {
 
@@ -42,7 +42,8 @@ public class UserClient {
         String json = objectMapper.writeValueAsString(user);
 
         String responseBody = this.mockMvc.perform(put("/users")
-                        .with(user("admin").password("admin"))
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword))
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -52,19 +53,21 @@ public class UserClient {
         });
     }
 
-    public int updateCurrent(UserUpdateRequest user, String username, String password) throws Exception {
+    public int updateCurrent(UserUpdateRequest user) throws Exception {
         String json = objectMapper.writeValueAsString(user);
 
         return this.mockMvc.perform(put("/users/current")
-                        .with(user(username).password(password))
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(currentUser.getUsername(), currentUserPassword))
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getStatus();
     }
 
-    public UserDto getUser(Integer id, String username, String password) throws Exception {
+    public UserDto getUser(Integer id) throws Exception {
         String response = this.mockMvc.perform(get("/users/" + id)
-                        .with(user(username).password(password)))
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(currentUser.getUsername(), currentUserPassword)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
@@ -72,15 +75,17 @@ public class UserClient {
         });
     }
 
-    public int blockUser(Integer id, String username, String password) throws Exception {
+    public int blockUser(Integer id) throws Exception {
         return this.mockMvc.perform(put("/users/{id}/block", id)
-                        .with(user(username).password(password)))
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(currentUser.getUsername(), currentUserPassword)))
                 .andReturn().getResponse().getStatus();
     }
 
-    public int unblockUser(Integer id, String username, String password) throws Exception {
+    public int unblockUser(Integer id) throws Exception {
         return this.mockMvc.perform(put("/users/{id}/unblock", id)
-                        .with(user(username).password(password)))
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(currentUser.getUsername(), currentUserPassword)))
                 .andReturn().getResponse().getStatus();
     }
 
@@ -88,7 +93,8 @@ public class UserClient {
         String json = objectMapper.writeValueAsString(request);
 
         return this.mockMvc.perform(put("/users/password")
-                        .with(user(currentUsername).password(currentPassword))
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(currentUser.getUsername(), currentUserPassword))
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getStatus();

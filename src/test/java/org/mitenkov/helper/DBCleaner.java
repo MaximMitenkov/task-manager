@@ -19,4 +19,9 @@ public class DBCleaner {
         taskRepository.deleteAll();
         userRepository.deleteAll();
     }
+
+    public void cleanAllButUsers() {
+        commentRepository.deleteAll();
+        taskRepository.deleteAll();
+    }
 }
