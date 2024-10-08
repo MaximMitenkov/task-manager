@@ -15,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mitenkov.helper.AuthTestHolder.defaultPassword;
-import static org.mitenkov.helper.AuthTestHolder.defaultUsername;
+import static org.mitenkov.helper.AuthTestHolder.*;
 
 @RequiredArgsConstructor
 public class UserControllerTest extends BaseTest {
@@ -39,6 +38,8 @@ public class UserControllerTest extends BaseTest {
     @BeforeEach
     public void beforeEach() {
         dbCleaner.cleanAll();
+        userClient.create(new UserAddRequest(adminUsername,null, adminPassword));
+        authHolder.setCurrentUser();
     }
 
     @Test
@@ -88,7 +89,9 @@ public class UserControllerTest extends BaseTest {
                 .id(user.id())
                 .build();
 
+        authHolder.setCurrentUser(defaultUsername, defaultPassword);
         userClient.updateCurrent(request);
+        authHolder.setCurrentUser("Vladimir", defaultPassword);
         UserDto result = userClient.getUser(user.id());
 
         assertEquals(request.username(), result.username());
@@ -111,15 +114,17 @@ public class UserControllerTest extends BaseTest {
         assertEquals(user.username(), blockedUser.username());
         assertEquals(user.email(), blockedUser.email());
 
+        authHolder.setCurrentUser(defaultUsername, defaultPassword);
         UserUpdateRequest request = UserUpdateRequest.builder()
                 .id(user.id())
                 .username("BlockedUser")
                 .build();
-
         userClient.updateCurrent(request);
-        userClient.getUser(user.id());
 
-        assertEquals(request.username(), defaultUsername);
+        authHolder.setCurrentUser();
+        UserDto resultUser = userClient.getUser(user.id());
+
+        assertEquals(defaultUsername, resultUser.username());
     }
 
     @Test
@@ -136,6 +141,8 @@ public class UserControllerTest extends BaseTest {
 
         userClient.updatePassword(request);
         userClient.getUser(user.id());
+
+
     }
 
 }

@@ -3,6 +3,7 @@ package org.mitenkov.helper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.mitenkov.dto.UserAddRequest;
 import org.mitenkov.dto.UserDto;
 import org.mitenkov.dto.UserPasswordUpdateRequest;
@@ -23,7 +24,8 @@ public class UserClient {
     private final MockMvc mockMvc;
     private final HeaderCreator headerCreator;
 
-    public UserDto create(UserAddRequest user) throws Exception {
+    @SneakyThrows
+    public UserDto create(UserAddRequest user) {
 
         String json = objectMapper.writeValueAsString(user);
 

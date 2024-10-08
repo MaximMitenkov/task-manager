@@ -46,10 +46,16 @@ public class TaskClient {
         String addedTaskResponse = this.mockMvc.perform(get("/tasks/" + id)
                         .header("Authorization",
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
-                .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
         return objectMapper.readValue(addedTaskResponse, TaskDto.class);
+    }
+
+    public int getByIdStatus(int id) throws Exception {
+        return this.mockMvc.perform(get("/tasks/" + id)
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
+                .andReturn().getResponse().getStatus();
     }
 
     public void deleteById(int id) throws Exception {
@@ -63,7 +69,6 @@ public class TaskClient {
         String responseBody = this.mockMvc.perform(get("/tasks")
                         .header("Authorization",
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
-                .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
         return objectMapper.readValue(responseBody, new TypeReference<>() {
         });

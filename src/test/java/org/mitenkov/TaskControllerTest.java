@@ -8,10 +8,7 @@ import org.mitenkov.dto.TaskDto;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
-import org.mitenkov.helper.DBCleaner;
-import org.mitenkov.helper.EntityGenerator;
-import org.mitenkov.helper.TaskClient;
-import org.mitenkov.helper.TaskConverter;
+import org.mitenkov.helper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,9 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskControllerTest extends BaseTest {
 
@@ -40,9 +35,14 @@ public class TaskControllerTest extends BaseTest {
     @Autowired
     DBCleaner dbCleaner;
 
+    @Autowired
+    AuthTestHolder authHolder;
+
     @BeforeEach
     public void beforeEach() {
-        dbCleaner.cleanAll();
+        dbCleaner.cleanAllButUsers();
+        entityGenerator.generateTasksAndSave();
+        authHolder.setCurrentUser();
     }
 
     @Test
@@ -85,8 +85,8 @@ public class TaskControllerTest extends BaseTest {
 
         taskClient.deleteById(result.id());
 
-        this.mockMvc.perform(get("/tasks/" + result.id()))
-                .andExpect(status().isNotFound());
+        int status = taskClient.getByIdStatus(result.id());
+        assertEquals(404, status);
     }
 
     @Test
