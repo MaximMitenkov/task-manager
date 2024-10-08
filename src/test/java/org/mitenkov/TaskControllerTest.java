@@ -11,17 +11,13 @@ import org.mitenkov.enums.TaskType;
 import org.mitenkov.helper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TaskControllerTest extends BaseTest {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     EntityGenerator entityGenerator;

@@ -140,9 +140,32 @@ public class UserControllerTest extends BaseTest {
                 .build();
 
         userClient.updatePassword(request);
-        userClient.getUser(user.id());
 
+        authHolder.setCurrentUser(defaultUsername, "new password");
+        int status = userClient.getUserRequestStatus(user.id());
+        assertEquals(200, status);
+    }
 
+    @Test
+    public void unblockUserTest() throws Exception {
+        UserDto user = userClient.create(UserAddRequest.builder()
+                .username(defaultUsername)
+                .password(defaultPassword)
+                .build());
+
+        int id =user.id();
+        userClient.blockUser(id);
+
+        authHolder.setCurrentUser(defaultUsername, defaultPassword);
+        int status = userClient.getUserRequestStatus(id);
+        assertEquals(401, status);
+
+        authHolder.setCurrentUser();
+        userClient.unblockUser(id);
+
+        authHolder.setCurrentUser(defaultUsername, defaultPassword);
+        status = userClient.getUserRequestStatus(id);
+        assertEquals(200, status);
     }
 
 }

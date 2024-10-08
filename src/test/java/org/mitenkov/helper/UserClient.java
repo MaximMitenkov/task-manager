@@ -77,6 +77,13 @@ public class UserClient {
         });
     }
 
+    public int getUserRequestStatus(Integer id) throws Exception {
+        return this.mockMvc.perform(get("/users/" + id)
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(currentUser.getUsername(), currentUserPassword)))
+                .andReturn().getResponse().getStatus();
+    }
+
     public int blockUser(Integer id) throws Exception {
         return this.mockMvc.perform(put("/users/{id}/block", id)
                         .header("Authorization",
