@@ -37,19 +37,16 @@ public class UserControllerTest extends BaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        dbCleaner.cleanAll();
-        userClient.create(new UserAddRequest(adminUsername,null, adminPassword));
+        dbCleaner.reset();
         authHolder.setCurrentUser();
     }
 
     @Test
     public void addUserTest() throws Exception {
-
         UserAddRequest userAddRequest = UserAddRequest.builder()
                 .username(defaultUsername)
                 .password(defaultPassword)
                 .build();
-
 
         Integer id = userClient.create(userAddRequest).id();
 
@@ -68,13 +65,17 @@ public class UserControllerTest extends BaseTest {
 
         userClient.getUser(user.id());
 
+        String newUsername = "Tester";
+
         userClient.update(UserUpdateRequest.builder()
                 .id(user.id())
-                .username("Tester")
+                .username(newUsername)
                 .build());
+        UserDto updatedUser = userClient.getUser(user.id());
+        int status = userClient.getUserRequestStatus(user.id());
 
-        userClient.getUser(user.id());
-
+        assertEquals(200, status);
+        assertEquals(newUsername, updatedUser.username());
     }
 
     @Test

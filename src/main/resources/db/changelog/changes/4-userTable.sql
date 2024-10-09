@@ -4,8 +4,8 @@ CREATE TABLE users
     username  VARCHAR(50) UNIQUE NOT NULL,
     email     VARCHAR(50),
     password  VARCHAR(100)       NOT NULL,
-    role      VARCHAR(20),
-    is_active BOOLEAN
+    role      VARCHAR(20)        NOT NULL,
+    is_active BOOLEAN            NOT NULL
 );
 
 ALTER TABLE task

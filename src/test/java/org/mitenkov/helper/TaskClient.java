@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,7 +45,7 @@ public class TaskClient {
     public TaskDto getById(int id) throws Exception {
 
         String addedTaskResponse = this.mockMvc.perform(get("/tasks/" + id)
-                        .header("Authorization",
+                        .header(HttpHeaders.AUTHORIZATION,
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
                 .andReturn().getResponse().getContentAsString();
 
@@ -53,21 +54,21 @@ public class TaskClient {
 
     public int getByIdStatus(int id) throws Exception {
         return this.mockMvc.perform(get("/tasks/" + id)
-                        .header("Authorization",
+                        .header(HttpHeaders.AUTHORIZATION,
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
                 .andReturn().getResponse().getStatus();
     }
 
     public void deleteById(int id) throws Exception {
         this.mockMvc.perform(delete("/tasks/" + id)
-                        .header("Authorization",
+                        .header(HttpHeaders.AUTHORIZATION,
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
                 .andExpect(status().isOk());
     }
 
     public Page<TaskDto> getAll() throws Exception {
         String responseBody = this.mockMvc.perform(get("/tasks")
-                        .header("Authorization",
+                        .header(HttpHeaders.AUTHORIZATION,
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
                 .andReturn().getResponse().getContentAsString();
         return objectMapper.readValue(responseBody, new TypeReference<>() {

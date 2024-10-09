@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @Validated
@@ -115,8 +114,11 @@ public class UserService implements UserDetailsService {
     }
 
     private User getByIdOrElseThrow(int id) {
-        return Optional.of(userRepository.findUserById(id))
-                .orElseThrow(() -> new ErrorCodeException(ErrorCode.NO_SUCH_ELEMENT));
+        User user = userRepository.findUserById(id);
+        if (user == null) {
+            throw new ErrorCodeException(ErrorCode.NO_SUCH_ELEMENT);
+        }
+        return user;
     }
 
     @Transactional
@@ -126,7 +128,7 @@ public class UserService implements UserDetailsService {
             addAdmin();
         }
     }
-    
+
     private void addAdmin() {
         userRepository.save(User.builder()
                 .role(UserRole.ADMIN)

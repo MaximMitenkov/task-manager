@@ -2,6 +2,7 @@ package org.mitenkov.Authintication;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.mitenkov.entity.User;
 import org.mitenkov.enums.UserRole;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Builder
+@RequiredArgsConstructor
 public class AuthInfo implements UserDetails {
 
     @Getter

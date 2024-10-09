@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +32,7 @@ public class CommentClient {
         String result = this.mockMvc.perform(post("/comments")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization",
+                        .header(HttpHeaders.AUTHORIZATION,
                                 headerCreator.createBasicAuthHeader(currentUser.getUsername(), currentUserPassword)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -42,7 +43,7 @@ public class CommentClient {
 
     public Page<CommentDto> getByNickname(String nickname) throws Exception {
         String result = this.mockMvc.perform(get("/comments?nick=" + nickname)
-                        .header("Authorization",
+                        .header(HttpHeaders.AUTHORIZATION,
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
