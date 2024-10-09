@@ -149,6 +149,7 @@ public class UserControllerTest extends BaseTest {
                 .password(defaultPassword)
                 .build());
 
+
         UserPasswordUpdateRequest request = UserPasswordUpdateRequest.builder()
                 .id(user.id())
                 .password("new password")
@@ -156,6 +157,7 @@ public class UserControllerTest extends BaseTest {
         int status = userClient.updatePassword(request);
         assertEquals(200, status);
 
+        authHolder.setCurrentUser(defaultUsername, defaultPassword);
         status = userClient.getUserRequestStatus(user.id());
         assertEquals(401, status);
 

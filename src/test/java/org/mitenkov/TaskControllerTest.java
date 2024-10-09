@@ -96,7 +96,7 @@ public class TaskControllerTest extends BaseTest {
 
         List<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().stream().map(converter::toAddRequest).toList();
 
-        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange.stream().toList()));
+        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange));
 
     }
 }

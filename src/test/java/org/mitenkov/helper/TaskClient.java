@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -70,9 +71,11 @@ public class TaskClient {
     public List<TaskDto> getAll() throws Exception {
         String responseBody = this.mockMvc.perform(get("/tasks")
                         .header(HttpHeaders.AUTHORIZATION,
-                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword))
+                        .header("Size", Integer.MAX_VALUE))
                 .andReturn().getResponse().getContentAsString();
-        return objectMapper.readValue(responseBody, new TypeReference<>() {
+        Page<TaskDto> page = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
+        return page.toList();
     }
 }

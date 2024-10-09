@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -45,11 +46,13 @@ public class CommentClient {
     public List<CommentDto> getByNickname(String nickname) throws Exception {
         String result = this.mockMvc.perform(get("/comments?nick=" + nickname)
                         .header(HttpHeaders.AUTHORIZATION,
-                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword))
+                        .header("Size", Integer.MAX_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        return objectMapper.readValue(result, new TypeReference<>() {
+        Page<CommentDto> page = objectMapper.readValue(result, new TypeReference<>() {
         });
+        return page.toList();
     }
 }
