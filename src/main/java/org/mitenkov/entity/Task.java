@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
@@ -13,8 +12,6 @@ import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -42,10 +39,9 @@ public abstract class Task {
 
     private LocalDate deadline;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
-    private List<Comment> comments = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public abstract TaskType getTaskType();
 }
-

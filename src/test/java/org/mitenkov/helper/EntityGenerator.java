@@ -24,7 +24,6 @@ public class EntityGenerator {
                 .id(1)
                 .deadline(LocalDate.now().plusDays(20))
                 .priority(Priority.LOW)
-                .comments(new ArrayList<>())
                 .build();
 
         Feature feature2 = Feature.builder()
@@ -32,13 +31,11 @@ public class EntityGenerator {
                 .id(2)
                 .deadline(LocalDate.now().plusDays(20))
                 .priority(Priority.LOW)
-                .comments(new ArrayList<>())
                 .build();
 
         Feature feature3 = Feature.builder()
                 .title("TestFeature3")
                 .priority(Priority.HIGH)
-                .comments(new ArrayList<>())
                 .deadline(LocalDate.now().plusDays(20))
                 .build();
 
@@ -47,7 +44,6 @@ public class EntityGenerator {
                 .priority(Priority.MEDIUM)
                 .version("2.1.2")
                 .title("TestBug1")
-                .comments(new ArrayList<>())
                 .build();
 
         Bug bug2 = Bug.builder()
@@ -55,7 +51,6 @@ public class EntityGenerator {
                 .priority(Priority.LOW)
                 .version("2.0.0")
                 .title("TestBug2")
-                .comments(new ArrayList<>())
                 .build();
 
         Bug bug3 = Bug.builder()
@@ -63,7 +58,6 @@ public class EntityGenerator {
                 .priority(Priority.MEDIUM)
                 .version("1.15.2")
                 .title("TestBug3")
-                .comments(new ArrayList<>())
                 .build();
 
         List<Task> tasks = new ArrayList<>();

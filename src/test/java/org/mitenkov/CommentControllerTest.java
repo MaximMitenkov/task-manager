@@ -6,9 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
-import org.mitenkov.helper.CommentClient;
-import org.mitenkov.helper.DBCleaner;
-import org.mitenkov.helper.EntityGenerator;
+import org.mitenkov.dto.UserAddRequest;
+import org.mitenkov.helper.*;
 import org.mitenkov.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mitenkov.helper.AuthTestHolder.*;
 
 public class CommentControllerTest extends BaseTest {
 
@@ -39,18 +39,26 @@ public class CommentControllerTest extends BaseTest {
     @Autowired
     CommentClient commentClient;
 
+    @Autowired
+    AuthTestHolder authHolder;
+
+    @Autowired
+    TaskClient taskClient;
+
+    @Autowired
+    UserClient userClient;
+
     @BeforeEach
     public void beforeEach() {
-        cleaner.cleanAll();
+        cleaner.reset();
         entityGenerator.generateTasksAndSave();
+        authHolder.setCurrentUser();
     }
 
     @Test
     void addComment() throws Exception {
-
         CommentAddRequest comment = CommentAddRequest.builder()
                 .content("Content")
-                .author("Author1")
                 .dateTime(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS))
                 .taskId(1)
                 .build();
@@ -58,7 +66,7 @@ public class CommentControllerTest extends BaseTest {
         CommentDto resultComment = commentClient.create(comment);
 
         assertEquals(comment.content(), resultComment.content());
-        assertEquals(comment.author(), resultComment.author());
+        assertEquals(currentUser.getId(), resultComment.authorId());
         assertEquals(comment.dateTime(), resultComment.dateTime());
         assertEquals(comment.taskId(), resultComment.taskId());
     }
@@ -66,43 +74,41 @@ public class CommentControllerTest extends BaseTest {
     @Test
     void getCommentByNicknameTest() throws Exception {
 
+        userClient.create(UserAddRequest.builder()
+                .username(defaultUsername)
+                .password(defaultPassword)
+                .build());
+        int taskId = taskClient.getAll().get(0).id();
+
         CommentAddRequest comment1 = new CommentAddRequest(
                 "Content",
-                "Author1",
                 LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-                1
-        );
-
-        CommentAddRequest comment2 = new CommentAddRequest(
-                "Content",
-                "Author2",
-                LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
-                1
+                taskId
         );
 
         commentClient.create(comment1);
+        authHolder.setCurrentUser(defaultUsername, defaultPassword);
+
+        CommentAddRequest comment2 = new CommentAddRequest(
+                "Content",
+                LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
+                taskId
+        );
+
         commentClient.create(comment2);
 
-        List<CommentDto> resultComment = commentClient.getByNickname("Author1").stream().toList();
+        List<CommentDto> resultComment = commentClient.getByNickname(adminUsername);
 
-        assertEquals(resultComment.size(), 1);
-        assertEquals(resultComment.get(0).author(), comment1.author());
-        assertEquals(resultComment.get(0).content(), comment1.content());
-        assertEquals(resultComment.get(0).dateTime(), comment1.dateTime());
-        assertEquals(resultComment.get(0).taskId(), comment1.taskId());
+        assertEquals(1, resultComment.size());
+        assertEquals(comment1.content(), resultComment.get(0).content());
+        assertEquals(comment1.dateTime(), resultComment.get(0).dateTime());
+        assertEquals(comment1.taskId(), resultComment.get(0).taskId());
 
-        resultComment = commentClient.getByNickname("Author2").stream().toList();
+        resultComment = commentClient.getByNickname(defaultUsername);
 
-        assertEquals(resultComment.size(), 1);
-        assertEquals(resultComment.get(0).author(), comment2.author());
-        assertEquals(resultComment.get(0).content(), comment2.content());
-        assertEquals(resultComment.get(0).dateTime(), comment2.dateTime());
-        assertEquals(resultComment.get(0).taskId(), comment2.taskId());
-
-        resultComment = commentClient.getByNickname("Wrong Author").stream().toList();
-
-        assertEquals(resultComment.size(), 0);
-
+        assertEquals(1, resultComment.size());
+        assertEquals(comment2.content(), resultComment.get(0).content());
+        assertEquals(comment2.dateTime(), resultComment.get(0).dateTime());
+        assertEquals(comment2.taskId(), resultComment.get(0).taskId());
     }
-
 }

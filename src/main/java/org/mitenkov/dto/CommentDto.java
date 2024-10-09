@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 
 @Builder
 public record CommentDto(
-        Integer id,
+        int id,
         String content,
-        String author,
         LocalDateTime dateTime,
-        Integer taskId
+        int taskId,
+        int authorId
 ) {
 }

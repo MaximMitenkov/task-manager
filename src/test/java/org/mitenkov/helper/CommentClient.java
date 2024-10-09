@@ -6,10 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.mitenkov.helper.AuthTestHolder.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,14 +24,18 @@ public class CommentClient {
 
     private final ObjectMapper objectMapper;
     private final MockMvc mockMvc;
+    private final HeaderCreator headerCreator;
 
     public CommentDto create(CommentAddRequest commentAddRequest) throws Exception {
 
         String json = objectMapper.writeValueAsString(commentAddRequest);
 
+
         String result = this.mockMvc.perform(post("/comments")
                         .content(json)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.AUTHORIZATION,
+                                headerCreator.createBasicAuthHeader(currentUser.getUsername(), currentUserPassword)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
@@ -35,12 +43,16 @@ public class CommentClient {
 
     }
 
-    public Page<CommentDto> getByNickname(String nickname) throws Exception {
-        String result = this.mockMvc.perform(get("/comments?nick=" + nickname))
+    public List<CommentDto> getByNickname(String nickname) throws Exception {
+        String result = this.mockMvc.perform(get("/comments?nick=" + nickname)
+                        .header(HttpHeaders.AUTHORIZATION,
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword))
+                        .header("Size", Integer.MAX_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        return objectMapper.readValue(result, new TypeReference<>() {
+        Page<CommentDto> page = objectMapper.readValue(result, new TypeReference<>() {
         });
+        return page.toList();
     }
 }

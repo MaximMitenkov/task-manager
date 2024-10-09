@@ -16,6 +16,7 @@ public record TaskDto(
         Priority priority,
         TaskType taskType,
         String title,
+        int authorId,
 
         @Schema(example = "2.1.12")
         String version

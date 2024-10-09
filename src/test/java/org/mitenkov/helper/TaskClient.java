@@ -7,12 +7,16 @@ import lombok.SneakyThrows;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.mitenkov.helper.AuthTestHolder.adminPassword;
+import static org.mitenkov.helper.AuthTestHolder.adminUsername;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
@@ -21,6 +25,7 @@ public class TaskClient {
 
     private final ObjectMapper objectMapper;
     private final MockMvc mockMvc;
+    private final HeaderCreator headerCreator;
 
     @SneakyThrows
     public TaskDto create(TaskAddRequest request) {
@@ -29,7 +34,9 @@ public class TaskClient {
 
         String responseBody = this.mockMvc.perform(post("/tasks")
                         .content(json)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization",
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
@@ -39,24 +46,36 @@ public class TaskClient {
 
     public TaskDto getById(int id) throws Exception {
 
-        String addedTaskResponse = this.mockMvc.perform(get("/tasks/" + id))
-                .andExpect(status().isOk())
+        String addedTaskResponse = this.mockMvc.perform(get("/tasks/" + id)
+                        .header(HttpHeaders.AUTHORIZATION,
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
                 .andReturn().getResponse().getContentAsString();
 
         return objectMapper.readValue(addedTaskResponse, TaskDto.class);
     }
 
+    public int getByIdStatus(int id) throws Exception {
+        return this.mockMvc.perform(get("/tasks/" + id)
+                        .header(HttpHeaders.AUTHORIZATION,
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
+                .andReturn().getResponse().getStatus();
+    }
+
     public void deleteById(int id) throws Exception {
-        this.mockMvc.perform(delete("/tasks/" + id))
+        this.mockMvc.perform(delete("/tasks/" + id)
+                        .header(HttpHeaders.AUTHORIZATION,
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))
                 .andExpect(status().isOk());
     }
 
-    public Page<TaskDto> getAll() throws Exception {
-        String responseBody = this.mockMvc.perform(get("/tasks"))
-                .andDo(print())
-                .andExpect(status().isOk())
+    public List<TaskDto> getAll() throws Exception {
+        String responseBody = this.mockMvc.perform(get("/tasks")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                headerCreator.createBasicAuthHeader(adminUsername, adminPassword))
+                        .header("Size", Integer.MAX_VALUE))
                 .andReturn().getResponse().getContentAsString();
-        return objectMapper.readValue(responseBody, new TypeReference<>() {
+        Page<TaskDto> page = objectMapper.readValue(responseBody, new TypeReference<>() {
         });
+        return page.toList();
     }
 }

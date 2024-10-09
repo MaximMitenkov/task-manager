@@ -8,25 +8,15 @@ import org.mitenkov.dto.TaskDto;
 import org.mitenkov.entity.Task;
 import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
-import org.mitenkov.helper.DBCleaner;
-import org.mitenkov.helper.EntityGenerator;
-import org.mitenkov.helper.TaskClient;
-import org.mitenkov.helper.TaskConverter;
+import org.mitenkov.helper.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TaskControllerTest extends BaseTest {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     EntityGenerator entityGenerator;
@@ -40,9 +30,14 @@ public class TaskControllerTest extends BaseTest {
     @Autowired
     DBCleaner dbCleaner;
 
+    @Autowired
+    AuthTestHolder authHolder;
+
     @BeforeEach
     public void beforeEach() {
-        dbCleaner.cleanAll();
+        dbCleaner.reset();
+        entityGenerator.generateTasksAndSave();
+        authHolder.setCurrentUser();
     }
 
     @Test
@@ -65,9 +60,7 @@ public class TaskControllerTest extends BaseTest {
         assertEquals(result.taskType(), taskAddRequest.type());
 
         TaskDto dto = taskClient.getById(result.id());
-
         assertEquals(dto, result);
-
     }
 
     @Test
@@ -82,11 +75,10 @@ public class TaskControllerTest extends BaseTest {
         );
 
         TaskDto result = taskClient.create(taskAddRequest);
-
         taskClient.deleteById(result.id());
 
-        this.mockMvc.perform(get("/tasks/" + result.id()))
-                .andExpect(status().isNotFound());
+        int status = taskClient.getByIdStatus(result.id());
+        assertEquals(404, status);
     }
 
     @Test
@@ -102,9 +94,9 @@ public class TaskControllerTest extends BaseTest {
             taskClient.create(t);
         }
 
-        Page<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().map(converter::toAddRequest);
+        List<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().stream().map(converter::toAddRequest).toList();
 
-        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange.stream().toList()));
+        assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange));
 
     }
 }

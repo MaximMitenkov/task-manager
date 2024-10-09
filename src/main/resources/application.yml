@@ -1,6 +1,7 @@
 logging:
   level:
     root: INFO
+    org.springframework.security: INFO
 
 spring:
   datasource:
@@ -24,4 +25,6 @@ app:
     feature:
       min-time-to-do: p10d
     max-title-length: 15
-
+  admin:
+    username: admin
+    password: 12345
