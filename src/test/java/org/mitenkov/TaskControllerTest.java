@@ -10,7 +10,6 @@ import org.mitenkov.enums.Priority;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.helper.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -61,9 +60,7 @@ public class TaskControllerTest extends BaseTest {
         assertEquals(result.taskType(), taskAddRequest.type());
 
         TaskDto dto = taskClient.getById(result.id());
-
         assertEquals(dto, result);
-
     }
 
     @Test
@@ -78,7 +75,6 @@ public class TaskControllerTest extends BaseTest {
         );
 
         TaskDto result = taskClient.create(taskAddRequest);
-
         taskClient.deleteById(result.id());
 
         int status = taskClient.getByIdStatus(result.id());
@@ -98,7 +94,7 @@ public class TaskControllerTest extends BaseTest {
             taskClient.create(t);
         }
 
-        Page<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().map(converter::toAddRequest);
+        List<TaskAddRequest> assertTaskDidNotChange = taskClient.getAll().stream().map(converter::toAddRequest).toList();
 
         assertEquals(getSet(tasksToAdd), getSet(assertTaskDidNotChange.stream().toList()));
 

@@ -48,7 +48,7 @@ public class UserControllerTest extends BaseTest {
                 .password(defaultPassword)
                 .build();
 
-        Integer id = userClient.create(userAddRequest).id();
+        int id = userClient.create(userAddRequest).id();
 
         UserDto user = userClient.getUser(id);
 
@@ -63,17 +63,20 @@ public class UserControllerTest extends BaseTest {
                 .password(defaultPassword)
                 .build());
 
-        userClient.getUser(user.id());
+        int id = user.id();
+        int status = userClient.getUserRequestStatus(id);
+        assertEquals(200, status);
 
         String newUsername = "Tester";
 
         userClient.update(UserUpdateRequest.builder()
-                .id(user.id())
+                .id(id)
                 .username(newUsername)
                 .build());
-        UserDto updatedUser = userClient.getUser(user.id());
-        int status = userClient.getUserRequestStatus(user.id());
+        UserDto updatedUser = userClient.getUser(id);
 
+        authHolder.setCurrentUser(newUsername, defaultPassword);
+        status = userClient.getUserRequestStatus(id);
         assertEquals(200, status);
         assertEquals(newUsername, updatedUser.username());
     }
@@ -85,17 +88,24 @@ public class UserControllerTest extends BaseTest {
                 .password(defaultPassword)
                 .build());
 
+        String newUsername = "Vladimir";
+        int id = user.id();
+
         UserUpdateRequest request = UserUpdateRequest.builder()
-                .username("Vladimir")
-                .id(user.id())
+                .username(newUsername)
+                .id(id)
                 .build();
 
         authHolder.setCurrentUser(defaultUsername, defaultPassword);
-        userClient.updateCurrent(request);
-        authHolder.setCurrentUser("Vladimir", defaultPassword);
-        UserDto result = userClient.getUser(user.id());
+        int status = userClient.updateCurrent(request);
+        assertEquals(200, status);
 
-        assertEquals(request.username(), result.username());
+        status = userClient.getUserRequestStatus(id);
+        assertEquals(401, status);
+
+        authHolder.setCurrentUser(newUsername, defaultPassword);
+        status = userClient.getUserRequestStatus(id);
+        assertEquals(200, status);
     }
 
 
@@ -115,16 +125,20 @@ public class UserControllerTest extends BaseTest {
         assertEquals(user.username(), blockedUser.username());
         assertEquals(user.email(), blockedUser.email());
 
+        userClient.blockUser(user.id());
+        blockedUser = userClient.getUser(user.id());
+        assertEquals(false, blockedUser.isActive());
+
         authHolder.setCurrentUser(defaultUsername, defaultPassword);
         UserUpdateRequest request = UserUpdateRequest.builder()
                 .id(user.id())
                 .username("BlockedUser")
                 .build();
-        userClient.updateCurrent(request);
+        int status = userClient.updateCurrent(request);
+        assertEquals(401, status);
 
         authHolder.setCurrentUser();
         UserDto resultUser = userClient.getUser(user.id());
-
         assertEquals(defaultUsername, resultUser.username());
     }
 
@@ -139,11 +153,14 @@ public class UserControllerTest extends BaseTest {
                 .id(user.id())
                 .password("new password")
                 .build();
+        int status = userClient.updatePassword(request);
+        assertEquals(200, status);
 
-        userClient.updatePassword(request);
+        status = userClient.getUserRequestStatus(user.id());
+        assertEquals(401, status);
 
         authHolder.setCurrentUser(defaultUsername, "new password");
-        int status = userClient.getUserRequestStatus(user.id());
+        status = userClient.getUserRequestStatus(user.id());
         assertEquals(200, status);
     }
 
@@ -154,7 +171,7 @@ public class UserControllerTest extends BaseTest {
                 .password(defaultPassword)
                 .build());
 
-        int id =user.id();
+        int id = user.id();
         userClient.blockUser(id);
 
         authHolder.setCurrentUser(defaultUsername, defaultPassword);
@@ -168,5 +185,4 @@ public class UserControllerTest extends BaseTest {
         status = userClient.getUserRequestStatus(id);
         assertEquals(200, status);
     }
-
 }

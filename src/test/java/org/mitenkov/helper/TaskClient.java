@@ -6,11 +6,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.mitenkov.helper.AuthTestHolder.adminPassword;
 import static org.mitenkov.helper.AuthTestHolder.adminUsername;
@@ -66,7 +67,7 @@ public class TaskClient {
                 .andExpect(status().isOk());
     }
 
-    public Page<TaskDto> getAll() throws Exception {
+    public List<TaskDto> getAll() throws Exception {
         String responseBody = this.mockMvc.perform(get("/tasks")
                         .header(HttpHeaders.AUTHORIZATION,
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))

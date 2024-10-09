@@ -12,13 +12,13 @@ public class AuthTestHolder {
 
     public static String currentUserPassword;
 
-    public static String adminUsername = "admin";
+    public static final String adminUsername = "admin";
 
-    public static String adminPassword = "12345";
+    public static final String adminPassword = "12345";
 
-    public static String defaultUsername = "TestUsername";
+    public static final String defaultUsername = "TestUsername";
 
-    public static String defaultPassword = "1234";
+    public static final String defaultPassword = "1234";
 
     private final UserRepository userRepository;
 

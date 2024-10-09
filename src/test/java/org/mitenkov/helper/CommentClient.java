@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.mitenkov.helper.AuthTestHolder.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,7 +42,7 @@ public class CommentClient {
 
     }
 
-    public Page<CommentDto> getByNickname(String nickname) throws Exception {
+    public List<CommentDto> getByNickname(String nickname) throws Exception {
         String result = this.mockMvc.perform(get("/comments?nick=" + nickname)
                         .header(HttpHeaders.AUTHORIZATION,
                                 headerCreator.createBasicAuthHeader(adminUsername, adminPassword)))

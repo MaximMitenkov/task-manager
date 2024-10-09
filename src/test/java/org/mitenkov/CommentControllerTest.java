@@ -78,7 +78,7 @@ public class CommentControllerTest extends BaseTest {
                 .username(defaultUsername)
                 .password(defaultPassword)
                 .build());
-        int taskId = taskClient.getAll().toList().get(0).id();
+        int taskId = taskClient.getAll().get(0).id();
 
         CommentAddRequest comment1 = new CommentAddRequest(
                 "Content",
@@ -97,14 +97,14 @@ public class CommentControllerTest extends BaseTest {
 
         commentClient.create(comment2);
 
-        List<CommentDto> resultComment = commentClient.getByNickname(adminUsername).toList();
+        List<CommentDto> resultComment = commentClient.getByNickname(adminUsername);
 
         assertEquals(1, resultComment.size());
         assertEquals(comment1.content(), resultComment.get(0).content());
         assertEquals(comment1.dateTime(), resultComment.get(0).dateTime());
         assertEquals(comment1.taskId(), resultComment.get(0).taskId());
 
-        resultComment = commentClient.getByNickname(defaultUsername).toList();
+        resultComment = commentClient.getByNickname(defaultUsername);
 
         assertEquals(1, resultComment.size());
         assertEquals(comment2.content(), resultComment.get(0).content());

@@ -20,9 +20,7 @@ public class DBCleaner {
     private final UserClient userClient;
 
     public void reset() {
-        taskRepository.deleteAll();
-        commentRepository.deleteAll();
-        userRepository.deleteAll();
+        cleanAll();
         userClient.create(new UserAddRequest(adminUsername,null, adminPassword));
     }
 
