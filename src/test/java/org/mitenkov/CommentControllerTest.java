@@ -50,7 +50,7 @@ public class CommentControllerTest extends BaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        cleaner.cleanAllButUsers();
+        cleaner.reset();
         entityGenerator.generateTasksAndSave();
         authHolder.setCurrentUser();
     }
