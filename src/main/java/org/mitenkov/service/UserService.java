@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Objects;
@@ -47,6 +48,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public User saveUser(@Valid UserAddRequest request) {
         if (userRepository.existsByUsername(request.username())) {
             throw new ErrorCodeException(ErrorCode.NOT_UNIQUE);
@@ -54,6 +56,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userProvider.createUser(request));
     }
 
+    @Transactional
     public User updateCurrentUser(@Valid UserUpdateRequest request) {
         User originalUser = getByIdOrElseThrow(request.id());
         if (!Objects.equals(originalUser.getUsername(), AuthHolder.getCurrentUser().getUsername())) {
@@ -63,6 +66,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(result);
     }
 
+    @Transactional
     public User updateCurrentPassword(@Valid UserPasswordUpdateRequest request) {
         User originalUser = getByIdOrElseThrow(request.id());
         if (!Objects.equals(originalUser.getUsername(), AuthHolder.getCurrentUser().getUsername())) {
@@ -72,6 +76,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(result);
     }
 
+    @Transactional
     public User updateUser(@Valid UserUpdateRequest request) {
         User originalUser = getByIdOrElseThrow(request.id());
         userValidator.validateUnique(request.username());
@@ -79,18 +84,21 @@ public class UserService implements UserDetailsService {
         return userRepository.save(result);
     }
 
+    @Transactional
     public User updatePassword(@Valid UserPasswordUpdateRequest request) {
         User originalUser = getByIdOrElseThrow(request.id());
         User result = userProvider.updatePassword(request, originalUser);
         return userRepository.save(result);
     }
 
+    @Transactional
     public User blockUser(int id) {
         User user = getByIdOrElseThrow(id);
         user.setActive(false);
         return userRepository.save(user);
     }
 
+    @Transactional
     public User unblockUser(int id) {
         User user = getByIdOrElseThrow(id);
         user.setActive(true);
@@ -111,13 +119,14 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new ErrorCodeException(ErrorCode.NO_SUCH_ELEMENT));
     }
 
+    @Transactional
     @EventListener(ApplicationReadyEvent.class)
     protected void createInitAdminUser() {
         if (userRepository.findByRole(UserRole.ADMIN).isEmpty()) {
             addAdmin();
         }
     }
-
+    
     private void addAdmin() {
         userRepository.save(User.builder()
                 .role(UserRole.ADMIN)
