@@ -86,9 +86,8 @@ public class TaskService {
     }
 
     @SneakyThrows
-    public void exportAllTasks() {
-        taskExport.exportTasksInFile();
-        taskExport.doGet();
+    public byte[] exportAllTasksAsBytes() {
+        return taskExport.exportTasksInBytes();
     }
 
 }

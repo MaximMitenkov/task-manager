@@ -1,8 +1,5 @@
 package org.mitenkov.export;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Row;
@@ -14,10 +11,7 @@ import org.mitenkov.entity.Task;
 import org.mitenkov.repository.TaskRepository;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 @Component
@@ -26,12 +20,8 @@ public class TaskExport {
 
     private final TaskRepository taskRepository;
 
-    private final HttpServletResponse response;
-
-    private final File file = new File("C:\\Users\\mitma\\Documents\\", "tasks.xlsx");
-
     @SneakyThrows
-    public void exportTasksInFile() {
+    public byte[] exportTasksInBytes() {
         List<Task> tasks = taskRepository.findAll();
 
         try (Workbook book = new XSSFWorkbook()) {
@@ -58,18 +48,11 @@ public class TaskExport {
                 }
                 newRow.createCell(4).setCellValue(task.getUser().getId());
             }
-            book.write(new FileOutputStream(file));
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            try (bos) {
+                book.write(bos);
+            }
+            return bos.toByteArray();
         }
-    }
-
-    public void doGet() throws ServletException, IOException {
-        ServletOutputStream out = response.getOutputStream();
-        byte[] byteArray = Files.readAllBytes(file.toPath());
-        response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
-        response.setContentLength(byteArray.length);
-        out.write(byteArray);
-        out.flush();
-        out.close();
     }
 }
