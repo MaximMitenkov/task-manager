@@ -2,6 +2,7 @@ package org.mitenkov.service;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.Authintication.AuthHolder;
 import org.mitenkov.dto.TaskAddRequest;
@@ -10,6 +11,7 @@ import org.mitenkov.entity.Feature;
 import org.mitenkov.entity.Task;
 import org.mitenkov.entity.User;
 import org.mitenkov.enums.TaskType;
+import org.mitenkov.export.TaskExport;
 import org.mitenkov.repository.TaskRepository;
 import org.mitenkov.repository.UserRepository;
 import org.mitenkov.service.validator.TaskValidator;
@@ -30,6 +32,7 @@ public class TaskService {
     private final TaskValidator taskValidationService;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final TaskExport taskExport;
 
     @Transactional
     public Task addTask(@Valid TaskAddRequest request) {
@@ -81,4 +84,11 @@ public class TaskService {
     public Page<Task> getTasks(Pageable pageable) {
         return taskRepository.findAll(pageable);
     }
+
+    @SneakyThrows
+    public void exportAllTasks() {
+        taskExport.exportTasksInFile();
+        taskExport.doGet();
+    }
+
 }

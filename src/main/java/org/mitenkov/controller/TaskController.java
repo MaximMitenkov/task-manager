@@ -55,6 +55,11 @@ public class TaskController {
         return taskDtoConverter.toDto(taskService.getTaskById(id));
     }
 
+    @GetMapping("/export")
+    public void exportTasks() {
+        taskService.exportAllTasks();
+    }
+
     @PostMapping
     @Operation(summary = "add task", description = "Add task. For task type BUG version is required")
     public TaskDto addTask(@RequestBody TaskAddRequest request) {
