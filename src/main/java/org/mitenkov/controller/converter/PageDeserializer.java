@@ -54,7 +54,7 @@ public class PageDeserializer extends JsonDeserializer<Page<?>> implements Conte
                             p.skipChildren();
                             break;
                     }
-                } while (((propName = p.nextFieldName())) != null);
+                } while ((propName = p.nextFieldName()) != null);
             } else {
                 ctxt.handleUnexpectedToken(handledType(), p);
             }

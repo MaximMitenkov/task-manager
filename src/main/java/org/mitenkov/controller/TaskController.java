@@ -16,6 +16,7 @@ import org.mitenkov.enums.TaskType;
 import org.mitenkov.service.TaskService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -53,6 +54,16 @@ public class TaskController {
     public TaskDto getTaskById(@PathVariable int id) {
         log.info("Get task request for id {}", id);
         return taskDtoConverter.toDto(taskService.getTaskById(id));
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportTasks() {
+        byte[] content = taskService.exportAllTasksAsBytes();
+        return ResponseEntity
+                .ok()
+                .header("Content-Disposition", "attachment; filename=tasks.xlsx")
+                .body(content);
+
     }
 
     @PostMapping
