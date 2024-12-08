@@ -15,6 +15,7 @@ import org.mitenkov.dto.ErrorMessageDto;
 import org.mitenkov.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,6 +36,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentDtoConverter commentDtoConverter;
+    private final KafkaTemplate<String, CommentDto> kafkaTemplate;
 
     @GetMapping
     @Operation(summary = "get comments", description = "Get comments by author nickname.")
@@ -46,7 +48,9 @@ public class CommentController {
     @PostMapping
     @Operation(summary = "add comment")
     public CommentDto createComment(@RequestBody CommentAddRequest request) {
-        return commentDtoConverter.toDto(commentService.add(request));
+        var dto = commentDtoConverter.toDto(commentService.add(request));
+        kafkaTemplate.send("comments", String.valueOf(dto.authorId()), dto);
+        return dto;
     }
 
 }

@@ -17,6 +17,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  kafka:
+    # Перечисляем всех наших брокеров
+    bootstrap-servers: localhost:29092,localhost:29093
+    producer:
+      # Настраиваем сериализацию сообщений
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+kafka:
+  topics:
+    comment-topic: comment
 
 app:
   validation:
@@ -28,3 +39,6 @@ app:
   admin:
     username: admin
     password: 12345
+  service:
+    url:
+      calendar: "localhost:1234/calendar/set/time"

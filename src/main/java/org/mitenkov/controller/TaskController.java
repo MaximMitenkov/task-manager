@@ -14,10 +14,14 @@ import org.mitenkov.dto.TaskAddRequest;
 import org.mitenkov.dto.TaskDto;
 import org.mitenkov.enums.TaskType;
 import org.mitenkov.service.TaskService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/tasks")
@@ -35,8 +39,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TaskController {
 
+    private final RestTemplate restTemplate;
     private final TaskService taskService;
     private final TaskDtoConverter taskDtoConverter;
+
+    @Value("${app.service.url.calendar}")
+    private URI calendarURI;
 
     @GetMapping
     @Operation(summary = "get tasks", description = "Getting sorted and filtered tasks by type")
