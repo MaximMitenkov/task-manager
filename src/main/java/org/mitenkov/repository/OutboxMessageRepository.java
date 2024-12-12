@@ -1,5 +1,6 @@
 package org.mitenkov.repository;
 
+import org.jetbrains.annotations.NotNull;
 import org.mitenkov.entity.OutboxMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,6 +10,6 @@ public interface OutboxMessageRepository extends JpaRepository<OutboxMessage, Lo
 
     List<OutboxMessage> findByTopic(String topic);
 
-    void deleteById(Long id);
+    void deleteById(@NotNull Long id);
 
 }
