@@ -41,7 +41,6 @@ public class CommentService {
                 .createdBy(user)
                 .build());
         commentEventSender.send(topic, comment);
-
         return comment;
     }
 

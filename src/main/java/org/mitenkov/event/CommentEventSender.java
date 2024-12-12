@@ -15,7 +15,7 @@ public class CommentEventSender {
 
     private final OutboxMessageRepository outboxMessageRepository;
     private final CommentDtoConverter converter;
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
 
     @SneakyThrows
     public void send(String topic, Comment comment) {

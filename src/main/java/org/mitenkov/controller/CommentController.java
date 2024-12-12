@@ -61,8 +61,8 @@ public class CommentController {
         return commentDtoConverter.toDto(commentService.add(request));
     }
 
-    @Scheduled(fixedRate = 1000)
-    private void sendMessages() {
+    @Scheduled(fixedRate = 100)
+    public void sendMessages() {
         List<OutboxMessage> messages = commentService.findMessages();
         if (messages.isEmpty()) {
             return;
