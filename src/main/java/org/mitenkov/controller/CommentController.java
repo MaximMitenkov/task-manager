@@ -9,14 +9,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.controller.converter.CommentDtoConverter;
+import org.mitenkov.controller.converter.OutboxMessageDtoConverter;
 import org.mitenkov.dto.CommentAddRequest;
 import org.mitenkov.dto.CommentDto;
 import org.mitenkov.dto.ErrorMessageDto;
+import org.mitenkov.entity.OutboxMessage;
 import org.mitenkov.service.CommentService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
@@ -36,7 +42,11 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentDtoConverter commentDtoConverter;
+    private final OutboxMessageDtoConverter outboxMessageDtoConverter;
     private final KafkaTemplate<String, CommentDto> kafkaTemplate;
+
+    @Value("${kafka.topics.comment-topic}")
+    private final String topic;
 
     @GetMapping
     @Operation(summary = "get comments", description = "Get comments by author nickname.")
@@ -48,9 +58,20 @@ public class CommentController {
     @PostMapping
     @Operation(summary = "add comment")
     public CommentDto createComment(@RequestBody CommentAddRequest request) {
-        var dto = commentDtoConverter.toDto(commentService.add(request));
-        kafkaTemplate.send("comments", String.valueOf(dto.authorId()), dto);
-        return dto;
+        return commentDtoConverter.toDto(commentService.add(request));
+    }
+
+    @Scheduled(fixedRate = 1000)
+    private void sendMessages() {
+        List<OutboxMessage> messages = commentService.findMessages();
+        if (messages.isEmpty()) {
+            return;
+        }
+        for (var msg : messages) {
+            var dto = outboxMessageDtoConverter.toDto(msg);
+            kafkaTemplate.send(dto.topic(), dto.payload());
+            commentService.deleteById(msg.getId());
+        }
     }
 
 }

@@ -19,7 +19,7 @@ spring:
         format_sql: true
   kafka:
     # Перечисляем всех наших брокеров
-    bootstrap-servers: localhost:29092,localhost:29093
+    bootstrap-servers: localhost:29092
     producer:
       # Настраиваем сериализацию сообщений
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -27,7 +27,7 @@ spring:
 
 kafka:
   topics:
-    comment-topic: comment
+    comment-topic: comments
 
 app:
   validation:
