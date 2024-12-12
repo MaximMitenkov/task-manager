@@ -5,10 +5,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.mitenkov.controller.converter.PageModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
-@EnableScheduling
 public class ObjectMapperConfig {
 
     @Bean
