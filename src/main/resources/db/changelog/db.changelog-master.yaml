@@ -7,3 +7,6 @@ databaseChangeLog:
       file: db/changelog/changes/3-commentTable.sql
   - include:
       file: db/changelog/changes/4-userTable.sql
+  - include:
+      file: db/changelog/changes/5-outbox.sql
+

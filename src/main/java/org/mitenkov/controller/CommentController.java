@@ -48,5 +48,4 @@ public class CommentController {
     public CommentDto createComment(@RequestBody CommentAddRequest request) {
         return commentDtoConverter.toDto(commentService.add(request));
     }
-
 }
