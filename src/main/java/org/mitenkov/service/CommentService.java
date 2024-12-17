@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -52,7 +53,7 @@ public class CommentService {
         return outboxMessageRepository.findByTopic(topic);
     }
 
-    public void deleteById(Long id) {
-        outboxMessageRepository.deleteById(id);
+    public void deleteById(Set<Long> ids) {
+        outboxMessageRepository.deleteAllById(ids);
     }
 }

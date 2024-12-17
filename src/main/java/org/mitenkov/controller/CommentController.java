@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.mitenkov.controller.converter.CommentDtoConverter;
 import org.mitenkov.controller.converter.OutboxMessageDtoConverter;
@@ -23,6 +24,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/comments")
@@ -61,17 +63,20 @@ public class CommentController {
         return commentDtoConverter.toDto(commentService.add(request));
     }
 
-    @Scheduled(fixedRate = 100)
+    @SneakyThrows
+    @Scheduled(fixedDelay = 1000)
     public void sendMessages() {
         List<OutboxMessage> messages = commentService.findMessages();
         if (messages.isEmpty()) {
             return;
         }
-        for (var msg : messages) {
-            var dto = outboxMessageDtoConverter.toDto(msg);
-            kafkaTemplate.send(dto.topic(), dto.payload());
-            commentService.deleteById(msg.getId());
-        }
+        messages.stream()
+                .map(outboxMessageDtoConverter::toDto)
+                .forEach(msg -> kafkaTemplate.send(msg.topic(), msg.payload()));
+        kafkaTemplate.flush();
+        commentService.deleteById(messages.stream()
+                .map(OutboxMessage::getId)
+                .collect(Collectors.toSet()));
     }
 
 }
