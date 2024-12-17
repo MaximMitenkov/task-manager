@@ -41,4 +41,4 @@ app:
     password: 12345
   service:
     url:
-      calendar: "localhost:1234/calendar/set/time"
+      calendar: "localhost:1234/events"
